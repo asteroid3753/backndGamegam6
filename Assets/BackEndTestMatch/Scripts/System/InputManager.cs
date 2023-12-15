@@ -37,7 +37,6 @@ public class InputManager : MonoBehaviour
         Vector3 moveVector = new Vector3(virtualStick.GetHorizontalValue(), 0, virtualStick.GetVerticalValue());
         moveVector = Vector3.Normalize(moveVector);
 
-
         if (keyCode <= 0)
         {
             return;
