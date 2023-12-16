@@ -21,7 +21,7 @@ namespace KSY
 
         }
 
-        private void PlayerMoveRecvFunc(SessionId sessionId, Vector2 vec)
+        private void PlayerMoveRecvFunc(Vector2 vec)
         {
             // 들어오면 
             Debug.Log($"x : {vec.x}, y : {vec.y}");
