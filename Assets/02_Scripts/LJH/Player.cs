@@ -11,10 +11,10 @@ namespace LJH{
 
         [SerializeField] public string NickName;
 
-        [SerializeField] GrowingItem havingItem; //°¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛ
-        [SerializeField] GrowingItem nowItem; //Ãæµ¹¾ÆÀÌÅÛ
+        [SerializeField] GrowingItem havingItem; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        [SerializeField] GrowingItem nowItem; //ï¿½æµ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        public string GetUserName(string _name)
+        public string GetUserName()
         {
             return NickName;
         }

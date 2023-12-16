@@ -9,7 +9,7 @@ using MorningBird.Sound;
 using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
-using Protocol;
+using UnityEngine.SceneManagement;
 
 namespace LJH
 {
@@ -19,6 +19,8 @@ namespace LJH
         private GameObject itemPrefab;
         [SerializeField]
         private float itemSpawnSpan = 1f;
+
+        [SerializeField] bool _isGameEnd = false;
 
         [SerializeField] GameObject _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
@@ -31,7 +33,7 @@ namespace LJH
         public Dictionary<string, LJH.PlayerController> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
-
+        
         int itemCount = 0;
 
         BoxCollider2D slimeArea;
@@ -95,6 +97,9 @@ namespace LJH
                 BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
                 BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
+
+                Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
+
             }
 
 
@@ -121,12 +126,10 @@ namespace LJH
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
-                    LJH.PlayerController player = Instantiate(_playerPrefab).GetComponent<LJH.PlayerController>();
-                    // player.SetUserName(_playerNickNames[i]);
-                    if (_playerNickNames[i] == _myClientNickName)
-                    {
-                        player.gameObject.AddComponent<InputManager>();
-                    }
+                    GameObject player = Instantiate(_playerPrefab);//, _playerPositions[i].position, Quaternion.identity);
+                    LJH.PlayerController playerController = player.GetComponent<LJH.PlayerController>();
+                    NamePlayerPairs.Add(_playerNickNames[i], playerController);
+                    player.GetComponent<Player>().SetUserName(_playerNickNames[i]);
 
                     if (isSuperPlayer == true)
                     {
@@ -138,10 +141,24 @@ namespace LJH
                     }
 
                     // tPlayer.SetAnimalType(Etype (int)i)
-
-                    player.transform.position = _playerPositions[i].position;
-
-                    NamePlayerPairs.Add(_playerNickNames[i], player);
+                    if (_playerNickNames[i].ToString() == _myClientNickName){
+                        player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                        player.transform.position = _playerPositions[i].position;
+                        player.gameObject.AddComponent<InputManager>();
+                    }
+                    else{
+                        player.transform.position = _playerPositions[i].position;
+                        player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                    }
+                    // if (_playerNickNames[i].ToString() == _myClientNickName)
+                    // {
+                        
+                    //     PlayerMoveMessage msg = new PlayerMoveMessage(player.transform.position);
+                    //     BackEndManager.Instance.InGame.SendDataToInGame(msg);
+                    // }
+                    // player.transform.position = _playerPositions[i].position;
+                    // player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                    
                 }
             }
 
@@ -184,6 +201,17 @@ namespace LJH
         int testCnt = 0;
         private void Update()
         {
+            #region GameEndingConditionCheck
+
+
+            if (_isGameEnd == true)
+            {
+                DeclareMatchEnd();
+                _isGameEnd = false;
+            }
+
+            #endregion
+
             // ������ ���� üũ
             // // ������ ���� ����
             if (Input.GetKeyDown(KeyCode.Space))
@@ -192,7 +220,73 @@ namespace LJH
                 BackEndManager.Instance.InGame.SendDataToInGame(new GrabItemMessage(testCnt++));
             }
 
+
+            // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
+
         }
+
+        private void OnDisable()
+        {
+            UnSubscribeOnLeaveInGameServerEvent();
+        }
+
+        #region EndingMatch
+        void OnLeaveInGameServerEvent(MatchInGameSessionEventArgs args)
+        {
+            if (args.ErrInfo == ErrorCode.Success)
+            {
+                Debug.Log("OnLeaveInGameServer 인게임 서버 접속 종료 : " + args.ErrInfo.ToString());
+            }
+            else
+            {
+                Debug.LogError("OnLeaveInGameServer 인게임 서버 접속 종료 : " + args.ErrInfo + " / " + args.Reason);
+            }
+        }
+
+        void UnSubscribeOnLeaveInGameServerEvent()
+        {
+            Backend.Match.OnLeaveInGameServer -= OnLeaveInGameServerEvent;
+        }
+
+        void DeclareMatchEnd()
+        {
+            Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
+            {
+                if (args.ErrInfo == ErrorCode.Success)
+                {
+                    Debug.Log("8-2. OnMatchResult 성공 : " + args.ErrInfo.ToString());
+                }
+                else
+                {
+                    Debug.LogError("8-2. OnMatchResult 실패 : " + args.ErrInfo.ToString());
+                }
+
+                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
+                
+
+
+
+            };
+
+            Debug.Log("8-1. MatchEnd 호출");
+
+            //MatchGameResult matchGameResult = new MatchGameResult();
+            //matchGameResult.m_winners = new List<SessionId>();
+            //matchGameResult.m_losers = new List<SessionId>();
+
+            //foreach (var session in inGameUserList)
+            //{
+            //    // 순서는 무관합니다.
+            //    matchGameResult.m_winners.Add(session.Value.m_sessionId);
+            //}
+
+            //Backend.Match.MatchEnd(matchGameResult);
+
+            var matchResult = new MatchGameResult();
+
+            Backend.Match.MatchEnd(matchResult);
+        } 
+        #endregion
 
         #region PasingEventFunc
 
