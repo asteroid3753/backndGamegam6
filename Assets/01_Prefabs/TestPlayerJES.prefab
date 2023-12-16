@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8853714566186432949}
   - component: {fileID: -2100507622039362839}
   - component: {fileID: 5871169576643266471}
+  - component: {fileID: 7449439496778598228}
+  - component: {fileID: 2900063038626094554}
   m_Layer: 0
   m_Name: TestPlayerJES
   m_TagString: Untagged
@@ -47,10 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e6e8a7c78d796c4eb6e0127992db138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 10
+  MovementSpeed: 10
   _currentItem: {fileID: 0}
   PlayerNickName: 
   MyClientNickName: 
+  _target: {x: 0, y: 0, z: 0}
 --- !u!61 &8853714566186432949
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -175,3 +178,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!114 &7449439496778598228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2262147002385814836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb1fbb10a6be1247beccdc52da8779c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2900063038626094554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2262147002385814836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565b634e78743b34ea76bff302f28973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 3789263350939630020}
+  itemObj: {fileID: 0}

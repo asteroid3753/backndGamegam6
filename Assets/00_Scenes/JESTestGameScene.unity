@@ -307,6 +307,10 @@ PrefabInstance:
       propertyPath: _value
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7979481863780322394, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.08
@@ -390,7 +394,7 @@ MonoBehaviour:
   _growingItemPrefabs: []
   _playerNickNames: []
   _superPlayerNickName: 
-  _myNickName: 
+  _myClientNickName: 
 --- !u!4 &900374800
 Transform:
   m_ObjectHideFlags: 0
@@ -488,6 +492,18 @@ PrefabInstance:
       propertyPath: _value
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.59
+      objectReference: {fileID: 0}
     - target: {fileID: 7979481863780322394, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.85
@@ -584,6 +600,18 @@ PrefabInstance:
       propertyPath: _value
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.59
+      objectReference: {fileID: 0}
     - target: {fileID: 7979481863780322394, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.07
@@ -649,6 +677,18 @@ PrefabInstance:
       propertyPath: _value
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.62
+      objectReference: {fileID: 0}
     - target: {fileID: 7979481863780322394, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.44
@@ -709,6 +749,18 @@ PrefabInstance:
     - target: {fileID: 2262147002385814836, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
       propertyPath: m_Name
       value: JESTestItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812003113079754516, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 0.59
       objectReference: {fileID: 0}
     - target: {fileID: 7979481863780322394, guid: b71609ee8bc9ed246b39cdf1b1d1a97a, type: 3}
       propertyPath: m_LocalPosition.x
