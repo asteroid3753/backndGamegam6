@@ -14,16 +14,11 @@ namespace LJH{
         
         LJH.InputManager inputManager;
 
-
-        // Start is called before the first frame update
         void Start()
         {
-            //서버연결이 완료되면 서버에서 현재 플레이어의 아이디와 이름을 가져온 후 초기화.
             player.SetUserSpeed(20f);
-            BackEndManager.Instance.Parsing.GrabItemEvent += PlayerGrapRecvFunc;
         }
 
-        // Update is called once per frame
         private void FixedUpdate() {
             //UserMove
             this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();

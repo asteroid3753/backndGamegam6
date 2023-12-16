@@ -125,6 +125,7 @@ namespace LJH
                     if (_playerNickNames[i] == _myClientNickName)
                     {
                         PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
+                        BackEndManager.Instance.InGame.SendDataToInGame(msg);
                         player.gameObject.AddComponent<InputManager>();
                     }
 
