@@ -15,7 +15,7 @@ namespace khj
         public static MatchManager Instance;
         InGameStart ingame;
         List<MatchCard> matchCardList = new List<MatchCard>();
-        public int index = 3;
+        public int index = 1;
         
         void Awake()
         {
@@ -180,11 +180,11 @@ namespace khj
                     matchCardList.Add(matchCard);
                 }
 
+                for (int i = 0; i < matchCardList.Count; i++)
+                {
+                    Debug.Log($"{i} 번째 매치카드 : \n" + matchCardList[i].ToString());
+                }
                 RequestMatchMaking();
-                //for (int i = 0; i < matchCardList.Count; i++)
-                //{
-                //    Debug.Log($"{i} 번째 매치카드 : \n" + matchCardList[i].ToString());
-                //}
             });
         }
         public void RequestMatchMaking()
@@ -213,6 +213,10 @@ namespace khj
             };
 
             Debug.Log("3-1. RequestMatchMaking ��Ī ��û ����");
+            Debug.Log(index);
+            Debug.Log(matchCardList[index].matchType);
+            Debug.Log(matchCardList[index].matchModeType);
+            Debug.Log(matchCardList[index].inDate);
 
             Backend.Match.RequestMatchMaking(matchCardList[index].matchType, matchCardList[index].matchModeType, matchCardList[index].inDate);
         }
