@@ -24,6 +24,12 @@ EditorBuildSettings:
     path: Assets/00_Scenes/Game.unity
     guid: f1e5c9b493a206d498e53ecc3916085a
   - enabled: 1
+    path: Assets/00_Scenes/Match.unity
+    guid: 92bbdad538e869f48a3184c52a9f9183
+  - enabled: 1
+    path: Assets/00_Scenes/Login.unity
+    guid: c7c9f20a622e54f4b93e59aa91fd6839
+  - enabled: 1
     path: Assets/00_Scenes/KimSoYeon.unity
     guid: 48202600c2ddc5043860a9696f8cf81e
   m_configObjects: {}

@@ -10,9 +10,8 @@ public class TotalGameManager : MonoBehaviour
     private static bool isCreate = false;
 
     #region Scene
-    private const string LOGIN = "0. Login";
-    private const string LOBBY = "1. MatchLobby";
-    private const string READY = "2. LoadRoom";
+    private const string LOGIN = "login";
+    private const string LOBBY = "Match";
     private const string INGAME = "KimSoYeon";
     #endregion
 
@@ -33,18 +32,10 @@ public class TotalGameManager : MonoBehaviour
     private GameState gameState;
     #endregion
 
-    [HideInInspector] public string host;
-    public Dictionary<string, Player> players;
+    public string host;
+    public string myNickName;
+    public string[] playerNickNames;
 
-    public static TotalGameManager GetInstance()
-    {
-        if (Instance == null)
-        {
-            Debug.LogError("TotalGameManager 인스턴스가 존재하지 않습니다.");
-            return null;
-        }
-        return Instance;
-    }
     void Awake()
     {
         if (!Instance)
@@ -105,8 +96,6 @@ public class TotalGameManager : MonoBehaviour
 
     private void GameReady()
     {
-        Debug.Log("게임 레디 상태 돌입");
-        ChangeScene(READY);
         OnGameReady();
     }
 
@@ -194,7 +183,7 @@ public class TotalGameManager : MonoBehaviour
 
     private void ChangeScene(string scene)
     {
-        if (scene != LOGIN && scene != INGAME && scene != LOBBY && scene != READY)
+        if (scene != LOGIN && scene != INGAME && scene != LOBBY)
         {
             Debug.Log("알수없는 씬 입니다.");
             return;
@@ -208,7 +197,7 @@ public class TotalGameManager : MonoBehaviour
     private void ChangeSceneAsync(string scene, Action<bool> func)
     {
         asyncSceneName = string.Empty;
-        if (scene != LOGIN && scene != INGAME && scene != LOBBY && scene != READY)
+        if (scene != LOGIN && scene != INGAME && scene != LOBBY)
         {
             Debug.Log("알수없는 씬 입니다.");
             return;
