@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private const string LOGIN = "0. Login";
     private const string LOBBY = "1. MatchLobby";
     private const string READY = "2. LoadRoom";
-    private const string INGAME = "LeeJunHo";
+    private const string INGAME = "KimSoYeon";
     #endregion
 
 
