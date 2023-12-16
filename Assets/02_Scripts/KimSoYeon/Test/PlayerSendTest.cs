@@ -26,23 +26,23 @@ namespace KSY
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
             }
 
-            //if (Input.GetKeyDown(KeyCode.DownArrow))
-            //{
-            //    SlimeSizeUpMessage msg = new SlimeSizeUpMessage(1, Random.Range(0.1f, 0.5f));
-            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
-            //}
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                SlimeSizeUpMessage msg = new SlimeSizeUpMessage(1, Random.Range(0.1f, 0.5f));
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            }
 
-            //if (Input.GetKeyDown(KeyCode.LeftArrow))
-            //{
-            //    SlimeSizeUpMessage msg = new SlimeSizeUpMessage(2, Random.Range(0.1f, 0.5f));
-            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
-            //}
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SlimeSizeUpMessage msg = new SlimeSizeUpMessage(2, Random.Range(0.1f, 0.5f));
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            }
 
-            //if (Input.GetKeyDown(KeyCode.RightArrow))
-            //{
-            //    SlimeSizeUpMessage msg = new SlimeSizeUpMessage(3, Random.Range(0.1f, 0.5f));
-            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
-            //}
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SlimeSizeUpMessage msg = new SlimeSizeUpMessage(3, Random.Range(0.1f, 0.5f));
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            }
         }
 
         private void Parsing_SlimeSizeUpEvent(int id, float addSize)
@@ -51,6 +51,8 @@ namespace KSY
             {
                 slimeObj.transform.localScale = new Vector3(slimeObj.transform.localScale.x + addSize, slimeObj.transform.localScale.y + addSize);
             }
+
+
         }
     }
 }
