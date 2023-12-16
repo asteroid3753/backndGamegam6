@@ -11,7 +11,7 @@ namespace KSY
     public class ParsingManager
     {
         public event Action<SessionId, Vector2> PlayerMoveEvent;
-        public event Action<SessionId, float> SimeSizeUpEvent;
+        public event Action<SessionId, float> SlimeSizeUpEvent;
 
         public void Init()
         {
@@ -81,7 +81,7 @@ namespace KSY
 
         private void SlimeSizeUpMsgEvent(SlimeSizeUpMessage data)
         {
-            SimeSizeUpEvent?.Invoke(data.playerSession, data.addSize);
+            SlimeSizeUpEvent?.Invoke(data.playerSession, data.addSize);
         }
 
     } 
