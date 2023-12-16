@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LJH;
+//using LJH;
 using BackEnd;
 using BackEnd.Tcp;
 using MorningBird.SceneManagement;
@@ -12,7 +12,7 @@ using BackEnd.Game;
 using KSY.Protocol;
 using Protocol;
 
-namespace JES
+namespace LJH
 {
     public class InGameManager : MonoBehaviour
     {
@@ -87,7 +87,7 @@ namespace JES
         {
             slimeArea = GameObject.Find("Slime").GetComponent<BoxCollider2D>();
             groundArea = GameObject.Find("Ground").GetComponent<BoxCollider2D>();
-            JESFunctions.SetCollider(groundArea, slimeArea);
+            JES.JESFunctions.SetCollider(groundArea, slimeArea);
         }
 
         void Start()
@@ -172,7 +172,7 @@ namespace JES
             while (true)
             {
                 int itemType = Random.Range(0, 3);
-                UnityEngine.Vector2 spawnPos = JESFunctions.CreateRandomInstance();
+                UnityEngine.Vector2 spawnPos = JES.JESFunctions.CreateRandomInstance();
 
                 CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
