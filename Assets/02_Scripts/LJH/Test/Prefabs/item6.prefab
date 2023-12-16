@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefa24371cae24bbd95094f57d3386e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemCode: 0
-  itemImg: {fileID: 0}
+  itemCode: 6
+  itemImg: {fileID: 21300000, guid: 9e41e4acae8014d06b95d1c701d6e674, type: 3}
 --- !u!61 &9170574981758718484
 BoxCollider2D:
   m_ObjectHideFlags: 0
