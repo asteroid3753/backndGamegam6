@@ -20,15 +20,32 @@ namespace KSY
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                SlimeSizeUpMessage msg = new SlimeSizeUpMessage(SessionId.Reserve, Random.Range(0.1f, 0.5f));
+                SlimeSizeUpMessage msg = new SlimeSizeUpMessage(0, Random.Range(0.1f, 0.5f));
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
-                Debug.Log("Send Msg");
             }
+
+            //if (Input.GetKeyDown(KeyCode.DownArrow))
+            //{
+            //    SlimeSizeUpMessage msg = new SlimeSizeUpMessage(1, Random.Range(0.1f, 0.5f));
+            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            //}
+
+            //if (Input.GetKeyDown(KeyCode.LeftArrow))
+            //{
+            //    SlimeSizeUpMessage msg = new SlimeSizeUpMessage(2, Random.Range(0.1f, 0.5f));
+            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            //}
+
+            //if (Input.GetKeyDown(KeyCode.RightArrow))
+            //{
+            //    SlimeSizeUpMessage msg = new SlimeSizeUpMessage(3, Random.Range(0.1f, 0.5f));
+            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            //}
         }
 
-        private void Parsing_SlimeSizeUpEvent(SessionId sessionId, float addSize)
+        private void Parsing_SlimeSizeUpEvent(int id, float addSize)
         {
             if (slimeObj != null)
             {
