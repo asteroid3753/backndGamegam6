@@ -140,7 +140,7 @@ namespace LJH
 
                     PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
                     player.transform.position = _playerPositions[i].position;
-
+                    player.PlayerMoveRecvFunc(_playerPositions[i].position);
                     NamePlayerPairs.Add(_playerNickNames[i], player);
                 }
             }
