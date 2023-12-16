@@ -10,6 +10,7 @@ using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace LJH
 {
@@ -26,7 +27,7 @@ namespace LJH
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
         // [SerializeField] List<GroawingItems>() = new List<GroawingItems>();
-        [SerializeField] string[] _playerNickNames;
+        [SerializeField] List<string> _playerNickNames;
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
 
@@ -115,7 +116,8 @@ namespace LJH
 
             // Setting Players
             {
-                _playerNickNames = TotalGameManager.Instance.playerNickNames;
+                _playerNickNames = TotalGameManager.Instance.playerNickNames.ToList<string>();
+                _playerNickNames.Sort();
                 _superPlayerNickName = TotalGameManager.Instance.host;
                 _myClientNickName = TotalGameManager.Instance.myNickName;
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
@@ -123,7 +125,7 @@ namespace LJH
                 NamePlayerPairs = new Dictionary<string, LJH.PlayerController>();
                 InGameItemDic = new Dictionary<int, GrowingItem>();
 
-                for (int i = 0; i < _playerNickNames.Length; i++)
+                for (int i = 0; i < _playerNickNames.Count; i++)
                 {
                     GameObject player = Instantiate(_playerPrefab);//, _playerPositions[i].position, Quaternion.identity);
                     LJH.PlayerController playerController = player.GetComponent<LJH.PlayerController>();
@@ -139,7 +141,6 @@ namespace LJH
                         //tPlayer.SetSuperPlayer(false);
                     }
 
-                    // tPlayer.SetAnimalType(Etype (int)i)
                     if (_playerNickNames[i].ToString() == _myClientNickName){
                         Debug.Log(_playerPositions[i].position);
                         player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
