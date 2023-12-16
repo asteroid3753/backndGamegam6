@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/Sirenix/Odin Inspector/Modules/Unity.Addressables.data.meta
 guid: d92d0eb8b980c6d44b5f0e64a620355b
+========
+guid: 0d3824caac948c9469383d9a5e45b452
+folderAsset: yes
+>>>>>>>> origin/LJH:Assets/Scripts.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
