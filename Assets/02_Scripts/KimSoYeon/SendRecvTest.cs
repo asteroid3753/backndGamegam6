@@ -37,7 +37,7 @@ namespace KSY
         private void PlayerMoveRecvFunc(SessionId sessionId, Vector2 vec)
         {
             // 들어오면 
-
+            
         }
     } 
 }

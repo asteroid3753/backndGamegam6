@@ -57,28 +57,15 @@ namespace KSY
 
         private void Update()
         {
-            StartCoroutine(BackEndPoll());
-        }
-
-        /// <summary>
-        /// BackEnd 송수신 이벤트를 위해 주기적으로 호출해야하는 함수
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator BackEndPoll()
-        {
-            while (true)
+            if (Backend.IsInitialized)
             {
-                if (Backend.IsInitialized)
-                {
-                    // 처리된 이벤트 갯수 return
-                    // BackEND 송수신 이벤트를 위해 꼭 주기적으로 호출해야함 (실질적 송수신)
-                    Backend.Match.Poll();
-                }
-
-                // TODO : 주기에 대한 설명 여쭤보기
-                yield return new WaitForFixedUpdate();
+                // 처리된 이벤트 갯수 return
+                // BackEND 송수신 이벤트를 위해 꼭 주기적으로 호출해야함 (실질적 송수신)
+                Backend.Match.Poll();
             }
         }
+
+
     }
 }
 

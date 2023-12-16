@@ -10,6 +10,7 @@ namespace KSY
     public class ParsingManager
     {
         public UnityEvent<SessionId, Vector2> PlayerMoveEvent;
+        public UnityEvent<SessionId, float> SimeSizeUpEvent;
 
         public void Init()
         {
@@ -48,9 +49,14 @@ namespace KSY
             switch (msg.type)
             {
                 case Type.PlayerMove:
-                    PlayerMoveMessage keyMessage = DataParser.ReadJsonData<PlayerMoveMessage>(args.BinaryUserData);
-                    PlayerMoveMsgEvent(keyMessage);
+                    PlayerMoveMessage moveMsg = DataParser.ReadJsonData<PlayerMoveMessage>(args.BinaryUserData);
+                    PlayerMoveMsgEvent(moveMsg);
                     break;
+                case Type.SlimeSizeUp:
+                    SlimeSizeUpMessage sizeUpMsg = DataParser.ReadJsonData<SlimeSizeUpMessage>(args.BinaryUserData);
+                    SlimeSizeUpMsgEvent(sizeUpMsg);
+                    break;
+          
             }
         }
 
@@ -70,6 +76,11 @@ namespace KSY
 
             // ¿Ã∫•∆Æ
             PlayerMoveEvent?.Invoke(data.playerSession, moveVector);
+        }
+
+        private void SlimeSizeUpMsgEvent(SlimeSizeUpMessage data)
+        {
+            SimeSizeUpEvent?.Invoke(data.playerSession, data.addSize);
         }
 
     } 

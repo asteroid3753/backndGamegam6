@@ -9,6 +9,7 @@ namespace KSY.Protocol
     public enum Type
     {
         PlayerMove = 0, //플레이어 키 입력
+        SlimeSizeUp
     }
 
     public class Message
@@ -32,6 +33,18 @@ namespace KSY.Protocol
             playerSession = sessionId;
             this.x = pos.x;
             this.y = pos.y;
+        }
+    }
+
+    public class SlimeSizeUpMessage : Message
+    {
+        public SessionId playerSession;
+        public float addSize;
+
+        public SlimeSizeUpMessage(SessionId sessionId, float addSize) : base(Type.SlimeSizeUp)
+        {
+            playerSession = sessionId;
+            this.addSize = addSize;
         }
     }
 }
