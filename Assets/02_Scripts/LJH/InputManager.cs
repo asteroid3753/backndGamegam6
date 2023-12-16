@@ -19,8 +19,6 @@ namespace LJH{
         void Start()
         {
             player = GetComponent<Player>();
-            // StartCoroutine(SendTest());
-
         }
 
         // Update is called once per frame
@@ -35,17 +33,17 @@ namespace LJH{
             BackEndManager.Instance.InGame.SendDataToInGame(msg); 
         }
 
-        IEnumerator SendTest()
-        {
-            while (true)
-            {
-                PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
+        // IEnumerator SendTest()
+        // {
+        //     while (true)
+        //     {
+        //         PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
 
-                // move ��ǥ ���� (�ش� �÷��̾�(�� �ڽ�)�� SessionID, ��� ��ǥ��)
-                BackEndManager.Instance.InGame.SendDataToInGame(msg); 
-                yield return new WaitForEndOfFrame();
-            }
-        }
+        //         // move ��ǥ ���� (�ش� �÷��̾�(�� �ڽ�)�� SessionID, ��� ��ǥ��)
+        //         BackEndManager.Instance.InGame.SendDataToInGame(msg); 
+        //         yield return new WaitForEndOfFrame();
+        //     }
+        // }
         
     }
 }

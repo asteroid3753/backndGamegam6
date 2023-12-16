@@ -16,7 +16,7 @@ namespace LJH{
         [SerializeField] public string SetNickName => nickName;
 
         //test
-        [SerializeField] Item havingItem;
+        [SerializeField] GrowingItem havingItem;
 
         //init
         public Player(int _id, string _name, float _speed){
@@ -42,7 +42,7 @@ namespace LJH{
             return flipX;
         }
         //getter Test
-        public Item GetUserItem(){
+        public GrowingItem GetUserItem(){
             return havingItem;
         }
 
@@ -64,7 +64,7 @@ namespace LJH{
             flipX = _flipX;
         }
         //setter Test
-        public void SetUserItem(Item _item){
+        public void SetUserItem(GrowingItem _item){
             havingItem = _item;
         }
 
