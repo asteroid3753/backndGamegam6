@@ -196,6 +196,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   host: 
+  myNickName: 
+  playerNickNames: []
 --- !u!1 &950195681
 GameObject:
   m_ObjectHideFlags: 0
