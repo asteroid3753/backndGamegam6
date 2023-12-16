@@ -29,6 +29,11 @@ namespace LJH{
             Invoke("WaitAndStart", 2f);
         }
 
+        public void SetFirstPos(Vector2 pos)
+        {
+            PlayerMoveMessage msg = new PlayerMoveMessage(pos);
+            BackEndManager.Instance.InGame.SendDataToInGame(msg);
+        }
         void WaitAndStart()
         {
             isConrollAble = true;

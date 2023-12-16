@@ -143,12 +143,12 @@ namespace LJH
                     // tPlayer.SetAnimalType(Etype (int)i)
                     if (_playerNickNames[i].ToString() == _myClientNickName){
                         player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                        player.gameObject.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
                         player.transform.position = _playerPositions[i].position;
-                        player.gameObject.AddComponent<InputManager>();
                     }
                     else{
                         player.transform.position = _playerPositions[i].position;
-                        player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                        //player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
                     }
                     // if (_playerNickNames[i].ToString() == _myClientNickName)
                     // {
@@ -316,6 +316,7 @@ namespace LJH
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
+            Debug.Log(nickName+"/"+target);
             NamePlayerPairs[nickName].PlayerMoveRecvFunc(target);
         }
     } 
