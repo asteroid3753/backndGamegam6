@@ -10,9 +10,12 @@ namespace KSY
 {
     public class ParsingManager
     {
+        #region 
+        #endregion
         public event Action<Vector2> PlayerMoveEvent;
         public event Action<int, float> SlimeSizeUpEvent;
         public event Action<int> GrabItemEvent;
+        public event Action<int, int, Vector2> CreateItemEvent;
 
         public void Init()
         {
@@ -58,13 +61,13 @@ namespace KSY
                     GrabItemMessage grabItemMsg = DataParser.ReadJsonData<GrabItemMessage>(args.BinaryUserData);
                     GrabItemMsgEvent(grabItemMsg);
                     break;
+                case MsgType.CreateItem:
+                    CreateItemMessage createItemMsg = DataParser.ReadJsonData<CreateItemMessage>(args.BinaryUserData);
+                    CreateItemMsgEvent(createItemMsg);
+                    break;
             }
         }
 
-        /// <summary>
-        /// PlayerMove 메세지 가공 후 이벤트 호출 함수
-        /// </summary>
-        /// <param name="data"></param>
         private void PlayerMoveMsgEvent(PlayerMoveMessage data)
         {
             Vector2 moveVector = new Vector2(data.x, data.y);
@@ -75,7 +78,6 @@ namespace KSY
             //    //이벤트 튀기기
             //}
 
-            // 이벤트
             PlayerMoveEvent?.Invoke(moveVector);
         }
 
@@ -87,6 +89,11 @@ namespace KSY
         private void GrabItemMsgEvent(GrabItemMessage data)
         {
             GrabItemEvent?.Invoke(data.itemCode);
+        }
+
+        private void CreateItemMsgEvent(CreateItemMessage data)
+        {
+            CreateItemEvent?.Invoke(data.itemType, data.itemCode, new Vector2(data.x, data.y));
         }
     } 
 }
