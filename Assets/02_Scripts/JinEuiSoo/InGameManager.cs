@@ -186,9 +186,9 @@ namespace JES
 
         #region PasingEventFunc
 
-        private void Parsing_GrabItemEvent(int obj)
+        private void Parsing_GrabItemEvent(string nickname, int itemCode)
         {
-            Debug.Log(obj);
+           
         }
 
         private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
