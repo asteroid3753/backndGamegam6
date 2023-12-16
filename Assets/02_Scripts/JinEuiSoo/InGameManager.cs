@@ -20,6 +20,8 @@ namespace LJH
         [SerializeField]
         private float itemSpawnSpan = 1f;
 
+        [SerializeField] bool _isGameEnd = false;
+
         [SerializeField] GameObject _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
@@ -95,6 +97,9 @@ namespace LJH
                 BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
                 BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
+
+                Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
+
             }
 
 
@@ -204,7 +209,78 @@ namespace LJH
                 BackEndManager.Instance.InGame.SendDataToInGame(new GrabItemMessage(testCnt++));
             }
 
+
+            // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
+            #region GameEndingConditionCheck
+
+            if (_isGameEnd == true)
+            {
+                DeclareMatchEnd();
+            }
+
+            if (Backend.Match.IsInGameServerConnect() == false)
+            {
+                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
+            }
+
+            #endregion
         }
+
+        private void OnDisable()
+        {
+            UnSubscribeOnLeaveInGameServerEvent();
+        }
+
+        #region EndingMatch
+        void OnLeaveInGameServerEvent(MatchInGameSessionEventArgs args)
+        {
+            if (args.ErrInfo == ErrorCode.Success)
+            {
+                Debug.Log("OnLeaveInGameServer 인게임 서버 접속 종료 : " + args.ErrInfo.ToString());
+            }
+            else
+            {
+                Debug.LogError("OnLeaveInGameServer 인게임 서버 접속 종료 : " + args.ErrInfo + " / " + args.Reason);
+            }
+        }
+
+        void UnSubscribeOnLeaveInGameServerEvent()
+        {
+            Backend.Match.OnLeaveInGameServer -= OnLeaveInGameServerEvent;
+        }
+
+        void DeclareMatchEnd()
+        {
+            //Backend.Match.OnMatchResult = (MatchResultEventArgs args) => {
+            //    if (args.ErrInfo == ErrorCode.Success)
+            //    {
+            //        Debug.Log("8-2. OnMatchResult 성공 : " + args.ErrInfo.ToString());
+            //    }
+            //    else
+            //    {
+            //        Debug.LogError("8-2. OnMatchResult 실패 : " + args.ErrInfo.ToString());
+            //    }
+            //};
+
+            Debug.Log("8-1. MatchEnd 호출");
+
+            //MatchGameResult matchGameResult = new MatchGameResult();
+            //matchGameResult.m_winners = new List<SessionId>();
+            //matchGameResult.m_losers = new List<SessionId>();
+
+            //foreach (var session in inGameUserList)
+            //{
+            //    // 순서는 무관합니다.
+            //    matchGameResult.m_winners.Add(session.Value.m_sessionId);
+            //}
+
+            //Backend.Match.MatchEnd(matchGameResult);
+
+            var matchResult = new MatchGameResult();
+
+            Backend.Match.MatchEnd(matchResult);
+        } 
+        #endregion
 
         #region PasingEventFunc
 
