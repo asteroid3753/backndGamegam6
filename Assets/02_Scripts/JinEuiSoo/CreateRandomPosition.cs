@@ -8,17 +8,23 @@ namespace JES
 {
     public static class JESFunctions
     {
-        //[SerializeField] private BoxCollider2D _wideCollider;
-        //[SerializeField] private BoxCollider2D _insideCollider;
+        private static BoxCollider2D _wideCollider;
+        private static BoxCollider2D _insideCollider;
+
         //[SerializeField] GameObject _testObject;
         //[SerializeField] GameObject[] _points;
-
-        public static void CreateRandomInstance(BoxCollider2D wideCollider, BoxCollider2D insideCollider, int targetIteration, GameObject targetObject)
+        public static void SetCollider(BoxCollider2D wideCollider, BoxCollider2D insideCollider)
         {
-            Vector2 outSideMax = wideCollider.bounds.max;
-            Vector2 outSideMin = wideCollider.bounds.min;
-            Vector2 innerSideMax = insideCollider.bounds.max;
-            Vector2 innerSideMin = insideCollider.bounds.min;
+            _wideCollider = wideCollider;
+            _insideCollider = insideCollider;
+        }
+
+        public static Vector2 CreateRandomInstance()
+        {
+            Vector2 outSideMax = _wideCollider.bounds.max;
+            Vector2 outSideMin = _wideCollider.bounds.min;
+            Vector2 innerSideMax = _insideCollider.bounds.max;
+            Vector2 innerSideMin = _insideCollider.bounds.min;
 
             // clock wise
             // min x, max x, min y, max y
@@ -27,37 +33,31 @@ namespace JES
             float4 sideC = new float4(outSideMin.x, innerSideMin.x, outSideMin.y, outSideMax.y);
             float4 sideD = new float4(innerSideMin.x, innerSideMax.x, innerSideMax.y, outSideMax.y);
 
-            for (int i = 0; i < targetIteration; i++)
+            float4 positionRandom = sideA;
+            int randomInt = Random.Range(0, 4);
+
+            switch (randomInt)
             {
-                float4 positionRandom = sideA;
-                int last = i % 4;
+                case 0:
+                    positionRandom = sideA;
+                    break;
+                case 1:
+                    positionRandom = sideB;
+                    break;
+                case 2:
+                    positionRandom = sideC;
+                    break;
+                case 3:
+                    positionRandom = sideD;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
 
-                switch (last)
-                {
-                    case 0:
-                        positionRandom = sideA;
-                        break;
-                    case 1:
-                        positionRandom = sideB;
-                        break;
-                    case 2:
-                        positionRandom = sideC;
-                        break;
-                    case 3:
-                        positionRandom = sideD;
-                        break;
-                    default:
-                        Debug.Assert(false);
-                        break;
-                }
-
-                var trans = UnityEngine.GameObject.Instantiate(targetObject).transform;
-                trans.position = new Vector2(Random.Range(positionRandom.x, positionRandom.y), Random.Range(positionRandom.z, positionRandom.w));
-                
+            return new Vector2( Random.Range(positionRandom.x, positionRandom.y), Random.Range(positionRandom.z, positionRandom.w));                  
             }
 
         }
 
     }
-
-}
