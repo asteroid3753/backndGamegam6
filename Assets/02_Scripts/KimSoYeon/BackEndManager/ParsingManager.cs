@@ -12,9 +12,9 @@ namespace KSY
     {
         #region 
         #endregion
-        public event Action<Vector2> PlayerMoveEvent;
+        public event Action<string, Vector2> PlayerMoveEvent;
         public event Action<int, float> SlimeSizeUpEvent;
-        public event Action<int> GrabItemEvent;
+        public event Action<string, int> GrabItemEvent;
         public event Action<int, int, Vector2> CreateItemEvent;
 
         public void Init()
@@ -51,7 +51,7 @@ namespace KSY
             {
                 case MsgType.PlayerMove:
                     PlayerMoveMessage moveMsg = DataParser.ReadJsonData<PlayerMoveMessage>(args.BinaryUserData);
-                    PlayerMoveMsgEvent(moveMsg);
+                    PlayerMoveMsgEvent(args.From.NickName, moveMsg);
                     break;
                 case MsgType.SlimeSizeUp:
                     SlimeSizeUpMessage sizeUpMsg = DataParser.ReadJsonData<SlimeSizeUpMessage>(args.BinaryUserData);
@@ -59,7 +59,7 @@ namespace KSY
                     break;
                 case MsgType.GrabItem:
                     GrabItemMessage grabItemMsg = DataParser.ReadJsonData<GrabItemMessage>(args.BinaryUserData);
-                    GrabItemMsgEvent(grabItemMsg);
+                    GrabItemMsgEvent(args.From.NickName, grabItemMsg);
                     break;
                 case MsgType.CreateItem:
                     CreateItemMessage createItemMsg = DataParser.ReadJsonData<CreateItemMessage>(args.BinaryUserData);
@@ -68,7 +68,7 @@ namespace KSY
             }
         }
 
-        private void PlayerMoveMsgEvent(PlayerMoveMessage data)
+        private void PlayerMoveMsgEvent(string nickname, PlayerMoveMessage data)
         {
             Vector2 moveVector = new Vector2(data.x, data.y);
 
@@ -78,7 +78,7 @@ namespace KSY
             //    //�̺�Ʈ Ƣ���
             //}
 
-            PlayerMoveEvent?.Invoke(moveVector);
+            PlayerMoveEvent?.Invoke(nickname, moveVector);
         }
 
         private void SlimeSizeUpMsgEvent(SlimeSizeUpMessage data)
@@ -86,9 +86,9 @@ namespace KSY
             SlimeSizeUpEvent?.Invoke(data.id, data.addSize);
         }
 
-        private void GrabItemMsgEvent(GrabItemMessage data)
+        private void GrabItemMsgEvent(string nikname, GrabItemMessage data)
         {
-            GrabItemEvent?.Invoke(data.itemCode);
+            GrabItemEvent?.Invoke(nikname, data.itemCode);
         }
 
         private void CreateItemMsgEvent(CreateItemMessage data)

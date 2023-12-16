@@ -45,7 +45,7 @@ namespace JES
         //    }
         //}
 
-        private void PlayerMoveRecvFunc(Vector2 vec)
+        private void PlayerMoveRecvFunc(string nickname, Vector2 vec)
         {
             // ������ 
             player.SetUserTarget(vec);

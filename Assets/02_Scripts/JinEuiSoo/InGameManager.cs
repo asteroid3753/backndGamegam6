@@ -16,6 +16,9 @@ namespace JES
 {
     public class InGameManager : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject itemPrefab;
+
         [SerializeField] GameObject _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
@@ -27,6 +30,9 @@ namespace JES
         [SerializeField] Dictionary<string, LJH.Player> _namePlayerPairs;
         public Dictionary<string, LJH.Player> NamePlayerPairs;
 
+        public Dictionary<int, GrowingItem> InGameItemDic;
+
+        int itemCount = 0;
         #region Singleton
 
         static InGameManager _instance;
@@ -90,6 +96,7 @@ namespace JES
             // Regest Event
             {
                 BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
+                BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
             }
 
             // Setting Players
@@ -100,6 +107,7 @@ namespace JES
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
                 NamePlayerPairs = new Dictionary<string, LJH.Player>();
+                InGameItemDic = new Dictionary<int, GrowingItem>();
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
@@ -123,37 +131,68 @@ namespace JES
                 }
             }
 
-            // ÀÌ°É ÇØµµ ¹®Á¦.
-            // ÀÚ½ÅÀÌ ´©±¸ÀÎÁö ¾Ë¾Æ¾ß ÇÏ°í, ±×¸®°í ±×°Ô ÀÚ½ÅÀÎ°É ¾Ë¾Æ¾ß ÇÑ´Ù.
-            // ±×¸®°í ÀÌ¸¦ °É·¯¼­ Çàµ¿ÇØ¾ß ÇÑ´Ù.
-
             // Setting Items
             {
-
+                // ï¿½Ú½ï¿½ï¿½ï¿½ È£ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ì¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                if (TotalGameManager.Instance.isHost)
+                {
+                    itemCount = 0;
+                    StartCoroutine(CreateItem());
+                }
             }
 
-            // ¾ÆÀÌÅÛ °ü·Ã ·ÎÁ÷
-            // ¾ÆÀÌÅÛÀ» »Ñ¸®°í, ¾ÆÀÌÅÛÀ» Áö¿î´Ù. ¾ÆÀÌÅÛÀ» °ü¸®ÇÑ´Ù.
-            // int ÀÎµ¦½º¸¦ ¹Þ°í, ±× ÇØ´çÇÏ´Â °ÍÀ» Áö¿î´Ù.
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¸ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+            // int ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ°ï¿½, ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
             // 
-            // nullÀÌ ¹ß»ýÇÒ ¶§´Â, µÑ´Ù ¾ò´Â °ÍÀ¸·Î Ã³¸®ÇÑ´Ù.
-            // nullÀÌ ¹ß»ýÇÒ ¼ö ÀÖ¾î¼­, nullÀÌ ¹ß»ýÇÏ¸é CatchÇÏ¸é¼­ Á¾·á½ÃÅ²´Ù.
+            // nullï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½Ñ´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ñ´ï¿½.
+            // nullï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¾î¼­, nullï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¸ï¿½ Catchï¿½Ï¸é¼­ ï¿½ï¿½ï¿½ï¿½ï¿½Å²ï¿½ï¿½.
 
 
             //GrabItemMessage msg = new GrabItemMessage(333);
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
+        IEnumerator CreateItem()
+        {
+            while (true)
+            {
+                int itemType = Random.Range(0, 3);
+                UnityEngine.Vector2 spawnPos = new UnityEngine.Vector2(0, itemCount);
+
+                CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
+                itemCount++;
+                yield return new WaitForSeconds(3);
+            }
+        }
+
         private void Update()
         {
-            // °ÔÀÓÀÇ ¿£µù Ã¼Å©
-            // // °ÔÀÓÀÇ ¿£µù ¼±¾ð
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
+            // // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         }
 
-        private void Parsing_GrabItemEvent(int obj)
+        #region PasingEventFunc
+
+        private void Parsing_GrabItemEvent(string nickname, int itemCode)
         {
-            Debug.Log(obj);
+           
         }
+
+        private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
+        {
+            if (InGameItemDic != null)
+            {
+                GameObject obj = Instantiate(itemPrefab);
+                obj.transform.position = arg3;
+                GrowingItem item = obj.GetComponent<GrowingItem>();
+                item.ItemCode = itemCode;
+                item.Type = (Define.ItemType)itemType;
+                InGameItemDic.Add(itemCode, item);
+            }       
+        } 
+        #endregion
     } 
 }

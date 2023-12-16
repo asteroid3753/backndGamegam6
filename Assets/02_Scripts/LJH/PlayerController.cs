@@ -29,18 +29,18 @@ namespace LJH{
             //UserMove
             this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();
             if(player.GetUserItem() != null)
-                this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = player.GetUserItem().GetItemImg();
+                this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = player.GetUserItem().ItemImg;
             else
                 this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = null;
         }
 
-        private void PlayerMoveRecvFunc(Vector2 vec)
+        private void PlayerMoveRecvFunc(string nickname, Vector2 vec)
         {
             // ������ 
             player.SetUserTarget(vec);
         }
 
-        private void PlayerGrapRecvFunc(int itemCode){
+        private void PlayerGrapRecvFunc(string nickname, int itemCode){
             //아이템을 잡았을 때 아이템 띄우기
             print("send item");
             player.SetUserItem(player.GetUserNowItem());
