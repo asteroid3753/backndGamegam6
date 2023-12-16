@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MorningBird.SceneManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -121,6 +122,8 @@ public class TotalGameManager : MonoBehaviour
     private void GameResult()
     {
         OnGameResult();
+        GameSceneLoadManager.Instance.UnLoadAllScenes();
+        GameSceneLoadManager.Instance.LoadSceneAsync("Result");
     }
 
     private void GameReconnect()
@@ -190,8 +193,8 @@ public class TotalGameManager : MonoBehaviour
             return;
         }
 
-        MorningBird.SceneManagement.GameSceneLoadManager.Instant.UnLoadAllScenes();
-        MorningBird.SceneManagement.GameSceneLoadManager.Instant.LoadSceneAsync(scene);
+        MorningBird.SceneManagement.GameSceneLoadManager.Instance.UnLoadAllScenes();
+        MorningBird.SceneManagement.GameSceneLoadManager.Instance.LoadSceneAsync(scene);
 
     }
 

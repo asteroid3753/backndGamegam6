@@ -195,6 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa792a3351424aac88a95a84040b1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  INGAME: JESTestGameScene
+  isHost: 0
   host: 
   myNickName: 
   playerNickNames: []
@@ -234,7 +236,7 @@ MonoBehaviour:
   _test: 0
   _testAudioStorage: {fileID: 0}
   _testAudioStoragePos: {x: 0, y: 0, z: 0}
-  _objectPoolingPrefab: {fileID: 0}
+  _objectPoolingPrefab: {fileID: 7759696024159432506, guid: ce229c881ce847f4eacdfe71ade61771, type: 3}
   _BGMPool: {fileID: 0}
   _ambiencePool: {fileID: 0}
   _clipPool: {fileID: 0}
@@ -286,6 +288,10 @@ PrefabInstance:
     - target: {fileID: 6027132343369358560, guid: 6e7ca3315e451944d90c63bd67d3abb4, type: 3}
       propertyPath: m_Name
       value: SceneLoader
+      objectReference: {fileID: 0}
+    - target: {fileID: 6027132343369358560, guid: 6e7ca3315e451944d90c63bd67d3abb4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6865850109722874396, guid: 6e7ca3315e451944d90c63bd67d3abb4, type: 3}
       propertyPath: m_LocalPosition.x

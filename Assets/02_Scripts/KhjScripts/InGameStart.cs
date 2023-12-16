@@ -59,6 +59,7 @@ namespace khj
         }
         public void JoinGameServer(MatchInGameRoomInfo gameRoomInfo)
         {
+            Debug.Log("들어왔어요!!!!");
             Backend.Match.OnSessionJoinInServer = (JoinChannelEventArgs args) => {
                 if (args.ErrInfo == ErrorInfo.Success)
                 {

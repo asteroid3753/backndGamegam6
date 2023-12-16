@@ -19,6 +19,7 @@ namespace khj
         private void Start()
         {
             TotalGameManager.OnGameReady += ShowReadyPanel;
+            MatchManager.Instance.Initialize();
         }
 
         void ShowReadyPanel()
@@ -26,6 +27,11 @@ namespace khj
             matchPanel.SetActive(false);
             readyPanel.SetActive(true);
 
+        }
+
+        private void OnDisable()
+        {
+            TotalGameManager.OnGameReady -= ShowReadyPanel;
         }
     }
 }

@@ -201,6 +201,17 @@ namespace LJH
         int testCnt = 0;
         private void Update()
         {
+            #region GameEndingConditionCheck
+
+
+            if (_isGameEnd == true)
+            {
+                DeclareMatchEnd();
+                _isGameEnd = false;
+            }
+
+            #endregion
+
             // ������ ���� üũ
             // // ������ ���� ����
             if (Input.GetKeyDown(KeyCode.Space))
@@ -211,19 +222,7 @@ namespace LJH
 
 
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
-            #region GameEndingConditionCheck
 
-            if (_isGameEnd == true)
-            {
-                DeclareMatchEnd();
-            }
-
-            if (Backend.Match.IsInGameServerConnect() == false)
-            {
-                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
-            }
-
-            #endregion
         }
 
         private void OnDisable()
@@ -251,16 +250,23 @@ namespace LJH
 
         void DeclareMatchEnd()
         {
-            //Backend.Match.OnMatchResult = (MatchResultEventArgs args) => {
-            //    if (args.ErrInfo == ErrorCode.Success)
-            //    {
-            //        Debug.Log("8-2. OnMatchResult 성공 : " + args.ErrInfo.ToString());
-            //    }
-            //    else
-            //    {
-            //        Debug.LogError("8-2. OnMatchResult 실패 : " + args.ErrInfo.ToString());
-            //    }
-            //};
+            Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
+            {
+                if (args.ErrInfo == ErrorCode.Success)
+                {
+                    Debug.Log("8-2. OnMatchResult 성공 : " + args.ErrInfo.ToString());
+                }
+                else
+                {
+                    Debug.LogError("8-2. OnMatchResult 실패 : " + args.ErrInfo.ToString());
+                }
+
+                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
+                
+
+
+
+            };
 
             Debug.Log("8-1. MatchEnd 호출");
 
