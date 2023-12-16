@@ -43,9 +43,9 @@ namespace LJH{
             PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
             
             if(player.GetUserNowItem() != null && Input.GetKeyDown(KeyCode.Space)){
-                print("item" + player.GetUserNowItem().GetItemCode());
+                print("item" + player.GetUserNowItem().ItemCode);
                 
-                GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().GetItemCode());
+                GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().ItemCode);
                 BackEndManager.Instance.InGame.SendDataToInGame(itemMsg); 
             }
             if(player.GetUserNowItem() == null && Input.GetKeyDown(KeyCode.Space)){

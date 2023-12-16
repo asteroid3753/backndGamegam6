@@ -7,9 +7,24 @@ namespace LJH{
     [System.Serializable]
     public class GrowingItem : MonoBehaviour
     {
+        private SpriteRenderer spriteRender;
+
         [SerializeField] int itemCode;
+        public int ItemCode { get { return itemCode; } set { itemCode = value; } }
+
         [SerializeField] Sprite itemImg;
+        public Sprite ItemImg
+        {
+            get { return itemImg; }
+            set 
+            { 
+                itemImg = value;
+                spriteRender.sprite = itemImg;
+            }
+        }
+
         private int growPoint;
+        public int GrowPoint { get { return growPoint; } set { growPoint = value; } }
 
         private Define.ItemType type;
 
@@ -23,38 +38,25 @@ namespace LJH{
             }
         }
 
-        public GrowingItem(int _itemCode){
-            itemCode = _itemCode;
-            itemImg = Resources.Load<Sprite>("Item" + _itemCode);
+        private void Awake()
+        {
+            spriteRender = GetComponent<SpriteRenderer>();
         }
-        public int GetItemCode(){
-            return itemCode;
-        }
-        public Sprite GetItemImg(){
-            return itemImg;
-        }
-        public Define.ItemType GetItemType(){
-            return type;
-        }
-
 
         private void SetItemType(Define.ItemType itemType)
         {
             switch (itemType)
             {
                 case Define.ItemType.can:
-                    itemImg = Resources.Load<Sprite>("Item6");
-                    itemCode = 6;
+                    ItemImg = Resources.Load<Sprite>("Item6");
                     growPoint = 10;
                     break;
                 case Define.ItemType.apple:
-                    itemImg = Resources.Load<Sprite>("Item1");
-                    itemCode = 1;
+                    ItemImg = Resources.Load<Sprite>("Item1");
                     growPoint = 20;
                     break;
                 case Define.ItemType.backendIcon:
-                    itemImg = Resources.Load<Sprite>("Item2");
-                    itemCode = 2;
+                    ItemImg = Resources.Load<Sprite>("Item2");
                     growPoint = 30;
                     break;
             }

@@ -29,7 +29,7 @@ namespace LJH{
             //UserMove
             this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();
             if(player.GetUserItem() != null)
-                this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = player.GetUserItem().GetItemImg();
+                this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = player.GetUserItem().ItemImg;
             else
                 this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = null;
         }

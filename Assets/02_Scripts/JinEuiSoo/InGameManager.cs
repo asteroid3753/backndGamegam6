@@ -17,6 +17,9 @@ namespace JES
 {
     public class InGameManager : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject itemPrefab;
+
         [SerializeField] GameObject _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
@@ -28,6 +31,10 @@ namespace JES
         [SerializeField] Dictionary<string, TestPlayer> _namePlayerPairs;
         public Dictionary<string, TestPlayer> NamePlayerPairs;
 
+        public Dictionary<int, GrowingItem> InGameItemDic;
+
+
+        int itemCount = 0;
         #region Singleton
 
         static InGameManager _instance;
@@ -91,6 +98,7 @@ namespace JES
             // Regest Event
             {
                 BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
+                BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
             }
 
             // Setting Players
@@ -100,6 +108,7 @@ namespace JES
                 _myClientNickName = TotalGameManager.Instance.myNickName;
 
                 NamePlayerPairs = new Dictionary<string, TestPlayer>();
+                InGameItemDic = new Dictionary<int, GrowingItem>();
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
@@ -133,13 +142,14 @@ namespace JES
                 }
             }
 
-            // 이걸 해도 문제.
-            // 자신이 누구인지 알아야 하고, 그리고 그게 자신인걸 알아야 한다.
-            // 그리고 이를 걸러서 행동해야 한다.
-
             // Setting Items
             {
-
+                // 자신이 호스트인 경우에 아이템 생성 로직
+                if (TotalGameManager.Instance.isHost)
+                {
+                    itemCount = 0;
+                    StartCoroutine(CreateItem());
+                }
             }
 
             // 아이템 관련 로직
@@ -154,6 +164,20 @@ namespace JES
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
+        IEnumerator CreateItem()
+        {
+            while (true)
+            {
+                int itemType = Random.Range(0, 3);
+                UnityEngine.Vector2 spawnPos = new UnityEngine.Vector2(0, itemCount);
+
+                CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
+
+                yield return new WaitForSeconds(3);
+            }
+        }
+
         private void Update()
         {
             // 게임의 엔딩 체크
@@ -161,9 +185,25 @@ namespace JES
 
         }
 
+        #region PasingEventFunc
+
         private void Parsing_GrabItemEvent(int obj)
         {
             Debug.Log(obj);
         }
+
+        private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
+        {
+            if (InGameItemDic != null)
+            {
+                GameObject obj = Instantiate(itemPrefab);
+                obj.transform.position = arg3;
+                GrowingItem item = obj.GetComponent<GrowingItem>();
+                item.ItemCode = itemCode;
+                item.Type = (Define.ItemType)itemType;
+                InGameItemDic.Add(itemCode, item);
+            }       
+        } 
+        #endregion
     } 
 }
