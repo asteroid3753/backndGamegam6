@@ -12,12 +12,9 @@ namespace khj
     {
         [SerializeField] GameObject titlePanel;
         [SerializeField] GameObject loginPanel;
-        [SerializeField] GameObject loadingPanel;
-        [SerializeField] GameObject matchPanel;
-        [SerializeField] GameObject matchManager;
-        [SerializeField] GameObject roomPanel;
         [SerializeField] TMP_InputField nameInputField;
         string nickName;
+
         void Awake()
         {
             titlePanel.SetActive(true);
@@ -34,12 +31,6 @@ namespace khj
             titlePanel.SetActive(false);
             loginPanel.SetActive(true);
         }
-        public void MatchStart()
-        {
-            loginPanel.SetActive(false);
-            matchPanel.SetActive(true);
-            matchManager.SetActive(true);
-        }
 
         public void Login()
         {
@@ -49,12 +40,12 @@ namespace khj
             if (bro.IsSuccess())
             {
                 Debug.Log("로그인 : " + bro);
-                MatchStart();
+                GameManager.Instance.ChangeState(GameManager.GameState.MatchLobby);
             }
             else if (bro.GetStatusCode() == "401")
             {
                 SignUp();
-                MatchStart();
+                GameManager.Instance.ChangeState(GameManager.GameState.MatchLobby);
             }
             else
             {
@@ -66,25 +57,14 @@ namespace khj
         {
             var bro = Backend.BMember.CustomSignUp(nickName, nickName);
 
-            if (bro.IsSuccess())
-            {
-                Debug.Log("회원가입: " + bro);
-            }
-            else
+            if (!bro.IsSuccess())
             {
                 Debug.LogError("회원가입: " + bro);
             }
-        }
 
-        public void UpdateNickname()
-        {
-            var bro = Backend.BMember.UpdateNickname(nickName);
+            bro = Backend.BMember.UpdateNickname(nickName);
 
-            if (bro.IsSuccess())
-            {
-                Debug.Log("닉네임 변경 : " + bro);
-            }
-            else
+            if (!bro.IsSuccess())
             {
                 Debug.LogError("닉네임 변경 : " + bro);
             }
