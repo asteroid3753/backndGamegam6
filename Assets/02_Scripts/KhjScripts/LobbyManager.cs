@@ -28,7 +28,6 @@ namespace khj
 
         public void TouchToStart()
         {
-            titlePanel.SetActive(false);
             loginPanel.SetActive(true);
         }
 

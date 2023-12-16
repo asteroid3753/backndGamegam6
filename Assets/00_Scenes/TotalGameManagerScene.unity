@@ -123,6 +123,62 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &458154019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 458154020}
+  - component: {fileID: 458154021}
+  m_Layer: 0
+  m_Name: VFXSoundPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &458154020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458154019}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &458154021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458154019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c0261a284c1f14da07b39b2daf9338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slimeSmiles:
+  - {fileID: 11400000, guid: 1f60d3eee54a1a74d81b9c6d2148923e, type: 2}
+  - {fileID: 11400000, guid: f7a6e851837ddf6448f20670a9e902f3, type: 2}
+  - {fileID: 11400000, guid: 96ae2839df55f3542850de78cd452133, type: 2}
+  - {fileID: 11400000, guid: cca5d4678a288284e84184d56d2cf1fa, type: 2}
+  - {fileID: 11400000, guid: 9a3aae2bb1b16074cb94bb00bd53cba0, type: 2}
+  - {fileID: 11400000, guid: f48220f3802a0f84197ccb34f22aed4f, type: 2}
+  - {fileID: 11400000, guid: c26927861e7a1704386bea9c0f6f97c8, type: 2}
+  - {fileID: 11400000, guid: eeffdd09336085b42ad209e3ba710312, type: 2}
+  slimeGrowl: {fileID: 11400000, guid: b3034103ceb811442802e6dd7617a4fa, type: 2}
+  pickUp: {fileID: 11400000, guid: 7a8d97b6ce72e604db569302680c6689, type: 2}
+  pickDown: {fileID: 11400000, guid: 3f7c47ffe49af334489ceba5f9f10a44, type: 2}
 --- !u!1 &588188897
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,3 +401,4 @@ SceneRoots:
   - {fileID: 950195683}
   - {fileID: 588188898}
   - {fileID: 1180989639}
+  - {fileID: 458154020}
