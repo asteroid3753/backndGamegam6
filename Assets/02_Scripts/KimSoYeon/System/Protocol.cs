@@ -9,7 +9,8 @@ namespace KSY.Protocol
     public enum MsgType
     {
         PlayerMove = 0, //플레이어 키 입력
-        SlimeSizeUp
+        SlimeSizeUp,
+        GrabItem
     }
 
     public class Message
@@ -45,5 +46,16 @@ namespace KSY.Protocol
             this.addSize = addSize;
         }
     }
+
+    public class GrabItemMessage : Message
+    {
+        public int itemCode;
+
+        public GrabItemMessage(int itemCode) : base(MsgType.GrabItem)
+        {
+            this.itemCode = itemCode;
+        }
+    }
+
 }
 

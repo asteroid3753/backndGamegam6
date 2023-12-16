@@ -12,6 +12,7 @@ namespace KSY
     {
         public event Action<Vector2> PlayerMoveEvent;
         public event Action<int, float> SlimeSizeUpEvent;
+        public event Action<int> GrabItemEvent;
 
         public void Init()
         {
@@ -53,7 +54,10 @@ namespace KSY
                     SlimeSizeUpMessage sizeUpMsg = DataParser.ReadJsonData<SlimeSizeUpMessage>(args.BinaryUserData);
                     SlimeSizeUpMsgEvent(sizeUpMsg);
                     break;
-          
+                case MsgType.GrabItem:
+                    GrabItemMessage grabItemMsg = DataParser.ReadJsonData<GrabItemMessage>(args.BinaryUserData);
+                    GrabItemMsgEvent(grabItemMsg);
+                    break;
             }
         }
 
@@ -80,5 +84,9 @@ namespace KSY
             SlimeSizeUpEvent?.Invoke(data.id, data.addSize);
         }
 
+        private void GrabItemMsgEvent(GrabItemMessage data)
+        {
+            GrabItemEvent?.Invoke(data.itemCode);
+        }
     } 
 }
