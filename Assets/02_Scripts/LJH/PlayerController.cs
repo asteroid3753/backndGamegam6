@@ -20,7 +20,6 @@ namespace LJH{
         {
             //서버연결이 완료되면 서버에서 현재 플레이어의 아이디와 이름을 가져온 후 초기화.
             player.SetUserSpeed(20f);
-            BackEndManager.Instance.Parsing.PlayerMoveEvent += PlayerMoveRecvFunc;
             BackEndManager.Instance.Parsing.GrabItemEvent += PlayerGrapRecvFunc;
         }
 
@@ -34,7 +33,7 @@ namespace LJH{
                 this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = null;
         }
 
-        private void PlayerMoveRecvFunc(string nickname, Vector2 vec)
+        public void PlayerMoveRecvFunc(Vector2 vec)
         {
             // ������ 
             player.SetUserTarget(vec);

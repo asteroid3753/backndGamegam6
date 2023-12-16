@@ -6,7 +6,6 @@ using BackEnd;
 using BackEnd.Tcp;
 using MorningBird.SceneManagement;
 using MorningBird.Sound;
-using System.Numerics;
 using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
@@ -29,8 +28,8 @@ namespace LJH
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
 
-        [SerializeField] Dictionary<string, LJH.Player> _namePlayerPairs;
-        public Dictionary<string, LJH.Player> NamePlayerPairs;
+        [SerializeField] Dictionary<string, LJH.PlayerController> _namePlayerPairs;
+        public Dictionary<string, LJH.PlayerController> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
 
@@ -96,7 +95,9 @@ namespace LJH
             {
                 BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
                 BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
+                BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
             }
+
 
             StartCoroutine(IEWaitAndStart());
 
@@ -219,5 +220,10 @@ namespace LJH
             }       
         } 
         #endregion
+
+        private void Parsing_PlayerMove(string nickName, Vector2 target)
+        {
+            _namePlayerPairs[nickName].PlayerMoveRecvFunc(target);
+        }
     } 
 }
