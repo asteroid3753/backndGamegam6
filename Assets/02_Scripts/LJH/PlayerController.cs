@@ -15,7 +15,7 @@ namespace LJH{
         LJH.InputManager inputManager;
 
         //item test
-        [SerializeField] Item nowItem;
+        [SerializeField] GrowingItem nowItem;
         [SerializeField] GameObject itemObj;
 
 
@@ -31,8 +31,16 @@ namespace LJH{
         private void FixedUpdate() {
             //UserMove
             this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();
-            if(player.GetUserItem() != null && Input.GetKeyDown(KeyCode.Space)){
+            if(nowItem != null && Input.GetKeyDown(KeyCode.Space)){
+                print("item");
                 player.SetUserItem(nowItem);
+                itemObj.GetComponent<SpriteRenderer>().sprite = player.GetUserItem().GetItemImg();
+                
+            }
+            if(nowItem == null && Input.GetKeyDown(KeyCode.Space)){
+                print("item drop");
+                player.SetUserItem(null);
+                itemObj.GetComponent<SpriteRenderer>().sprite = null;
             }
         }
 
@@ -44,7 +52,7 @@ namespace LJH{
 
         private void OnTriggerEnter2D(Collider2D other) {
             if(other.tag == "Item"){
-                nowItem = other.GetComponent<Item>();
+                nowItem = other.GetComponent<GrowingItem>();
             }
         }
         private void OnTriggerExit2D(Collider2D other)
