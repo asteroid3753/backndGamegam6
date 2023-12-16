@@ -15,6 +15,7 @@ namespace khj
         public static MatchManager Instance;
         InGameStart ingame;
         List<MatchCard> matchCardList = new List<MatchCard>();
+        int index;
         
         void Awake()
         {
@@ -180,6 +181,10 @@ namespace khj
                 }
 
                 RequestMatchMaking();
+                //for (int i = 0; i < matchCardList.Count; i++)
+                //{
+                //    Debug.Log($"{i} 번째 매치카드 : \n" + matchCardList[i].ToString());
+                //}
             });
         }
         public void RequestMatchMaking()
@@ -187,7 +192,7 @@ namespace khj
             Backend.Match.OnMatchMakingResponse = (MatchMakingResponseEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Match_InProgress)
                 {
-                    int second = matchCardList[0].transit_to_sandbox_timeout_ms / 1000;
+                    int second = matchCardList[index].transit_to_sandbox_timeout_ms / 1000;
 
                     //if (second > 0)
                     //{
@@ -209,7 +214,7 @@ namespace khj
 
             Debug.Log("3-1. RequestMatchMaking ��Ī ��û ����");
 
-            Backend.Match.RequestMatchMaking(matchCardList[0].matchType, matchCardList[0].matchModeType, matchCardList[0].inDate);
+            Backend.Match.RequestMatchMaking(matchCardList[index].matchType, matchCardList[index].matchModeType, matchCardList[index].inDate);
         }
         IEnumerator WaitFor10Seconds(int second)
         {
@@ -227,7 +232,7 @@ namespace khj
                 if (args.ErrInfo == ErrorCode.Success)
                 {
                     Debug.Log("2-2. OnMatchMakingRoomCreate ����");
-                    Backend.Match.RequestMatchMaking(matchCardList[0].matchType, matchCardList[0].matchModeType, matchCardList[0].inDate);
+                    Backend.Match.RequestMatchMaking(matchCardList[index].matchType, matchCardList[index].matchModeType, matchCardList[index].inDate);
                 }
                 else
                 {
