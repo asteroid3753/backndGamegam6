@@ -196,6 +196,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   host: 
+  myNickName: 
+  playerNickNames: []
 --- !u!1 &950195681
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3543987441977500756, guid: 6e7ca3315e451944d90c63bd67d3abb4, type: 3}
       propertyPath: sceneNames.Array.data[0]
-      value: 0. Login
+      value: Login
       objectReference: {fileID: 0}
     - target: {fileID: 6027132343369358560, guid: 6e7ca3315e451944d90c63bd67d3abb4, type: 3}
       propertyPath: m_Name

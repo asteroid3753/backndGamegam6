@@ -40,12 +40,12 @@ namespace khj
             if (bro.IsSuccess())
             {
                 Debug.Log("·Î±×ÀÎ : " + bro);
-                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.MatchLobby);
+                StartMatch();
             }
             else if (bro.GetStatusCode() == "401")
             {
                 SignUp();
-                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.MatchLobby);
+                StartMatch();
             }
             else
             {
@@ -53,6 +53,11 @@ namespace khj
             }
         }
 
+        void StartMatch()
+        {
+            TotalGameManager.Instance.myNickName = nickName;
+            TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.MatchLobby);
+        }
         void SignUp()
         {
             var bro = Backend.BMember.CustomSignUp(nickName, nickName);
