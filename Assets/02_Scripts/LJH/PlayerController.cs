@@ -28,12 +28,6 @@ namespace LJH{
                 this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = null;
         }
 
-        public void PlayerMoveRecvFunc(Vector2 vec)
-        {
-            // ������ 
-            player.SetUserTarget(vec);
-        }
-
         private void PlayerGrapRecvFunc(string nickname, int itemCode){
             //아이템을 잡았을 때 아이템 띄우기
             print("send item");

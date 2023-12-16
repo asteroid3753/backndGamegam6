@@ -31,7 +31,7 @@ namespace LJH
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
 
-        public Dictionary<string, LJH.PlayerController> NamePlayerPairs;
+        public Dictionary<string, LJH.Player> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
         
@@ -122,15 +122,15 @@ namespace LJH
                 _myClientNickName = TotalGameManager.Instance.myNickName;
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
-                NamePlayerPairs = new Dictionary<string, LJH.PlayerController>();
+                NamePlayerPairs = new Dictionary<string, LJH.Player>();
                 InGameItemDic = new Dictionary<int, GrowingItem>();
 
                 for (int i = 0; i < _playerNickNames.Count; i++)
                 {
-                    GameObject player = Instantiate(_playerPrefab);//, _playerPositions[i].position, Quaternion.identity);
-                    LJH.PlayerController playerController = player.GetComponent<LJH.PlayerController>();
-                    NamePlayerPairs.Add(_playerNickNames[i], playerController);
-                    player.GetComponent<Player>().SetUserName(_playerNickNames[i]);
+                    GameObject pgo = Instantiate(_playerPrefab);//, _playerPositions[i].position, Quaternion.identity);
+                    LJH.Player player = pgo.GetComponent<LJH.Player>();
+                    NamePlayerPairs.Add(_playerNickNames[i], player);
+                    player.SetUserName(_playerNickNames[i]);
 
                     if (isSuperPlayer == true)
                     {
@@ -143,12 +143,12 @@ namespace LJH
 
                     if (_playerNickNames[i].ToString() == _myClientNickName){
                         Debug.Log(_playerPositions[i].position);
-                        player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
-                        player.gameObject.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
-                        player.transform.position = _playerPositions[i].position;
+                        player.SetUserTarget(_playerPositions[i].position);
+                        pgo.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
+                        pgo.transform.position = _playerPositions[i].position;
                     }
                     else{
-                        player.transform.position = _playerPositions[i].position;
+                        pgo.transform.position = _playerPositions[i].position;
                         //player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
                     }
                     // if (_playerNickNames[i].ToString() == _myClientNickName)
@@ -260,7 +260,7 @@ namespace LJH
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
             Debug.Log(nickName+"/"+target);
-            NamePlayerPairs[nickName].PlayerMoveRecvFunc(target);
+            NamePlayerPairs[nickName].SetUserTarget(target);
         }
     } 
 }
