@@ -9,7 +9,6 @@ using MorningBird.Sound;
 using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
-using Protocol;
 
 namespace LJH
 {
@@ -139,6 +138,7 @@ namespace LJH
 
                     // tPlayer.SetAnimalType(Etype (int)i)
 
+                    PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
                     player.transform.position = _playerPositions[i].position;
 
                     NamePlayerPairs.Add(_playerNickNames[i], player);
