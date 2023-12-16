@@ -25,6 +25,11 @@ namespace JES
         // Update is called once per frame
         void FixedUpdate()
         {
+            if( player.IsNameSame == false)
+            {
+                return;
+            }
+
             x = player.transform.position.x + (Input.GetAxisRaw("Horizontal") * Time.deltaTime * player.MovementSpeed);
             y = player.transform.position.y + (Input.GetAxisRaw("Vertical") * Time.deltaTime * player.MovementSpeed);
             

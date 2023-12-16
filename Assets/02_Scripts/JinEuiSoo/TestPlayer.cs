@@ -14,6 +14,8 @@ namespace JES
         [SerializeField] public string PlayerNickName;
         [SerializeField] public string MyClientNickName;
 
+        [SerializeField] public bool IsNameSame =>  PlayerNickName == MyClientNickName;
+
         [SerializeField] Vector3 _target;
 
         private void Update()
