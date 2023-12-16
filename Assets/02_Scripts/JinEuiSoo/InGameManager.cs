@@ -30,7 +30,7 @@ namespace LJH
         public Dictionary<string, LJH.PlayerController> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
-
+        public GameObject
         int itemCount = 0;
 
         BoxCollider2D slimeArea;
@@ -120,7 +120,7 @@ namespace LJH
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
-                    LJH.PlayerController player = Instantiate(_playerPrefab).GetComponent<LJH.PlayerController>();
+                    LJH.PlayerController player = Instantiate(_playerPrefab, _playerPositions[i].position, Quaternion.identity).GetComponent<LJH.PlayerController>();
                     //player.SetUserName(_playerNickNames[i]);
 
                     if (isSuperPlayer == true)
@@ -134,7 +134,7 @@ namespace LJH
 
                     // tPlayer.SetAnimalType(Etype (int)i)
 
-                    player.transform.position = _playerPositions[i].position;
+                    // player.transform.position = _playerPositions[i].position;
                     NamePlayerPairs.Add(_playerNickNames[i], player);
                     if (_playerNickNames[i] == _myClientNickName)
                     {
