@@ -15,7 +15,7 @@ namespace khj
         public static MatchManager Instance;
         InGameStart ingame;
         List<MatchCard> matchCardList = new List<MatchCard>();
-        int index;
+        public int index = 3;
         
         void Awake()
         {
