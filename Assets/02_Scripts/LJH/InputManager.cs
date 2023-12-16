@@ -29,7 +29,7 @@ namespace LJH{
             x = player.transform.position.x + (Input.GetAxisRaw("Horizontal") * Time.deltaTime * player.GetUserSpeed());
             y = player.transform.position.y + (Input.GetAxisRaw("Vertical") * Time.deltaTime * player.GetUserSpeed());
             
-            PlayerMoveMessage msg = new PlayerMoveMessage(SessionId.Reserve, new Vector2(x, y));
+            PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
 
             // move ��ǥ ���� (�ش� �÷��̾�(�� �ڽ�)�� SessionID, ��� ��ǥ��)
             BackEndManager.Instance.InGame.SendDataToInGame(msg); 
@@ -39,7 +39,7 @@ namespace LJH{
         {
             while (true)
             {
-                PlayerMoveMessage msg = new PlayerMoveMessage(SessionId.Reserve, new Vector2(x, y));
+                PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
 
                 // move ��ǥ ���� (�ش� �÷��̾�(�� �ڽ�)�� SessionID, ��� ��ǥ��)
                 BackEndManager.Instance.InGame.SendDataToInGame(msg); 

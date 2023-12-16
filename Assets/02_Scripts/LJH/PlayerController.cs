@@ -32,7 +32,7 @@ namespace LJH{
             this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();
         }
 
-        private void PlayerMoveRecvFunc(SessionId sessionId, Vector2 vec)
+        private void PlayerMoveRecvFunc(Vector2 vec)
         {
             // ������ 
             player.SetUserTarget(vec);
