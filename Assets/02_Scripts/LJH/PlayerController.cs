@@ -38,9 +38,8 @@ namespace LJH{
             player.SetUserTarget(vec);
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            if(other.gameObject.tag == "Item"){
+        private void OnTriggerEnter2D(Collider2D other) {
+            if(other.tag == "Item"){
                 
             }
         }
