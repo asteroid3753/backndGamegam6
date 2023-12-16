@@ -618,6 +618,8 @@ MonoBehaviour:
   _playerNickNames: []
   _superPlayerNickName: 
   _myClientNickName: 
+  slimeArea: {fileID: 992732855}
+  outerArea: {fileID: 110902210}
 --- !u!4 &900374800
 Transform:
   m_ObjectHideFlags: 0
