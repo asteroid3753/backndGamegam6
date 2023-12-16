@@ -9,6 +9,7 @@ using MorningBird.Sound;
 using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
+using UnityEngine.SceneManagement;
 
 namespace LJH
 {
@@ -120,10 +121,10 @@ namespace LJH
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
-                    GameObject player = Instantiate(_playerPrefab);
+                    GameObject player = Instantiate(_playerPrefab);//, _playerPositions[i].position, Quaternion.identity);
                     LJH.PlayerController playerController = player.GetComponent<LJH.PlayerController>();
-                    
-                    //player.SetUserName(_playerNickNames[i]);
+                    NamePlayerPairs.Add(_playerNickNames[i], playerController);
+                    player.GetComponent<Player>().SetUserName(_playerNickNames[i]);
 
                     if (isSuperPlayer == true)
                     {
@@ -135,15 +136,24 @@ namespace LJH
                     }
 
                     // tPlayer.SetAnimalType(Etype (int)i)
-                    
-                    NamePlayerPairs.Add(_playerNickNames[i], playerController);
-                    if (_playerNickNames[i] == _myClientNickName)
-                    {
-                        PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
-                        BackEndManager.Instance.InGame.SendDataToInGame(msg);
+                    if (_playerNickNames[i].ToString() == _myClientNickName){
+                        player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                        player.transform.position = _playerPositions[i].position;
                         player.gameObject.AddComponent<InputManager>();
                     }
-                    player.transform.position = _playerPositions[i].position;
+                    else{
+                        player.transform.position = _playerPositions[i].position;
+                        player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                    }
+                    // if (_playerNickNames[i].ToString() == _myClientNickName)
+                    // {
+                        
+                    //     PlayerMoveMessage msg = new PlayerMoveMessage(player.transform.position);
+                    //     BackEndManager.Instance.InGame.SendDataToInGame(msg);
+                    // }
+                    // player.transform.position = _playerPositions[i].position;
+                    // player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                    
                 }
             }
 

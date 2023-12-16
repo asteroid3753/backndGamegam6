@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace KSY.Protocol
 {
-    // ¾÷µ¥ÀÌÆ® ÇÒ ¶§¸¶´Ù ParsingManager switch¹® ¾÷µ¥ÀÌÆ®µµ °°ÀÌ ÇØÁà¾ßÇÔ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ParsingManager switchï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public enum MsgType
     {
-        PlayerMove = 0, //ÇÃ·¹ÀÌ¾î Å° ÀÔ·Â
+        PlayerMove = 0, //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Å° ï¿½Ô·ï¿½
         SlimeSizeUp,
         GrabItem,
         CreateItem

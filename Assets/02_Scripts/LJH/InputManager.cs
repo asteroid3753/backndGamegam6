@@ -27,6 +27,10 @@ namespace LJH{
         // Update is called once per frame
         void FixedUpdate()
         {
+            if(TotalGameManager.Instance.myNickName != player.GetUserName())
+            {
+                return;
+            }
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
 
@@ -39,7 +43,7 @@ namespace LJH{
 
             x = player.transform.position.x + (horizontal * Time.deltaTime * player.GetUserSpeed());
             y = player.transform.position.y + (vertical * Time.deltaTime * player.GetUserSpeed());
-            
+
             PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
             
             if(player.GetUserNowItem() != null && Input.GetKeyDown(KeyCode.Space)){
