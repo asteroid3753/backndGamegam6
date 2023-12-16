@@ -11,6 +11,12 @@ namespace LJH{
         [SerializeField] float userSpeed = 2.0f;
         [SerializeField] bool flipX = false;
 
+        [SerializeField] private string nickName;
+        [SerializeField] public string NickName;
+        [SerializeField] public string SetNickName => nickName;
+
+        //test
+        [SerializeField] Item havingItem;
 
         //init
         public Player(int _id, string _name, float _speed){
@@ -35,6 +41,10 @@ namespace LJH{
         public bool GetUserFlip(){
             return flipX;
         }
+        //getter Test
+        public Item GetUserItem(){
+            return havingItem;
+        }
 
 
         //setter
@@ -52,6 +62,10 @@ namespace LJH{
         }
         public void SetUserFlip(bool _flipX){
             flipX = _flipX;
+        }
+        //setter Test
+        public void SetUserItem(Item _item){
+            havingItem = _item;
         }
 
         private void Update() {

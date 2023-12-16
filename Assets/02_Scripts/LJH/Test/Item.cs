@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[System.Serializable]
 public class Item : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [SerializeField] int itemCode;
+    [SerializeField] Sprite itemImg;
+
+    public int GetItemCode(){
+        return itemCode;
+    }
+    public Sprite GetItemImg(){
+        return itemImg;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+    public void SetItemCode(int _code){
+        itemCode = _code;
     }
+
 }

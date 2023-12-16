@@ -13,11 +13,12 @@ namespace LJH{
         [SerializeField] LJH.Player player;
         
         LJH.InputManager inputManager;
-    
-        //server
-        string serverAddress;
-        ushort serverPort;
-        
+
+        //item test
+        [SerializeField] Item nowItem;
+        [SerializeField] GameObject itemObj;
+
+
         // Start is called before the first frame update
         void Start()
         {
@@ -30,6 +31,9 @@ namespace LJH{
         private void FixedUpdate() {
             //UserMove
             this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();
+            if(player.GetUserItem() != null && Input.GetKeyDown(KeyCode.Space)){
+                player.SetUserItem(nowItem);
+            }
         }
 
         private void PlayerMoveRecvFunc(Vector2 vec)
@@ -40,7 +44,13 @@ namespace LJH{
 
         private void OnTriggerEnter2D(Collider2D other) {
             if(other.tag == "Item"){
-                
+                nowItem = other.GetComponent<Item>();
+            }
+        }
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if(other.tag == "Item"){
+                nowItem = null;
             }
         }
 
