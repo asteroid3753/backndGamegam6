@@ -122,12 +122,6 @@ namespace LJH
                 {
                     LJH.PlayerController player = Instantiate(_playerPrefab).GetComponent<LJH.PlayerController>();
                     //player.SetUserName(_playerNickNames[i]);
-                    if (_playerNickNames[i] == _myClientNickName)
-                    {
-                        PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
-                        BackEndManager.Instance.InGame.SendDataToInGame(msg);
-                        player.gameObject.AddComponent<InputManager>();
-                    }
 
                     if (isSuperPlayer == true)
                     {
@@ -141,8 +135,13 @@ namespace LJH
                     // tPlayer.SetAnimalType(Etype (int)i)
 
                     player.transform.position = _playerPositions[i].position;
-                    player.PlayerMoveRecvFunc(_playerPositions[i].position);
                     NamePlayerPairs.Add(_playerNickNames[i], player);
+                    if (_playerNickNames[i] == _myClientNickName)
+                    {
+                        PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
+                        BackEndManager.Instance.InGame.SendDataToInGame(msg);
+                        player.gameObject.AddComponent<InputManager>();
+                    }
                 }
             }
 
