@@ -30,7 +30,7 @@ namespace LJH
         public Dictionary<string, LJH.PlayerController> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
-        public GameObject
+        
         int itemCount = 0;
 
         BoxCollider2D slimeArea;
