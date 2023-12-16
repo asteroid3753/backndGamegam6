@@ -3,11 +3,14 @@ using KSY.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KSY
 {
     public class ParsingManager
     {
+        public UnityEvent<SessionId, Vector2> PlayerMoveEvent;
+
         public void Init()
         {
 
@@ -46,19 +49,27 @@ namespace KSY
             {
                 case Type.PlayerMove:
                     PlayerMoveMessage keyMessage = DataParser.ReadJsonData<PlayerMoveMessage>(args.BinaryUserData);
-                    KeyMessageEvent(args.From.SessionId, keyMessage);
+                    PlayerMoveMsgEvent(keyMessage);
                     break;
             }
         }
 
-        private void KeyMessageEvent(SessionId index, PlayerMoveMessage keyMessage)
+        /// <summary>
+        /// PlayerMove 메세지 가공 후 이벤트 호출 함수
+        /// </summary>
+        /// <param name="data"></param>
+        private void PlayerMoveMsgEvent(PlayerMoveMessage data)
         {
-            // TODO : 호스트만 수행할지, 호스트 아닌애들만 수행할지 고민해보기
-            if (!BackEndMatchManager.GetInstance().IsHost())
-            {
-                //호스트만 수행
-                return;
-            }
+            Vector2 moveVector = new Vector2(data.x, data.y);
+
+            //// 타겟 백터랑 일치하는지 확인 동일하면 이벤트 튀길 필요가 없음
+            //if (!moveVector.Equals(BackEndManager.Instance.players[data.playerSession].moveVector))
+            //{
+            //    //이벤트 튀기기
+            //}
+
+            // 이벤트
+            PlayerMoveEvent?.Invoke(data.playerSession, moveVector);
         }
 
     } 

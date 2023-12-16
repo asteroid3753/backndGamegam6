@@ -23,17 +23,15 @@ namespace KSY.Protocol
 
     public class PlayerMoveMessage : Message
     {
-        public int keyData;
+        public SessionId playerSession;
         public float x;
         public float y;
-        public float z;
 
-        public PlayerMoveMessage(int data, Vector3 pos) : base(Type.PlayerMove)
+        public PlayerMoveMessage(SessionId sessionId, Vector2 pos) : base(Type.PlayerMove)
         {
-            this.keyData = data;
+            playerSession = sessionId;
             this.x = pos.x;
             this.y = pos.y;
-            this.z = pos.z;
         }
     }
 }
