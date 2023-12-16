@@ -4,24 +4,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecvTest : MonoBehaviour
+namespace KSY
 {
-    // Start is called before the first frame update
-    void Start()
+    public class RecvTest : MonoBehaviour
     {
-        // recv ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½
-        BackEndManager.Instance.Parsing.PlayerMoveEvent += PlayerMoveRecvFunc;
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
+            // recv ÀÌº¥Æ® µî·Ï
+            BackEndManager.Instance.Parsing.PlayerMoveEvent += PlayerMoveRecvFunc;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        // Update is called once per frame
+        void Update()
+        {
 
-    private void PlayerMoveRecvFunc(SessionId sessionId, Vector2 vec)
-    {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
-        Debug.Log($"x : {vec.x}, y : {vec.y}");
-    }
+        }
+
+        private void PlayerMoveRecvFunc(SessionId sessionId, Vector2 vec)
+        {
+            // µé¾î¿À¸é 
+            Debug.Log($"x : {vec.x}, y : {vec.y}");
+        }
+    } 
 }

@@ -12,6 +12,7 @@ namespace khj
     {
         [SerializeField] GameObject titlePanel;
         [SerializeField] GameObject loginPanel;
+        [SerializeField] GameObject loadingPanel;
         [SerializeField] GameObject matchPanel;
         [SerializeField] GameObject matchManager;
         [SerializeField] GameObject roomPanel;
@@ -68,7 +69,6 @@ namespace khj
             if (bro.IsSuccess())
             {
                 Debug.Log("회원가입: " + bro);
-                UpdateNickname();
             }
             else
             {

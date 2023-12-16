@@ -10,8 +10,8 @@ namespace KSY
 {
     public class ParsingManager
     {
-        public event Action<SessionId, Vector2> PlayerMoveEvent;
-        public event Action<SessionId, float> SimeSizeUpEvent;
+        public event Action<Vector2> PlayerMoveEvent;
+        public event Action<int, float> SlimeSizeUpEvent;
 
         public void Init()
         {
@@ -34,11 +34,7 @@ namespace KSY
                 return;
             }
 
-            // TODO : 호스트 정보 필요, 보낸이가 HOST 인지 체크 이거는 뭘 체크하는건지 체크해봐야함
-            //if (BackEndMatchManager.GetInstance().IsHost() != true && args.From.SessionId == myPlayerIndex)
-            //{
-            //    return;
-            //}
+            //args.From.NickName
 
             // TODO : Player 정보 배열 필요, 현재 플레이어와 내 플레이어 가 누군지 필요
             //if (players == null)
@@ -76,12 +72,12 @@ namespace KSY
             //}
 
             // 이벤트
-            PlayerMoveEvent?.Invoke(data.playerSession, moveVector);
+            PlayerMoveEvent?.Invoke(moveVector);
         }
 
         private void SlimeSizeUpMsgEvent(SlimeSizeUpMessage data)
         {
-            SimeSizeUpEvent?.Invoke(data.playerSession, data.addSize);
+            SlimeSizeUpEvent?.Invoke(data.id, data.addSize);
         }
 
     } 

@@ -198,7 +198,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        SceneManager.LoadScene(scene);
+        MorningBird.SceneManagement.GameSceneLoadManager.Instant.UnLoadAllScenes();
+        MorningBird.SceneManagement.GameSceneLoadManager.Instant.LoadSceneAsync(scene);
+
     }
 
     private void ChangeSceneAsync(string scene, Action<bool> func)

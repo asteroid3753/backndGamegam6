@@ -19,7 +19,7 @@ namespace MorningBird.SceneManagement
         /// <summary>
         /// TotalGameSceneManager
         /// </summary>
-        internal static GameSceneLoadManager GSLM
+        internal static GameSceneLoadManager Instant
         {
             get
             {
@@ -110,6 +110,7 @@ namespace MorningBird.SceneManagement
                     }
                 }
             }
+
 
         }
 

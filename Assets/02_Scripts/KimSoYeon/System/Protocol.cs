@@ -24,13 +24,11 @@ namespace KSY.Protocol
 
     public class PlayerMoveMessage : Message
     {
-        public SessionId playerSession;
         public float x;
         public float y;
 
-        public PlayerMoveMessage(SessionId sessionId, Vector2 pos) : base(MsgType.PlayerMove)
+        public PlayerMoveMessage(Vector2 pos) : base(MsgType.PlayerMove)
         {
-            playerSession = sessionId;
             this.x = pos.x;
             this.y = pos.y;
         }
@@ -38,12 +36,12 @@ namespace KSY.Protocol
 
     public class SlimeSizeUpMessage : Message
     {
-        public SessionId playerSession;
+        public int id;
         public float addSize;
 
-        public SlimeSizeUpMessage(SessionId sessionId, float addSize) : base(MsgType.SlimeSizeUp)
+        public SlimeSizeUpMessage(int id, float addSize) : base(MsgType.SlimeSizeUp)
         {
-            playerSession = sessionId;
+            this.id = id;
             this.addSize = addSize;
         }
     }
