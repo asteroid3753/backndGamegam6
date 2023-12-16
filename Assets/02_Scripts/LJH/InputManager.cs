@@ -5,6 +5,7 @@ using KSY.Protocol;
 using KSY;
 using BackEnd.Tcp;
 using BackEnd;
+using Unity.VisualScripting;
 
 namespace LJH{
     public class InputManager : MonoBehaviour
@@ -12,7 +13,7 @@ namespace LJH{
         float x, y;
         Player player;
 
-
+        [SerializeField] bool isConrollAble = false;
 
         public Vector2 GetUserPos(){
             return new Vector2(x,y);
@@ -22,11 +23,23 @@ namespace LJH{
         void Start()
         {
             player = GetComponent<Player>();
+
+            isConrollAble = false;
+
+            Invoke("WaitAndStart", 2f);
+        }
+
+        void WaitAndStart()
+        {
+            isConrollAble = true;
         }
 
         // Update is called once per frame
         void FixedUpdate()
         {
+            if (isConrollAble == false)
+                return;
+
             if(TotalGameManager.Instance.myNickName != player.GetUserName())
             {
                 return;
