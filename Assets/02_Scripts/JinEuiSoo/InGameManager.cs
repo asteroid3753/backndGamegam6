@@ -33,7 +33,6 @@ namespace JES
 
         public Dictionary<int, GrowingItem> InGameItemDic;
 
-
         int itemCount = 0;
         #region Singleton
 
@@ -173,7 +172,7 @@ namespace JES
 
                 CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
-
+                itemCount++;
                 yield return new WaitForSeconds(3);
             }
         }
