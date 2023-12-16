@@ -608,11 +608,12 @@ MonoBehaviour:
   itemPrefab: {fileID: 5314646180147118603, guid: 169a16d7e49e2cd4382f048de97e15a8, type: 3}
   itemSpawnSpan: 1
   _isGameEnd: 0
+  cameraPrefab: {fileID: 8013790294747103645, guid: d0bf9ad5aeb6db84cb0719c4666cb11c, type: 3}
   _playerPrefab:
   - {fileID: 8936083618042500769, guid: 41501697f7252534ca53f04cbce33f6e, type: 3}
   - {fileID: 4090975814814055091, guid: 0fcb5e10ef26135449951e7eb1de6b0d, type: 3}
-  - {fileID: 4090975814814055091, guid: 0fcb5e10ef26135449951e7eb1de6b0d, type: 3}
-  - {fileID: 4090975814814055091, guid: 0fcb5e10ef26135449951e7eb1de6b0d, type: 3}
+  - {fileID: 4627703413314820558, guid: da5766cc605e7ce49b9a599af2d89774, type: 3}
+  - {fileID: 6723984741756288781, guid: ec6e44a29cca85d40b75451a3b0e2792, type: 3}
   _playerPositions:
   - {fileID: 1055019955}
   - {fileID: 62560507}

@@ -11,6 +11,7 @@ using BackEnd.Game;
 using KSY.Protocol;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using Cinemachine;
 
 namespace LJH
 {
@@ -23,6 +24,7 @@ namespace LJH
 
         [SerializeField] bool _isGameEnd = false;
 
+        [SerializeField] GameObject cameraPrefab;
         [SerializeField] GameObject[] _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
@@ -145,6 +147,9 @@ namespace LJH
                         Debug.Log(_playerPositions[i].position);
                         player.SetUserTarget(_playerPositions[i].position);
                         pgo.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
+                        CinemachineVirtualCamera cam = Instantiate(cameraPrefab, pgo.transform).GetComponent<CinemachineVirtualCamera>() ;
+                        cam.Follow = pgo.transform;
+                        cam.LookAt = pgo.transform;
                         pgo.transform.position = _playerPositions[i].position;
                     }
                     else{
