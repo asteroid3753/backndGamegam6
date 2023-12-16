@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static MatchingTest;
 using LitJson;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -14,8 +13,9 @@ namespace khj
     public class MatchManager : MonoBehaviour
     {
         public static MatchManager Instance;
+        InGameStart ingame;
         List<MatchCard> matchCardList = new List<MatchCard>();
-
+        
         void Awake()
         {
             if (Instance != null)
@@ -32,7 +32,7 @@ namespace khj
 
         public void JoinMatchMakingServer()
         {
-            // _inGameTest = GetComponent<InGameTest>();
+            ingame = GetComponent<InGameStart>();
 
             //Backend.Match.OnException = (Exception e) => { Debug.LogError(e.ToString()); };
 
@@ -192,21 +192,19 @@ namespace khj
             Backend.Match.OnMatchMakingResponse = (MatchMakingResponseEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Match_InProgress)
                 {
-                    Debug.Log("3-2. OnMatchMakingResponse 매칭 신청 진행중");
-
                     int second = matchCardList[0].transit_to_sandbox_timeout_ms / 1000;
 
-                    if (second > 0)
-                    {
-                        Debug.Log($"{second}초 뒤에 샌드박스 활성화가 됩니다.");
-                        StartCoroutine(WaitFor10Seconds(second));
-                    }
+                    //if (second > 0)
+                    //{
+                    //    Debug.Log($"{second}초 뒤에 샌드박스 활성화가 됩니다.");
+                    //    StartCoroutine(WaitFor10Seconds(second));
+                    //}
                 }
                 else if (args.ErrInfo == ErrorCode.Success)
                 {
                     Debug.Log("3-3. OnMatchMakingResponse 매칭 성사 완료");
 
-                    //_inGameTest.JoinGameServer(args.RoomInfo);
+                    ingame.JoinGameServer(args.RoomInfo);
                 }
                 else
                 {
@@ -226,6 +224,7 @@ namespace khj
                 Debug.Log($"{i}초 경과");
                 yield return delay;
             }
+            TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Ready);
         }
         public void CreateMatchRoom()
         {
@@ -245,6 +244,10 @@ namespace khj
             Backend.Match.CreateMatchRoom();
         }
 
+        void ShowReadyPanel()
+        {
+
+        }
         void Update()
         {
             if (Backend.IsInitialized)

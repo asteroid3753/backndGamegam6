@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class MatchUIManager : MonoBehaviour
 {
-    [SerializeField] GameObject loadingPanel;
     [SerializeField] GameObject matchPanel;
+    [SerializeField] GameObject readyPanel;
     [SerializeField] GameObject matchManager;
 
     void Awake()
     {
-        loadingPanel.SetActive(true);
-        matchPanel.SetActive(false);
+        matchPanel.SetActive(true);
+        readyPanel.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        TotalGameManager.OnGameReady += ShowReadyPanel;
+    }
+
+    void ShowReadyPanel()
+    {
+        matchPanel.SetActive(false);
+        readyPanel.SetActive(true);
+
     }
 }
