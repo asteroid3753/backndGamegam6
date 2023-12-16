@@ -10,7 +10,8 @@ namespace KSY.Protocol
     {
         PlayerMove = 0, //플레이어 키 입력
         SlimeSizeUp,
-        GrabItem
+        GrabItem,
+        CreateItem
     }
 
     public class Message
@@ -57,5 +58,20 @@ namespace KSY.Protocol
         }
     }
 
+    public class CreateItemMessage : Message
+    {
+        public int itemType;
+        public int itemCode;
+        public float x;
+        public float y;
+
+        public CreateItemMessage(int itemType, int itemCode, Vector2 pos) : base(MsgType.CreateItem)
+        {
+            this.itemType = itemType;
+            this.itemCode = itemCode;
+            this.x = pos.x;
+            this.y = pos.y;
+        }
+    }
 }
 
