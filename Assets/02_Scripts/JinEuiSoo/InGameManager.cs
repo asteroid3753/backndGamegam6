@@ -19,6 +19,8 @@ namespace JES
     {
         [SerializeField]
         private GameObject itemPrefab;
+        [SerializeField]
+        private float itemSpawnSpan = 1f;
 
         [SerializeField] GameObject _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
@@ -34,6 +36,10 @@ namespace JES
         public Dictionary<int, GrowingItem> InGameItemDic;
 
         int itemCount = 0;
+
+        BoxCollider2D slimeArea;
+        BoxCollider2D groundArea;
+
         #region Singleton
 
         static InGameManager _instance;
@@ -80,7 +86,9 @@ namespace JES
 
         void AwakeInitialize()
         {
-
+            slimeArea = GameObject.Find("Slime").GetComponent<BoxCollider2D>();
+            groundArea = GameObject.Find("Ground").GetComponent<BoxCollider2D>();
+            JESFunctions.SetCollider(groundArea, slimeArea);
         }
 
         void Start()
@@ -150,17 +158,6 @@ namespace JES
                     StartCoroutine(CreateItem());
                 }
             }
-
-            // 아이템 관련 로직
-            // 아이템을 뿌리고, 아이템을 지운다. 아이템을 관리한다.
-            // int 인덱스를 받고, 그 해당하는 것을 지운다.
-            // 
-            // null이 발생할 때는, 둘다 얻는 것으로 처리한다.
-            // null이 발생할 수 있어서, null이 발생하면 Catch하면서 종료시킨다.
-
-
-            //GrabItemMessage msg = new GrabItemMessage(333);
-            //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
         IEnumerator CreateItem()
@@ -168,19 +165,25 @@ namespace JES
             while (true)
             {
                 int itemType = Random.Range(0, 3);
-                UnityEngine.Vector2 spawnPos = new UnityEngine.Vector2(0, itemCount);
+                UnityEngine.Vector2 spawnPos = JESFunctions.CreateRandomInstance();
 
                 CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
                 itemCount++;
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(itemSpawnSpan);
             }
         }
 
+        int testCnt = 0;
         private void Update()
         {
             // 게임의 엔딩 체크
             // // 게임의 엔딩 선언
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log($"{testCnt}번 아에팀 삭제");
+                BackEndManager.Instance.InGame.SendDataToInGame(new GrabItemMessage(testCnt++));
+            }
 
         }
 
@@ -188,7 +191,12 @@ namespace JES
 
         private void Parsing_GrabItemEvent(string nickname, int itemCode)
         {
-           
+            //NamePlayerPairs[nickname].
+            if (InGameItemDic.ContainsKey(itemCode))
+            {
+                Destroy(InGameItemDic[itemCode].gameObject);
+                InGameItemDic.Remove(itemCode);
+            }
         }
 
         private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
