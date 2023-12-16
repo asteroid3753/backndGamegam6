@@ -1,5 +1,6 @@
 using BackEnd.Tcp;
 using KSY.Protocol;
+using LJH;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,13 +73,11 @@ namespace KSY
         {
             Vector2 moveVector = new Vector2(data.x, data.y);
 
-            //// Ÿ�� ���Ͷ� ��ġ�ϴ��� Ȯ�� �����ϸ� �̺�Ʈ Ƣ�� �ʿ䰡 ����
-            //if (!moveVector.Equals(BackEndManager.Instance.players[data.playerSession].moveVector))
-            //{
-            //    //�̺�Ʈ Ƣ���
-            //}
-
-            PlayerMoveEvent?.Invoke(nickname, moveVector);
+            // if Now Vector diffrent
+            if (!moveVector.Equals(InGameManager.Instance.NamePlayerPairs[nickname].GetUserTarget()))
+            {
+                PlayerMoveEvent?.Invoke(nickname, moveVector);
+            }
         }
 
         private void SlimeSizeUpMsgEvent(SlimeSizeUpMessage data)

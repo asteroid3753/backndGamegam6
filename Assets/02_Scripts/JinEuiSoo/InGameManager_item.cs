@@ -9,6 +9,10 @@ namespace LJH
 
     public partial class InGameManager : MonoBehaviour
     {
+        [SerializeField]
+        int itemMaxCount = 10;
+
+        private int itemTypeCount;
         private void ItemUpdate()
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -30,6 +34,7 @@ namespace LJH
             if (TotalGameManager.Instance.isHost)
             {
                 itemCount = 0;
+                itemTypeCount = System.Enum.GetValues(typeof(Define.ItemType)).Length;
                 StartCoroutine(CreateItem());
             }
         }
@@ -37,8 +42,14 @@ namespace LJH
         {
             while (true)
             {
-                int itemType = Random.Range(0, 3);
-                UnityEngine.Vector2 spawnPos = JES.JESFunctions.CreateRandomInstance();
+                if (itemMaxCount <= InGameItemDic.Count)
+                {
+                    yield return new WaitForSeconds(0.2f);
+                    continue;
+                }
+
+                int itemType = Random.Range(0, itemTypeCount + 1);
+                Vector2 spawnPos = JES.JESFunctions.CreateRandomInstance();
 
                 CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
@@ -54,6 +65,8 @@ namespace LJH
             //NamePlayerPairs[nickname].
             if (InGameItemDic.ContainsKey(itemCode))
             {
+                player.SetUserItem(player.GetUserNowItem());
+
                 Destroy(InGameItemDic[itemCode].gameObject);
                 InGameItemDic.Remove(itemCode);
             }
