@@ -12,7 +12,7 @@ public class TotalGameManager : MonoBehaviour
     #region Scene
     private const string LOGIN = "login";
     private const string LOBBY = "Match";
-    private const string INGAME = "KimSoYeon";
+    private const string INGAME = "JESTestGameScene";
     #endregion
 
     #region Actions-Events

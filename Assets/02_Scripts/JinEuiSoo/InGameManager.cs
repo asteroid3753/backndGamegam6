@@ -11,6 +11,7 @@ using System.Numerics;
 using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
+using Protocol;
 
 namespace JES
 {
@@ -20,8 +21,12 @@ namespace JES
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
         // [SerializeField] List<GroawingItems>() = new List<GroawingItems>();
-        [SerializeField] string[] _playerNicNames;
+        [SerializeField] string[] _playerNickNames;
         [SerializeField] string _superPlayerNickName;
+        [SerializeField] string _myClientNickName;
+
+        [SerializeField] Dictionary<string, TestPlayer> _namePlayerPairs;
+        public Dictionary<string, TestPlayer> NamePlayerPairs;
 
         #region Singleton
 
@@ -74,6 +79,15 @@ namespace JES
 
         void Start()
         {
+            StartCoroutine(IEWaitAndStart());
+
+        }
+
+        IEnumerator IEWaitAndStart()
+        {
+
+            yield return new WaitForSeconds(0.5f);
+
             // Regest Event
             {
                 BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
@@ -81,22 +95,26 @@ namespace JES
 
             // Setting Players
             {
-                string[] playerNickNames = { "1", "2", "3", "4" }; /* _playerNicNames = TotalGameManager.Instance.GetPlayerNickNames(); */
-                string superPlayerNicNames = "1"; /* _superPlayerNickName = TotalGameManager.Instance.GetSuperGamePlayer(); */
+                _playerNickNames = TotalGameManager.Instance.playerNickNames;
+                _superPlayerNickName = TotalGameManager.Instance.host;
+                _myClientNickName = TotalGameManager.Instance.myNickName;
 
-                for (int i = 0; i < playerNickNames.Length; i++)
+                NamePlayerPairs = new Dictionary<string, TestPlayer>();
+
+                for (int i = 0; i < _playerNickNames.Length; i++)
                 {
                     bool isSuperPlayer = false;
-                    if (playerNickNames[i] == superPlayerNicNames)
+                    if (_playerNickNames[i] == _superPlayerNickName)
                     {
                         isSuperPlayer = true;
                     }
 
 
                     GameObject tGO = Instantiate(_playerPrefab);
-                    LJH.Player tplayer = tGO.GetComponent<LJH.Player>();
+                    TestPlayer tplayer = tGO.GetComponent<TestPlayer>();
 
-                    tplayer.NickName = playerNickNames[i];
+                    tplayer.PlayerNickName = _playerNickNames[i];
+                    tplayer.MyClientNickName = _myClientNickName;
 
                     if (isSuperPlayer == true)
                     {
@@ -109,14 +127,19 @@ namespace JES
 
                     // tPlayer.SetAnimalType(Etype (int)i)
 
-                    // tGO.transform.position = _playerPositions[i].position;
+                    tGO.transform.position = _playerPositions[i].position;
 
+                    NamePlayerPairs.Add(_playerNickNames[i], tplayer);
                 }
             }
 
+            // 이걸 해도 문제.
+            // 자신이 누구인지 알아야 하고, 그리고 그게 자신인걸 알아야 한다.
+            // 그리고 이를 걸러서 행동해야 한다.
+
             // Setting Items
             {
-                
+
             }
 
             // 아이템 관련 로직
@@ -129,12 +152,18 @@ namespace JES
 
             //GrabItemMessage msg = new GrabItemMessage(333);
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
+        }
+
+        private void Update()
+        {
+            // 게임의 엔딩 체크
+            // // 게임의 엔딩 선언
 
         }
 
         private void Parsing_GrabItemEvent(int obj)
         {
-            
+            Debug.Log(obj);
         }
     } 
 }
