@@ -16,6 +16,7 @@ namespace LJH{
 
         void Start()
         {
+            player = GetComponent< LJH.Player>();
             player.SetUserSpeed(20f);
         }
 

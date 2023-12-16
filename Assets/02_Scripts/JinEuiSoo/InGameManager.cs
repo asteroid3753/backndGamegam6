@@ -23,7 +23,7 @@ namespace LJH
 
         [SerializeField] bool _isGameEnd = false;
 
-        [SerializeField] GameObject _playerPrefab;
+        [SerializeField] GameObject[] _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
         // [SerializeField] List<GroawingItems>() = new List<GroawingItems>();
@@ -127,7 +127,7 @@ namespace LJH
 
                 for (int i = 0; i < _playerNickNames.Count; i++)
                 {
-                    GameObject pgo = Instantiate(_playerPrefab);//, _playerPositions[i].position, Quaternion.identity);
+                    GameObject pgo = Instantiate(_playerPrefab[i]);//, _playerPositions[i].position, Quaternion.identity);
                     LJH.Player player = pgo.GetComponent<LJH.Player>();
                     NamePlayerPairs.Add(_playerNickNames[i], player);
                     player.SetUserName(_playerNickNames[i]);
