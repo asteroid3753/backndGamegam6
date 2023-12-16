@@ -9,12 +9,14 @@ namespace LJH{
         [SerializeField] string userName;
         [SerializeField] Vector2 target;
         [SerializeField] float userSpeed = 2.0f;
+        [SerializeField] bool flipX = false;
 
 
         //init
-        public Player(int _id, string _name){
+        public Player(int _id, string _name, float _speed){
             userID = _id;
             userName = _name;
+            userSpeed = _speed;
         }
 
         //getter
@@ -30,6 +32,10 @@ namespace LJH{
         public float GetUserSpeed(){
             return userSpeed;
         }
+        public bool GetUserFlip(){
+            return flipX;
+        }
+
 
         //setter
         public void SetUserID(int _id){
@@ -44,10 +50,20 @@ namespace LJH{
         public void SetUserSpeed(float _speed){
             userSpeed = _speed;
         }
+        public void SetUserFlip(bool _flipX){
+            flipX = _flipX;
+        }
 
         private void Update() {
+            if(target.x - this.transform.position.x > 0.1f){
+                SetUserFlip(true); //right
+            }
+            if(target.x - this.transform.position.x < -0.1f){
+                SetUserFlip(false); //right
+            }
             float x = Mathf.Lerp(this.transform.position.x, target.x,0.1f);
             float y = Mathf.Lerp(this.transform.position.y, target.y,0.1f);
+            
             this.transform.position = new Vector3(x,y,transform.position.z);
         }
     }
