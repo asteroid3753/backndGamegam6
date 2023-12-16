@@ -515,7 +515,6 @@ GameObject:
   - component: {fileID: 9126340042961603628}
   - component: {fileID: 1010635237694445915}
   - component: {fileID: 2344572399973099325}
-  - component: {fileID: 5175861190921231412}
   - component: {fileID: 7436495845467558726}
   - component: {fileID: 6854734479435839964}
   - component: {fileID: 1603517790205750850}
@@ -560,11 +559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a78c6fcb4ed840208027277b70dbdb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userName: 
   target: {x: 0, y: 0}
   userSpeed: 0
   flipX: 0
-  nickName: 
   NickName: 
   havingItem: {fileID: 0}
   nowItem: {fileID: 0}
@@ -581,18 +578,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1010635237694445915}
---- !u!114 &5175861190921231412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8936083618042500769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e790f910b6d554005bcf51f7fc5356c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &7436495845467558726
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

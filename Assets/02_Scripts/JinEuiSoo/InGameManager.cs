@@ -123,6 +123,10 @@ namespace JES
                 {
                     LJH.Player player = Instantiate(_playerPrefab).GetComponent<LJH.Player>();
                     player.SetUserName(_playerNickNames[i]);
+                    if (_playerNickNames[i] == _myClientNickName)
+                    {
+                        player.gameObject.AddComponent<InputManager>();
+                    }
 
                     if (isSuperPlayer == true)
                     {
