@@ -32,6 +32,7 @@ public class TotalGameManager : MonoBehaviour
     private GameState gameState;
     #endregion
 
+    public bool isHost = false;
     public string host;
     public string myNickName;
     public string[] playerNickNames;
