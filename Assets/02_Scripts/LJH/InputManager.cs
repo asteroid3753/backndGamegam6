@@ -11,6 +11,9 @@ namespace LJH{
     {  
         float x, y;
         Player player;
+
+
+
         public Vector2 GetUserPos(){
             return new Vector2(x,y);
         }
@@ -24,26 +27,47 @@ namespace LJH{
         // Update is called once per frame
         void FixedUpdate()
         {
-            x = player.transform.position.x + (Input.GetAxisRaw("Horizontal") * Time.deltaTime * player.GetUserSpeed());
-            y = player.transform.position.y + (Input.GetAxisRaw("Vertical") * Time.deltaTime * player.GetUserSpeed());
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+
+            if(horizontal != 0 || vertical != 0){
+                this.GetComponent<Animator>().SetBool("Walk",true);
+            }
+            else{
+                this.GetComponent<Animator>().SetBool("Walk",false);
+            }
+
+            x = player.transform.position.x + (horizontal * Time.deltaTime * player.GetUserSpeed());
+            y = player.transform.position.y + (vertical * Time.deltaTime * player.GetUserSpeed());
             
             PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
-
+            
+            if(player.GetUserNowItem() != null && Input.GetKeyDown(KeyCode.Space)){
+                print("item" + player.GetUserNowItem().GetItemCode());
+                
+                GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().GetItemCode());
+                BackEndManager.Instance.InGame.SendDataToInGame(itemMsg); 
+            }
+            if(player.GetUserNowItem() == null && Input.GetKeyDown(KeyCode.Space)){
+                print("item drop");
+                GrabItemMessage itemMsg = new GrabItemMessage(-1);
+                BackEndManager.Instance.InGame.SendDataToInGame(itemMsg); 
+            }
             // move ��ǥ ���� (�ش� �÷��̾�(�� �ڽ�)�� SessionID, ��� ��ǥ��)
             BackEndManager.Instance.InGame.SendDataToInGame(msg); 
         }
 
-        // IEnumerator SendTest()
-        // {
-        //     while (true)
-        //     {
-        //         PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
-
-        //         // move ��ǥ ���� (�ش� �÷��̾�(�� �ڽ�)�� SessionID, ��� ��ǥ��)
-        //         BackEndManager.Instance.InGame.SendDataToInGame(msg); 
-        //         yield return new WaitForEndOfFrame();
-        //     }
-        // }
+        private void OnTriggerEnter2D(Collider2D other) {
+            if(other.tag == "Item"){
+                player.SetUserNowItem(other.GetComponent<GrowingItem>());
+            }
+        }
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if(other.tag == "Item"){
+                player.SetUserNowItem(null);
+            }
+        }
         
     }
 }

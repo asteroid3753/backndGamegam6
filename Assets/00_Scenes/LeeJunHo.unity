@@ -345,8 +345,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 106253622}
-  nowItem: {fileID: 0}
-  itemObj: {fileID: 28402040}
 --- !u!114 &106253622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +365,7 @@ MonoBehaviour:
   nickName: 
   NickName: 
   havingItem: {fileID: 0}
+  nowItem: {fileID: 0}
 --- !u!70 &106253623
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

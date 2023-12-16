@@ -18,6 +18,8 @@ namespace LJH{
         //test
         [SerializeField] GrowingItem havingItem;
 
+        [SerializeField] GrowingItem nowItem;
+
         //init
         public Player(int _id, string _name, float _speed){
             userID = _id;
@@ -45,6 +47,9 @@ namespace LJH{
         public GrowingItem GetUserItem(){
             return havingItem;
         }
+        public GrowingItem GetUserNowItem(){
+            return nowItem;
+        }
 
 
         //setter
@@ -67,6 +72,9 @@ namespace LJH{
         public void SetUserItem(GrowingItem _item){
             havingItem = _item;
         }
+        public void SetUserNowItem(GrowingItem _item){
+            nowItem = _item;
+        }
 
         private void Update() {
             if(target.x - this.transform.position.x > 0.1f){
@@ -75,6 +83,7 @@ namespace LJH{
             if(target.x - this.transform.position.x < -0.1f){
                 SetUserFlip(false); //right
             }
+
             float x = Mathf.Lerp(this.transform.position.x, target.x,0.1f);
             float y = Mathf.Lerp(this.transform.position.y, target.y,0.1f);
             

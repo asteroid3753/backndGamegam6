@@ -23,7 +23,10 @@ namespace LJH{
             }
         }
 
-
+        public GrowingItem(int _itemCode){
+            itemCode = _itemCode;
+            itemImg = Resources.Load<Sprite>("Item" + _itemCode);
+        }
         public int GetItemCode(){
             return itemCode;
         }
@@ -35,27 +38,23 @@ namespace LJH{
         }
 
 
-        public void SetItemCode(int _code){
-            itemCode = _code;
-        } 
-        public void SetItemImg(Sprite _itemImg){
-            itemImg = _itemImg;
-        }
-
         private void SetItemType(Define.ItemType itemType)
         {
             switch (itemType)
             {
                 case Define.ItemType.can:
-                    //itemImg = "";
+                    itemImg = Resources.Load<Sprite>("Item6");
+                    itemCode = 6;
                     growPoint = 10;
                     break;
                 case Define.ItemType.apple:
-                    //itemImg = "";
+                    itemImg = Resources.Load<Sprite>("Item1");
+                    itemCode = 1;
                     growPoint = 20;
                     break;
                 case Define.ItemType.backendIcon:
-                    //itemImg = "";
+                    itemImg = Resources.Load<Sprite>("Item2");
+                    itemCode = 2;
                     growPoint = 30;
                     break;
             }

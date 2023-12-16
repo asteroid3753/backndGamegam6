@@ -14,10 +14,6 @@ namespace LJH{
         
         LJH.InputManager inputManager;
 
-        //item test
-        [SerializeField] GrowingItem nowItem;
-        [SerializeField] GameObject itemObj;
-
 
         // Start is called before the first frame update
         void Start()
@@ -25,23 +21,17 @@ namespace LJH{
             //서버연결이 완료되면 서버에서 현재 플레이어의 아이디와 이름을 가져온 후 초기화.
             player.SetUserSpeed(20f);
             BackEndManager.Instance.Parsing.PlayerMoveEvent += PlayerMoveRecvFunc;
+            BackEndManager.Instance.Parsing.GrabItemEvent += PlayerGrapRecvFunc;
         }
 
         // Update is called once per frame
         private void FixedUpdate() {
             //UserMove
             this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();
-            if(nowItem != null && Input.GetKeyDown(KeyCode.Space)){
-                print("item");
-                player.SetUserItem(nowItem);
-                itemObj.GetComponent<SpriteRenderer>().sprite = player.GetUserItem().GetItemImg();
-                
-            }
-            if(nowItem == null && Input.GetKeyDown(KeyCode.Space)){
-                print("item drop");
-                player.SetUserItem(null);
-                itemObj.GetComponent<SpriteRenderer>().sprite = null;
-            }
+            if(player.GetUserItem() != null)
+                this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = player.GetUserItem().GetItemImg();
+            else
+                this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = null;
         }
 
         private void PlayerMoveRecvFunc(Vector2 vec)
@@ -50,17 +40,12 @@ namespace LJH{
             player.SetUserTarget(vec);
         }
 
-        private void OnTriggerEnter2D(Collider2D other) {
-            if(other.tag == "Item"){
-                nowItem = other.GetComponent<GrowingItem>();
-            }
+        private void PlayerGrapRecvFunc(int itemCode){
+            //아이템을 잡았을 때 아이템 띄우기
+            print("send item");
+            player.SetUserItem(player.GetUserNowItem());
         }
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if(other.tag == "Item"){
-                nowItem = null;
-            }
-        }
+
 
     }
 

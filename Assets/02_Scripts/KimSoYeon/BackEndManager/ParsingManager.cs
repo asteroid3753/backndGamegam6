@@ -26,24 +26,24 @@ namespace KSY
         {
             if (args.BinaryUserData == null)
             {
-                Debug.LogWarning(string.Format("ºó µ¥ÀÌÅÍ°¡ ºê·ÎµåÄ³½ºÆÃ µÇ¾ú½À´Ï´Ù.\n{0} - {1}", args.From, args.ErrInfo));
-                // µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é ±×³É ¸®ÅÏ
+                Debug.LogWarning(string.Format("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½Îµï¿½Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.\n{0} - {1}", args.From, args.ErrInfo));
+                // ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×³ï¿½ ï¿½ï¿½ï¿½ï¿½
                 return;
             }
 
             Message msg = DataParser.ReadJsonData<Message>(args.BinaryUserData);
             if (msg == null)
             {
-                Debug.Log("µ¥ÀÌÅÍ ¸Þ¼¼Áö ¾øÀ½");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 return;
             }
 
             //args.From.NickName
 
-            // TODO : Player Á¤º¸ ¹è¿­ ÇÊ¿ä, ÇöÀç ÇÃ·¹ÀÌ¾î¿Í ³» ÇÃ·¹ÀÌ¾î °¡ ´©±ºÁö ÇÊ¿ä
+            // TODO : Player ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½Ê¿ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
             //if (players == null)
             //{
-            //    Debug.LogError("Players Á¤º¸°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            //    Debug.LogError("Players ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
             //    return;
             //}
 
@@ -72,10 +72,10 @@ namespace KSY
         {
             Vector2 moveVector = new Vector2(data.x, data.y);
 
-            //// Å¸°Ù ¹éÅÍ¶û ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎ µ¿ÀÏÇÏ¸é ÀÌº¥Æ® Æ¢±æ ÇÊ¿ä°¡ ¾øÀ½
+            //// Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½Í¶ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ìºï¿½Æ® Æ¢ï¿½ï¿½ ï¿½Ê¿ä°¡ ï¿½ï¿½ï¿½ï¿½
             //if (!moveVector.Equals(BackEndManager.Instance.players[data.playerSession].moveVector))
             //{
-            //    //ÀÌº¥Æ® Æ¢±â±â
+            //    //ï¿½Ìºï¿½Æ® Æ¢ï¿½ï¿½ï¿½
             //}
 
             PlayerMoveEvent?.Invoke(moveVector);
