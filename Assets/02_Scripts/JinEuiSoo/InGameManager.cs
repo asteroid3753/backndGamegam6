@@ -28,7 +28,6 @@ namespace LJH
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
 
-        [SerializeField] Dictionary<string, LJH.PlayerController> _namePlayerPairs;
         public Dictionary<string, LJH.PlayerController> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
@@ -117,13 +116,13 @@ namespace LJH
                 _myClientNickName = TotalGameManager.Instance.myNickName;
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
-                NamePlayerPairs = new Dictionary<string, LJH.Player>();
+                NamePlayerPairs = new Dictionary<string, LJH.PlayerController>();
                 InGameItemDic = new Dictionary<int, GrowingItem>();
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
-                    LJH.Player player = Instantiate(_playerPrefab).GetComponent<LJH.Player>();
-                    player.SetUserName(_playerNickNames[i]);
+                    LJH.PlayerController player = Instantiate(_playerPrefab).GetComponent<LJH.PlayerController>();
+                    // player.SetUserName(_playerNickNames[i]);
                     if (_playerNickNames[i] == _myClientNickName)
                     {
                         player.gameObject.AddComponent<InputManager>();
@@ -223,7 +222,7 @@ namespace LJH
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
-            _namePlayerPairs[nickName].PlayerMoveRecvFunc(target);
+            NamePlayerPairs[nickName].PlayerMoveRecvFunc(target);
         }
     } 
 }

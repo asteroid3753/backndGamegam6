@@ -9,9 +9,10 @@ namespace KSY.Protocol
     public enum MsgType
     {
         PlayerMove = 0, //플레이어 키 입력
-        SlimeSizeUp,
-        GrabItem,
-        CreateItem
+        SlimeSizeUp, // 슬라임 크기 
+        GrabItem, // 아이템 획득
+        CreateItem, // 아이템 생성
+        CreateBg // 배경 생성
     }
 
     public class Message
@@ -69,6 +70,19 @@ namespace KSY.Protocol
         {
             this.itemType = itemType;
             this.itemCode = itemCode;
+            this.x = pos.x;
+            this.y = pos.y;
+        }
+    }
+
+    public class CreateBgMessage : Message
+    {
+        public int bgType;
+        public float x;
+        public float y;
+
+        public CreateBgMessage(int bgType, int itemCode, Vector2 pos) : base(MsgType.CreateBg)
+        {
             this.x = pos.x;
             this.y = pos.y;
         }
