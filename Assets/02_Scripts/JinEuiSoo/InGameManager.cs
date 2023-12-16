@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LJH;
-using Player = LJH.Player;
 using BackEnd;
 using BackEnd.Tcp;
 using MorningBird.SceneManagement;
@@ -25,8 +24,8 @@ namespace JES
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
 
-        [SerializeField] Dictionary<string, TestPlayer> _namePlayerPairs;
-        public Dictionary<string, TestPlayer> NamePlayerPairs;
+        [SerializeField] Dictionary<string, LJH.Player> _namePlayerPairs;
+        public Dictionary<string, LJH.Player> NamePlayerPairs;
 
         #region Singleton
 
@@ -98,23 +97,14 @@ namespace JES
                 _playerNickNames = TotalGameManager.Instance.playerNickNames;
                 _superPlayerNickName = TotalGameManager.Instance.host;
                 _myClientNickName = TotalGameManager.Instance.myNickName;
+                bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
-                NamePlayerPairs = new Dictionary<string, TestPlayer>();
+                NamePlayerPairs = new Dictionary<string, LJH.Player>();
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
-                    bool isSuperPlayer = false;
-                    if (_playerNickNames[i] == _superPlayerNickName)
-                    {
-                        isSuperPlayer = true;
-                    }
-
-
-                    GameObject tGO = Instantiate(_playerPrefab);
-                    TestPlayer tplayer = tGO.GetComponent<TestPlayer>();
-
-                    tplayer.PlayerNickName = _playerNickNames[i];
-                    tplayer.MyClientNickName = _myClientNickName;
+                    LJH.Player player = Instantiate(_playerPrefab).GetComponent<LJH.Player>();
+                    player.SetUserName(_playerNickNames[i]);
 
                     if (isSuperPlayer == true)
                     {
@@ -127,9 +117,9 @@ namespace JES
 
                     // tPlayer.SetAnimalType(Etype (int)i)
 
-                    tGO.transform.position = _playerPositions[i].position;
+                    player.transform.position = _playerPositions[i].position;
 
-                    NamePlayerPairs.Add(_playerNickNames[i], tplayer);
+                    NamePlayerPairs.Add(_playerNickNames[i], player);
                 }
             }
 

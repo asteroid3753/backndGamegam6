@@ -5,7 +5,6 @@ using UnityEngine;
 namespace LJH{
     public class Player : MonoBehaviour
     {
-        [SerializeField] int userID;
         [SerializeField] string userName;
         [SerializeField] Vector2 target;
         [SerializeField] float userSpeed = 2.0f;
@@ -15,22 +14,9 @@ namespace LJH{
         [SerializeField] public string NickName;
         [SerializeField] public string SetNickName => nickName;
 
-        //test
-        [SerializeField] GrowingItem havingItem;
+        [SerializeField] GrowingItem havingItem; //가지고 있는 아이템
+        [SerializeField] GrowingItem nowItem; //충돌아이템
 
-        [SerializeField] GrowingItem nowItem;
-
-        //init
-        public Player(int _id, string _name, float _speed){
-            userID = _id;
-            userName = _name;
-            userSpeed = _speed;
-        }
-
-        //getter
-        public int GetUserID(){
-            return userID;
-        }
         public string GetUserName(){
             return userName;
         }
@@ -53,9 +39,6 @@ namespace LJH{
 
 
         //setter
-        public void SetUserID(int _id){
-            userID = _id;
-        }
         public void SetUserName(string _name){
             userName = _name;
         }
