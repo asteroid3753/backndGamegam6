@@ -9,7 +9,20 @@ namespace LJH{
     {
         [SerializeField] int itemCode;
         [SerializeField] Sprite itemImg;
-        [SerializeField] Define.ItemType type;
+        private int growPoint;
+
+        private Define.ItemType type;
+
+        public Define.ItemType Type
+        {
+            get { return type; }
+            set
+            {
+                type = value;
+                SetItemType(type);
+            }
+        }
+
 
         public int GetItemCode(){
             return itemCode;
@@ -28,8 +41,24 @@ namespace LJH{
         public void SetItemImg(Sprite _itemImg){
             itemImg = _itemImg;
         }
-        public void SetItemType(Define.ItemType _type){
-            type = _type;
+
+        private void SetItemType(Define.ItemType itemType)
+        {
+            switch (itemType)
+            {
+                case Define.ItemType.can:
+                    //itemImg = "";
+                    growPoint = 10;
+                    break;
+                case Define.ItemType.apple:
+                    //itemImg = "";
+                    growPoint = 20;
+                    break;
+                case Define.ItemType.backendIcon:
+                    //itemImg = "";
+                    growPoint = 30;
+                    break;
+            }
         }
 
     }
