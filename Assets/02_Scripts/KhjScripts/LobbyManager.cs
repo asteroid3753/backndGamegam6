@@ -40,12 +40,12 @@ namespace khj
             if (bro.IsSuccess())
             {
                 Debug.Log("·Î±×ÀÎ : " + bro);
-                GameManager.Instance.ChangeState(GameManager.GameState.MatchLobby);
+                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.MatchLobby);
             }
             else if (bro.GetStatusCode() == "401")
             {
                 SignUp();
-                GameManager.Instance.ChangeState(GameManager.GameState.MatchLobby);
+                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.MatchLobby);
             }
             else
             {

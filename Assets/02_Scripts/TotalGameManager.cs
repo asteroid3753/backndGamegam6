@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class TotalGameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static TotalGameManager Instance;
     private static bool isCreate = false;
 
     #region Scene
@@ -36,11 +36,11 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public string host;
     public Dictionary<string, Player> players;
 
-    public static GameManager GetInstance()
+    public static TotalGameManager GetInstance()
     {
         if (Instance == null)
         {
-            Debug.LogError("GameManager 인스턴스가 존재하지 않습니다.");
+            Debug.LogError("TotalGameManager 인스턴스가 존재하지 않습니다.");
             return null;
         }
         return Instance;
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
 
         OnGameReconnect();
         ChangeScene(INGAME);
-        ChangeState(GameManager.GameState.InGame);
+        ChangeState(TotalGameManager.GameState.InGame);
     }
 
     public GameState GetGameState()
