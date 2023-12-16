@@ -1,5 +1,6 @@
 using BackEnd.Tcp;
 using KSY.Protocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,8 @@ namespace KSY
 {
     public class ParsingManager
     {
-        public UnityEvent<SessionId, Vector2> PlayerMoveEvent;
-        public UnityEvent<SessionId, float> SimeSizeUpEvent;
+        public event Action<SessionId, Vector2> PlayerMoveEvent;
+        public event Action<SessionId, float> SlimeSizeUpEvent;
 
         public void Init()
         {
@@ -48,11 +49,11 @@ namespace KSY
 
             switch (msg.type)
             {
-                case Type.PlayerMove:
+                case MsgType.PlayerMove:
                     PlayerMoveMessage moveMsg = DataParser.ReadJsonData<PlayerMoveMessage>(args.BinaryUserData);
                     PlayerMoveMsgEvent(moveMsg);
                     break;
-                case Type.SlimeSizeUp:
+                case MsgType.SlimeSizeUp:
                     SlimeSizeUpMessage sizeUpMsg = DataParser.ReadJsonData<SlimeSizeUpMessage>(args.BinaryUserData);
                     SlimeSizeUpMsgEvent(sizeUpMsg);
                     break;
@@ -80,7 +81,7 @@ namespace KSY
 
         private void SlimeSizeUpMsgEvent(SlimeSizeUpMessage data)
         {
-            SimeSizeUpEvent?.Invoke(data.playerSession, data.addSize);
+            SlimeSizeUpEvent?.Invoke(data.playerSession, data.addSize);
         }
 
     } 

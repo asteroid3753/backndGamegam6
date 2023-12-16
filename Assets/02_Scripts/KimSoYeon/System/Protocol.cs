@@ -6,7 +6,7 @@ using UnityEngine;
 namespace KSY.Protocol
 {
     // 업데이트 할 때마다 ParsingManager switch문 업데이트도 같이 해줘야함
-    public enum Type
+    public enum MsgType
     {
         PlayerMove = 0, //플레이어 키 입력
         SlimeSizeUp
@@ -14,9 +14,9 @@ namespace KSY.Protocol
 
     public class Message
     {
-        public Type type;
+        public MsgType type;
 
-        public Message(Type type)
+        public Message(MsgType type)
         {
             this.type = type;
         }
@@ -28,7 +28,7 @@ namespace KSY.Protocol
         public float x;
         public float y;
 
-        public PlayerMoveMessage(SessionId sessionId, Vector2 pos) : base(Type.PlayerMove)
+        public PlayerMoveMessage(SessionId sessionId, Vector2 pos) : base(MsgType.PlayerMove)
         {
             playerSession = sessionId;
             this.x = pos.x;
@@ -41,7 +41,7 @@ namespace KSY.Protocol
         public SessionId playerSession;
         public float addSize;
 
-        public SlimeSizeUpMessage(SessionId sessionId, float addSize) : base(Type.SlimeSizeUp)
+        public SlimeSizeUpMessage(SessionId sessionId, float addSize) : base(MsgType.SlimeSizeUp)
         {
             playerSession = sessionId;
             this.addSize = addSize;

@@ -176,7 +176,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  preserveSceneList: []
+  preserveSceneList:
+  - TotalGameManagerScene
   _testLoading: 0
   _testUnLoading: 0
   _testStringArr: []
