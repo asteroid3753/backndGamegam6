@@ -120,7 +120,9 @@ namespace LJH
 
                 for (int i = 0; i < _playerNickNames.Length; i++)
                 {
-                    LJH.PlayerController player = Instantiate(_playerPrefab, _playerPositions[i].position, Quaternion.identity).GetComponent<LJH.PlayerController>();
+                    GameObject player = Instantiate(_playerPrefab);
+                    LJH.PlayerController playerController = player.GetComponent<LJH.PlayerController>();
+                    
                     //player.SetUserName(_playerNickNames[i]);
 
                     if (isSuperPlayer == true)
@@ -133,15 +135,15 @@ namespace LJH
                     }
 
                     // tPlayer.SetAnimalType(Etype (int)i)
-
-                    // player.transform.position = _playerPositions[i].position;
-                    NamePlayerPairs.Add(_playerNickNames[i], player);
+                    
+                    NamePlayerPairs.Add(_playerNickNames[i], playerController);
                     if (_playerNickNames[i] == _myClientNickName)
                     {
                         PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
                         BackEndManager.Instance.InGame.SendDataToInGame(msg);
                         player.gameObject.AddComponent<InputManager>();
                     }
+                    player.transform.position = _playerPositions[i].position;
                 }
             }
 
