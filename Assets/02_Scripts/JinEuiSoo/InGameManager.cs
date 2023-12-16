@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 namespace LJH
 {
-    public partial class InGameManager : MonoBehaviour
+    public class InGameManager : MonoBehaviour
     {
         [SerializeField]
         private GameObject itemPrefab;
@@ -94,13 +94,17 @@ namespace LJH
         {
             // Regest Event
             {
-                ItemEventAdd();
-
+                BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
+                BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
+
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
+
             }
 
+
             StartCoroutine(IEWaitAndStart());
+
         }
 
         IEnumerator IEWaitAndStart()
@@ -138,15 +142,19 @@ namespace LJH
 
                     // tPlayer.SetAnimalType(Etype (int)i)
                     if (_playerNickNames[i].ToString() == _myClientNickName){
-                        
+                        Debug.Log(_playerPositions[i].position);
                         player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                        player.gameObject.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
                         player.transform.position = _playerPositions[i].position;
-                        player.gameObject.AddComponent<InputManager>();
+                    }
+                    else{
+                        player.transform.position = _playerPositions[i].position;
+                        //player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
                     }
                     // if (_playerNickNames[i].ToString() == _myClientNickName)
                     // {
                         
-                    //     PlayerMoveMessag msg = new PlayerMoveMessage(player.transform.position);
+                    //     PlayerMoveMessage msg = new PlayerMoveMessage(player.transform.position);
                     //     BackEndManager.Instance.InGame.SendDataToInGame(msg);
                     // }
                     // player.transform.position = _playerPositions[i].position;
@@ -157,7 +165,12 @@ namespace LJH
 
             // Setting Items
             {
-                GameItemInit();
+                // �ڽ��� ȣ��Ʈ�� ��쿡 ������ ���� ����
+                if (TotalGameManager.Instance.isHost)
+                {
+                    itemCount = 0;
+                    StartCoroutine(CreateItem());
+                }
             }
 
             // ������ ���� ����
@@ -172,7 +185,19 @@ namespace LJH
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
-     
+        IEnumerator CreateItem()
+        {
+            while (true)
+            {
+                int itemType = Random.Range(0, 3);
+                UnityEngine.Vector2 spawnPos = JES.JESFunctions.CreateRandomInstance();
+
+                CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
+                itemCount++;
+                yield return new WaitForSeconds(itemSpawnSpan);
+            }
+        }
 
         int testCnt = 0;
         private void Update()
@@ -187,7 +212,15 @@ namespace LJH
             }
 
             #endregion
-            ItemUpdate();
+
+            // ������ ���� üũ
+            // // ������ ���� ����
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log($"{testCnt}�� �ƿ��� ����");
+                BackEndManager.Instance.InGame.SendDataToInGame(new GrabItemMessage(testCnt++));
+            }
+
 
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
@@ -256,10 +289,35 @@ namespace LJH
         } 
         #endregion
 
+        #region PasingEventFunc
 
+        private void Parsing_GrabItemEvent(string nickname, int itemCode)
+        {
+            //NamePlayerPairs[nickname].
+            if (InGameItemDic.ContainsKey(itemCode))
+            {
+                Destroy(InGameItemDic[itemCode].gameObject);
+                InGameItemDic.Remove(itemCode);
+            }
+        }
+
+        private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
+        {
+            if (InGameItemDic != null)
+            {
+                GameObject obj = Instantiate(itemPrefab);
+                obj.transform.position = arg3;
+                GrowingItem item = obj.GetComponent<GrowingItem>();
+                item.ItemCode = itemCode;
+                item.Type = (Define.ItemType)itemType;
+                InGameItemDic.Add(itemCode, item);
+            }       
+        } 
+        #endregion
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
+            Debug.Log(nickName+"/"+target);
             NamePlayerPairs[nickName].PlayerMoveRecvFunc(target);
         }
     } 
