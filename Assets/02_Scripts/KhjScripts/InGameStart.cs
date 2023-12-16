@@ -141,7 +141,11 @@ namespace khj
             };
 
             Backend.Match.JoinGameRoom(currentGameRoomInfo.m_inGameRoomToken);
+            Invoke("ChangeState", 3f);
+        }
 
+        void ChangeState()
+        {
             TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Start);
         }
     }
