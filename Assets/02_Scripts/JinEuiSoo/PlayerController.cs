@@ -13,7 +13,7 @@ namespace JES
     {
         [SerializeField] JES.TestPlayer player;
         
-        JES.InputManager inputManager;
+         //JES.InputManager inputManager;
 
         //item test
         //[SerializeField] GrowingItem nowItem;
