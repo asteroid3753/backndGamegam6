@@ -9,7 +9,7 @@ public class RecvTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // recv ÀÌº¥Æ® µî·Ï
+        // recv ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½
         BackEndManager.Instance.Parsing.PlayerMoveEvent += PlayerMoveRecvFunc;
     }
 
@@ -21,7 +21,7 @@ public class RecvTest : MonoBehaviour
 
     private void PlayerMoveRecvFunc(SessionId sessionId, Vector2 vec)
     {
-        // µé¾î¿À¸é 
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
         Debug.Log($"x : {vec.x}, y : {vec.y}");
     }
 }
