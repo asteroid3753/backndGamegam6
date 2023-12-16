@@ -33,6 +33,7 @@ namespace LJH{
         {
             PlayerMoveMessage msg = new PlayerMoveMessage(pos);
             BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            Debug.Log(pos);
         }
         void WaitAndStart()
         {
