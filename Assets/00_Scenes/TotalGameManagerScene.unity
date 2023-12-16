@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 588188898}
   - component: {fileID: 588188899}
+  - component: {fileID: 588188900}
   m_Layer: 0
   m_Name: TotalGameManager
   m_TagString: Untagged
@@ -182,6 +183,19 @@ MonoBehaviour:
   _testUnLoading: 0
   _testStringArr: []
   _isAllScenesLoaded: 0
+--- !u!114 &588188900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588188897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fa792a3351424aac88a95a84040b1f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  host: 
 --- !u!1 &950195681
 GameObject:
   m_ObjectHideFlags: 0

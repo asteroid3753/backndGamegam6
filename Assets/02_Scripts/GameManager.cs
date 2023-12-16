@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
-    private static GameManager instance;
+    public static GameManager Instance;
     private static bool isCreate = false;
 
     #region Scene
@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     private const string READY = "2. LoadRoom";
     private const string INGAME = "LeeJunHo";
     #endregion
-
 
     #region Actions-Events
     //public static event Action OnRobby = delegate { };
@@ -34,20 +33,23 @@ public class GameManager : MonoBehaviour
     private GameState gameState;
     #endregion
 
+    [HideInInspector] public string host;
+    public Dictionary<string, Player> players;
+
     public static GameManager GetInstance()
     {
-        if (instance == null)
+        if (Instance == null)
         {
             Debug.LogError("GameManager 인스턴스가 존재하지 않습니다.");
             return null;
         }
-        return instance;
+        return Instance;
     }
     void Awake()
     {
-        if (!instance)
+        if (!Instance)
         {
-            instance = this;
+            Instance = this;
         }
         // 60프레임 고정
         Application.targetFrameRate = 60;
