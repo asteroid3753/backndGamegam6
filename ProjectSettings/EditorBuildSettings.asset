@@ -21,6 +21,12 @@ EditorBuildSettings:
     path: Assets/00_Scenes/KwanHyoJeaon.unity
     guid: d70057a63260eef43a2aaa461d8841c3
   - enabled: 1
+    path: Assets/00_Scenes/JESTestGameScene.unity
+    guid: 554191b1831999e4a845ec9f8776f1f9
+  - enabled: 1
+    path: Assets/00_Scenes/Reconnect.unity
+    guid: 128306b9a3ae7f245b6325ca8ff22904
+  - enabled: 1
     path: Assets/00_Scenes/Game.unity
     guid: f1e5c9b493a206d498e53ecc3916085a
   - enabled: 1

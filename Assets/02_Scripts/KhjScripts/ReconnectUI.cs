@@ -1,18 +1,28 @@
+using BackEnd;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReconnectUI : MonoBehaviour
+namespace khj
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ReconnectUI : MonoBehaviour
     {
-        
-    }
+        public void Reconnect()
+        {
+            TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.MatchLobby);
+            MatchManager.Instance.Join();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void Logout()
+        {
+            var bro = Backend.BMember.Logout();
+            Destroy(MatchManager.Instance.gameObject);
+            TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Login);
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
     }
 }
