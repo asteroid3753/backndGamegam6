@@ -5,20 +5,18 @@ using UnityEngine;
 namespace LJH{
     public class Player : MonoBehaviour
     {
-        [SerializeField] string userName;
         [SerializeField] Vector2 target;
         [SerializeField] float userSpeed = 2.0f;
         [SerializeField] bool flipX = false;
 
-        [SerializeField] private string nickName;
         [SerializeField] public string NickName;
-        [SerializeField] public string SetNickName => nickName;
 
         [SerializeField] GrowingItem havingItem; //가지고 있는 아이템
         [SerializeField] GrowingItem nowItem; //충돌아이템
 
-        public string GetUserName(){
-            return userName;
+        public string GetUserName(string _name)
+        {
+            return NickName;
         }
         public Vector2 GetUserTarget(){
             return target;
@@ -40,7 +38,7 @@ namespace LJH{
 
         //setter
         public void SetUserName(string _name){
-            userName = _name;
+            NickName = _name;
         }
         public void SetUserTarget(Vector2 _target){
             target = _target;

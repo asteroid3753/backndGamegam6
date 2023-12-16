@@ -84,6 +84,12 @@ namespace JES
 
         void Start()
         {
+            // Regest Event
+            {
+                BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
+                BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
+            }
+
             StartCoroutine(IEWaitAndStart());
 
         }
@@ -91,13 +97,9 @@ namespace JES
         IEnumerator IEWaitAndStart()
         {
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(.5f);
 
-            // Regest Event
-            {
-                BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
-                BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
-            }
+
 
             // Setting Players
             {
