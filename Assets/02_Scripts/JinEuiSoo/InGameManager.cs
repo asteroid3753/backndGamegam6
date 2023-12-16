@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 namespace LJH
 {
-    public class InGameManager : MonoBehaviour
+    public partial class InGameManager : MonoBehaviour
     {
         [SerializeField]
         private GameObject itemPrefab;
@@ -94,8 +94,7 @@ namespace LJH
         {
             // Regest Event
             {
-                BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
-                BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
+                ItemEventAdd();
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
 
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
@@ -163,16 +162,7 @@ namespace LJH
                 }
             }
 
-            // Setting Items
-            {
-                // �ڽ��� ȣ��Ʈ�� ��쿡 ������ ���� ����
-                if (TotalGameManager.Instance.isHost)
-                {
-                    itemCount = 0;
-                    StartCoroutine(CreateItem());
-                }
-            }
-
+            GameItemInit();
             // ������ ���� ����
             // �������� �Ѹ���, �������� �����. �������� �����Ѵ�.
             // int �ε����� �ް�, �� �ش��ϴ� ���� �����.
@@ -185,19 +175,6 @@ namespace LJH
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
-        IEnumerator CreateItem()
-        {
-            while (true)
-            {
-                int itemType = Random.Range(0, 3);
-                UnityEngine.Vector2 spawnPos = JES.JESFunctions.CreateRandomInstance();
-
-                CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
-                BackEndManager.Instance.InGame.SendDataToInGame(msg);
-                itemCount++;
-                yield return new WaitForSeconds(itemSpawnSpan);
-            }
-        }
 
         int testCnt = 0;
         private void Update()
@@ -213,15 +190,7 @@ namespace LJH
 
             #endregion
 
-            // ������ ���� üũ
-            // // ������ ���� ����
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log($"{testCnt}�� �ƿ��� ����");
-                BackEndManager.Instance.InGame.SendDataToInGame(new GrabItemMessage(testCnt++));
-            }
-
-
+            ItemUpdate();
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
         }
@@ -263,9 +232,7 @@ namespace LJH
                 }
 
                 TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
-                
-
-
+         
 
             };
 
@@ -286,32 +253,6 @@ namespace LJH
             var matchResult = new MatchGameResult();
 
             Backend.Match.MatchEnd(matchResult);
-        } 
-        #endregion
-
-        #region PasingEventFunc
-
-        private void Parsing_GrabItemEvent(string nickname, int itemCode)
-        {
-            //NamePlayerPairs[nickname].
-            if (InGameItemDic.ContainsKey(itemCode))
-            {
-                Destroy(InGameItemDic[itemCode].gameObject);
-                InGameItemDic.Remove(itemCode);
-            }
-        }
-
-        private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
-        {
-            if (InGameItemDic != null)
-            {
-                GameObject obj = Instantiate(itemPrefab);
-                obj.transform.position = arg3;
-                GrowingItem item = obj.GetComponent<GrowingItem>();
-                item.ItemCode = itemCode;
-                item.Type = (Define.ItemType)itemType;
-                InGameItemDic.Add(itemCode, item);
-            }       
         } 
         #endregion
 
