@@ -34,14 +34,14 @@ namespace khj
         {
             // _inGameTest = GetComponent<InGameTest>();
 
-            Backend.Match.OnException = (Exception e) => { Debug.LogError(e.ToString()); };
+            //Backend.Match.OnException = (Exception e) => { Debug.LogError(e.ToString()); };
 
             Backend.Match.OnJoinMatchMakingServer = (JoinChannelEventArgs args) => {
                 if (args.ErrInfo == ErrorInfo.Success)
                 {
                     Debug.Log("1-2. OnJoinMatchMakingServer 성공");
+                    CreateMatchRoom();
                     GetMatchList();
-                    JoinRoom();
                 }
                 else
                 {
@@ -183,6 +183,8 @@ namespace khj
 
                     matchCardList.Add(matchCard);
                 }
+
+                RequestMatchMaking();
             });
         }
         public void RequestMatchMaking()
@@ -231,6 +233,7 @@ namespace khj
                 if (args.ErrInfo == ErrorCode.Success)
                 {
                     Debug.Log("2-2. OnMatchMakingRoomCreate 성공");
+                    Backend.Match.RequestMatchMaking(matchCardList[0].matchType, matchCardList[0].matchModeType, matchCardList[0].inDate);
                 }
                 else
                 {
@@ -240,19 +243,6 @@ namespace khj
 
             Debug.Log("2-1. CreateMatchRoom 요청");
             Backend.Match.CreateMatchRoom();
-        }
-
-        void JoinRoom()
-        {
-            if (matchCardList.Count > 0)
-            {
-                RequestMatchMaking();
-            }
-            else
-            {
-                CreateMatchRoom();
-            }
-            BackEndMatchManager.GetInstance().RequestMatchMaking(0);
         }
 
         void Update()
