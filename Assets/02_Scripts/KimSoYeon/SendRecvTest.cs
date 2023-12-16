@@ -26,7 +26,7 @@ namespace KSY
             while (true)
             {
                 count++;
-                PlayerMoveMessage msg = new PlayerMoveMessage(SessionId.Reserve, new Vector2(0, count));
+                PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(0, count));
 
                 // move 좌표 전송 (해당 플레이어(나 자신)의 SessionID, 계산 좌표값)
                 BackEndManager.Instance.InGame.SendDataToInGame(msg); 
