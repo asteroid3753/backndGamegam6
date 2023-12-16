@@ -124,6 +124,7 @@ namespace LJH
                     //player.SetUserName(_playerNickNames[i]);
                     if (_playerNickNames[i] == _myClientNickName)
                     {
+                        PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
                         player.gameObject.AddComponent<InputManager>();
                     }
 
@@ -138,7 +139,6 @@ namespace LJH
 
                     // tPlayer.SetAnimalType(Etype (int)i)
 
-                    PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
                     player.transform.position = _playerPositions[i].position;
                     player.PlayerMoveRecvFunc(_playerPositions[i].position);
                     NamePlayerPairs.Add(_playerNickNames[i], player);
