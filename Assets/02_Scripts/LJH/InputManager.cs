@@ -65,18 +65,11 @@ namespace LJH{
 
             PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
             
-            if(player.GetUserNowItem() != null && Input.GetKeyDown(KeyCode.Space)){
-                print("item" + player.GetUserNowItem().ItemCode);
-                
+            if(player.GetUserNowItem() != null && player.GetUserItem() == null && Input.GetKeyDown(KeyCode.Space)){
                 GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().ItemCode);
                 BackEndManager.Instance.InGame.SendDataToInGame(itemMsg); 
             }
-            if(player.GetUserNowItem() == null && Input.GetKeyDown(KeyCode.Space)){
-                print("item drop");
-                GrabItemMessage itemMsg = new GrabItemMessage(-1);
-                BackEndManager.Instance.InGame.SendDataToInGame(itemMsg); 
-            }
-            // move ��ǥ ���� (�ش� �÷��̾�(�� �ڽ�)�� SessionID, ��� ��ǥ��)
+
             BackEndManager.Instance.InGame.SendDataToInGame(msg); 
         }
 

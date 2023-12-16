@@ -15,12 +15,11 @@ namespace LJH
         private int itemTypeCount;
         private void ItemUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log($"{testCnt}�� �ƿ��� ����");
-                BackEndManager.Instance.InGame.SendDataToInGame(new GrabItemMessage(testCnt++));
-            }
-
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    GrabItemMessage msg = new GrabItemMessage(NamePlayerPairs[_myClientNickName].GetUserNowItem().ItemCode);
+            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            //}
         }
 
         private void ItemEventAdd()
@@ -65,7 +64,7 @@ namespace LJH
             //NamePlayerPairs[nickname].
             if (InGameItemDic.ContainsKey(itemCode))
             {
-                player.SetUserItem(player.GetUserNowItem());
+                NamePlayerPairs[nickname].SetUserItem(InGameItemDic[itemCode]);
 
                 Destroy(InGameItemDic[itemCode].gameObject);
                 InGameItemDic.Remove(itemCode);

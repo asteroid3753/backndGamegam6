@@ -35,7 +35,6 @@ namespace LJH{
             return nowItem;
         }
 
-
         //setter
         public void SetUserName(string _name){
             NickName = _name;
@@ -52,6 +51,8 @@ namespace LJH{
         //setter Test
         public void SetUserItem(GrowingItem _item){
             havingItem = _item;
+
+            this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = havingItem.ItemImg;
         }
         public void SetUserNowItem(GrowingItem _item){
             nowItem = _item;
