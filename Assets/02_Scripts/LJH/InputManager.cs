@@ -80,7 +80,7 @@ namespace LJH{
                 if (isSlime)
                 {
                     Debug.Log("������ ���̱� ����");
-                    if (player.GetUserItem() == 0)
+                    if (player.GetUserItem() != 0)
                     {
                         SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(player.GetUserItem());
                         BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
