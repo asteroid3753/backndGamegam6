@@ -13,10 +13,11 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using Cinemachine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 
 namespace LJH
 {
-    public partial class InGameManager : MonoBehaviour
+    public partial class InGameManager : SerializedMonoBehaviour
     {
         [SerializeField]
         private GameObject itemPrefab;
@@ -207,22 +208,31 @@ namespace LJH
             #region GameEndingConditionCheck
 
 
-            if (_isGameEnd == true)
-            {
-                DeclareMatchEnd();
-                _isGameEnd = false;
-            }
+
 
             #endregion
 
             ItemUpdate();
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
-            // Slime size check
-            if(slimeObj.transform.localScale.x >= slimeEndScale)
+            if (TotalGameManager.Instance.isHost || _isGameEnd == true)
             {
-                // Game End
+                if (slimeObj.transform.localScale.x >= slimeEndScale || _isGameEnd == true)
+                {
+                    // Game End
+                    TotalScoreMessage scoreMsg = new TotalScoreMessage(ScoreDic);
+                    BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);
+                    DeclareMatchEnd();
+
+                    _isGameEnd = false;
+                }
             }
+
+            if(Backend.Match.IsInGameServerConnect() == false)
+            {
+                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
+            }
+
         }
 
         private void OnDisable()
@@ -281,7 +291,7 @@ namespace LJH
             //Backend.Match.MatchEnd(matchGameResult);
 
             var matchResult = new MatchGameResult();
-
+           
             Backend.Match.MatchEnd(matchResult);
         } 
         #endregion
