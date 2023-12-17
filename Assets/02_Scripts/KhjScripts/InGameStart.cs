@@ -59,11 +59,9 @@ namespace khj
         }
         public void JoinGameServer(MatchInGameRoomInfo gameRoomInfo)
         {
-            Debug.Log("들어왔어요!!!!");
             Backend.Match.OnSessionJoinInServer = (JoinChannelEventArgs args) => {
                 if (args.ErrInfo == ErrorInfo.Success)
                 {
-                    Debug.Log("4-2. OnSessionJoinInServer ���� ���� ���� ���� : " + args.ToString());
                     JoinGameRoom();
                 }
                 else
@@ -74,8 +72,6 @@ namespace khj
                 // ���� ������ ���������� ���������� ��Ī ������ ����
                 LeaveMatchMaking();
             };
-
-            Debug.Log("4-1. JoinGameServer �ΰ��� ���� ���� ��û");
 
             currentGameRoomInfo = gameRoomInfo;
             ErrorInfo errorInfo = null;
@@ -91,8 +87,6 @@ namespace khj
             Backend.Match.OnSessionListInServer = (MatchInGameSessionListEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Success)
                 {
-                    Debug.Log("5-2. OnSessionListInServer ���ӷ� ���� ���� : " + args.ToString());
-
                     foreach (var list in args.GameRecords)
                     {
                         if (inGameUserList.ContainsKey(list.m_nickname))

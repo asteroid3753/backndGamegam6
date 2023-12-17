@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LJH{
@@ -11,7 +12,7 @@ namespace LJH{
 
         [SerializeField] public string NickName;
 
-        [SerializeField] bool havingItem; //������ �ִ� ������
+        [SerializeField] int havingItem; //������ �ִ� ������
         [SerializeField] GrowingItem nowItem; //�浹������
 
         SpriteRenderer sprite;
@@ -30,7 +31,7 @@ namespace LJH{
             return flipX;
         }
         //getter Test
-        public bool GetUserItem(){
+        public int GetUserItem(){
             return havingItem;
         }
         public GrowingItem GetUserNowItem(){
@@ -54,12 +55,12 @@ namespace LJH{
         public void SetUserItem(GrowingItem _item){
             if (_item == null)
             {
-                havingItem = false;
+                havingItem = -1;
                 sprite = null;
             }
             else
             {
-                havingItem = true;
+                havingItem = InGameManager.Instance.InGameItemDic.FirstOrDefault(item => item.Value == _item).Key;
                 sprite.sprite = _item.ItemImg;
             }
         }
