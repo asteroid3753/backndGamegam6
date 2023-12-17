@@ -5,6 +5,8 @@ using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
 using Sirenix.OdinInspector;
+using BackEnd;
+using khj;
 
 namespace JES
 {
@@ -74,6 +76,9 @@ namespace JES
 
         public void BackToLogin()
         {
+            var bro = Backend.BMember.Logout();
+            Destroy(MatchManager.Instance.gameObject);
+            TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Login);
             GameSceneLoadManager.Instance.UnLoadAllScenes();
             GameSceneLoadManager.Instance.LoadSceneAsync("Login");
         }

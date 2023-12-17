@@ -6,17 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/BackEndTestMatch/Scenes/1. MatchLobby.unity
-    guid: 2d1769497a4024cefbd9ae35bffbebb4
-  - enabled: 1
-    path: Assets/BackEndTestMatch/Scenes/2. LoadRoom.unity
-    guid: a993a8a193e284f399369874ca6ef979
-  - enabled: 1
-    path: Assets/BackEndTestMatch/Scenes/3. InGame.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/BackEndTestMatch/Scenes/0. Login.unity
-    guid: 36f035f51ede145c98f9ec6aecdeb294
+    path: Assets/00_Scenes/TotalGameManagerScene.unity
+    guid: d378f346c34fdd849a188045c7b142d2
   - enabled: 1
     path: Assets/00_Scenes/KwanHyoJeaon.unity
     guid: d70057a63260eef43a2aaa461d8841c3

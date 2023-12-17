@@ -228,11 +228,6 @@ namespace LJH
                 }
             }
 
-            if(Backend.Match.IsInGameServerConnect() == false)
-            {
-                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
-            }
-
         }
 
         private void OnDisable()

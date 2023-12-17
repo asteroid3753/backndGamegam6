@@ -45,8 +45,7 @@ namespace KSY
 
                 DontDestroyOnLoad(managerObj);
                 instance = managerObj.GetComponent<BackEndManager>();
-
-                instance.inGame.Init();
+ 
                 instance.parsing.Init();
             }
         }

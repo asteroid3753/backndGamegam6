@@ -2,13 +2,14 @@ using BackEnd;
 using BackEnd.Tcp;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace KSY
 {
     public class BackEndInGame
     {
-        public void Init()
+        async public void Init()
         {
             // 중복 호출 방지
             Backend.Match.OnMatchRelay -= ReceiveEvent;

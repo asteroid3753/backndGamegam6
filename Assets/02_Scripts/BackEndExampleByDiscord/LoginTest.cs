@@ -7,12 +7,14 @@ using BackEnd.Tcp;
 using LitJson;
 using System;
 using UnityEngine.UI;
+using KSY;
 
 public class Logintest : MonoBehaviour {
     [SerializeField] private InputField _inputField;
     void Start() {
         var bro = Backend.Initialize();
         Debug.Log("초기화 결과 : " + bro);
+        BackEndManager.Instance.InGame.Init();
     }
 
     public void SignUp() {
