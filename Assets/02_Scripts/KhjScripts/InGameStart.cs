@@ -38,7 +38,7 @@ namespace khj
                 }
             };
             Backend.Match.OnMatchInGameStart = () => {
-                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToArray();
+                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToList<string>();
                 foreach (var list in inGameUserList)
                 {
                     if (list.Value.m_isSuperGamer == true)
