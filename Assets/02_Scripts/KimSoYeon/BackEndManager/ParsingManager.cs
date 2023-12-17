@@ -17,6 +17,7 @@ namespace KSY
         public event Action<string, float> SlimeSizeUpEvent;
         public event Action<string, int> GrabItemEvent;
         public event Action<int, int, Vector2> CreateItemEvent;
+        public event Action<Dictionary<string, float>> TotalScoreEvent;
 
         public void Init()
         {
@@ -39,14 +40,11 @@ namespace KSY
                 return;
             }
 
-            //args.From.NickName
-
-            // TODO : Player ���� �迭 �ʿ�, ���� �÷��̾�� �� �÷��̾� �� ������ �ʿ�
-            //if (players == null)
-            //{
-            //    Debug.LogError("Players ������ �������� �ʽ��ϴ�.");
-            //    return;
-            //}
+            if (InGameManager.Instance.NamePlayerPairs == null)
+            {
+                Debug.LogError("Players ������ �������� �ʽ��ϴ�.");
+                return;
+            }
 
             switch (msg.type)
             {
@@ -65,6 +63,10 @@ namespace KSY
                 case MsgType.CreateItem:
                     CreateItemMessage createItemMsg = DataParser.ReadJsonData<CreateItemMessage>(args.BinaryUserData);
                     CreateItemMsgEvent(createItemMsg);
+                    break;
+                case MsgType.TotalScore:
+                    TotalScoreMessage scoreMsg = DataParser.ReadJsonData<TotalScoreMessage>(args.BinaryUserData);
+                    TotalScoreMsgEvent(scoreMsg);
                     break;
             }
         }
@@ -93,6 +95,11 @@ namespace KSY
         private void CreateItemMsgEvent(CreateItemMessage data)
         {
             CreateItemEvent?.Invoke(data.itemType, data.itemCode, new Vector2(data.x, data.y));
+        }
+
+        private void TotalScoreMsgEvent(TotalScoreMessage data)
+        {
+            TotalScoreEvent?.Invoke(data.scoreDic);
         }
     } 
 }

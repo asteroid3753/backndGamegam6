@@ -12,7 +12,8 @@ namespace KSY.Protocol
         SlimeSizeUp, // 슬라임 크기 
         GrabItem, // 아이템 획득
         CreateItem, // 아이템 생성
-        CreateBg // 배경 생성
+        CreateBg, // 배경 생성
+        TotalScore // 최종 점수
     }
 
     public class Message
@@ -83,6 +84,16 @@ namespace KSY.Protocol
         {
             this.x = pos.x;
             this.y = pos.y;
+        }
+    }
+
+    public class TotalScoreMessage : Message
+    {
+        public Dictionary<string, float> scoreDic;
+
+        public TotalScoreMessage(Dictionary<string, float> scoreDic) : base(MsgType.TotalScore)
+        {
+            this.scoreDic = scoreDic;
         }
     }
 }
