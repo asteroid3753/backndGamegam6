@@ -14,7 +14,6 @@ public class Logintest : MonoBehaviour {
     void Start() {
         var bro = Backend.Initialize();
         Debug.Log("초기화 결과 : " + bro);
-        BackEndManager.Instance.InGame.Init();
     }
 
     public void SignUp() {

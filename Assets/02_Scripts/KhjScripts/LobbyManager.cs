@@ -26,7 +26,6 @@ namespace khj
         {
             var bro = Backend.Initialize();
             BackEndManager.Instance.InGame.Init();
-
         }
 
         public void TouchToStart()
