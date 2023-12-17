@@ -95,11 +95,11 @@ namespace MorningBird.SceneManagement
             // LoadScene
             if (sceneList.Count == 1)
             {
-                GameSceneLoadManager.Instant.LoadSceneAsync(sceneList[0]);
+                GameSceneLoadManager.Instance.LoadSceneAsync(sceneList[0]);
             }
             else
             {
-                GameSceneLoadManager.Instant.LoadSceneAsync(sceneList.ToArray());
+                GameSceneLoadManager.Instance.LoadSceneAsync(sceneList.ToArray());
             }
         }
 

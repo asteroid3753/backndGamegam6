@@ -28,7 +28,6 @@ namespace khj
 
         public void TouchToStart()
         {
-            titlePanel.SetActive(false);
             loginPanel.SetActive(true);
         }
 
@@ -40,17 +39,20 @@ namespace khj
             if (bro.IsSuccess())
             {
                 Debug.Log("로그인 : " + bro);
-                StartMatch();
             }
             else if (bro.GetStatusCode() == "401")
             {
                 SignUp();
-                StartMatch();
+                var broTwo = Backend.BMember.CustomLogin(nickName, nickName);
+
+                Debug.Log("로그인 : " + broTwo);
             }
             else
             {
                 Debug.LogError("로그인 : " + bro);
             }
+
+            StartMatch();
         }
 
         void StartMatch()
@@ -73,6 +75,7 @@ namespace khj
             {
                 Debug.LogError("닉네임 변경 : " + bro);
             }
+
         }
     }
 }

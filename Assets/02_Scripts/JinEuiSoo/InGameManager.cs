@@ -9,28 +9,34 @@ using MorningBird.Sound;
 using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
+using UnityEngine.SceneManagement;
+using System.Linq;
+using Cinemachine;
 
 namespace LJH
 {
-    public class InGameManager : MonoBehaviour
+    public partial class InGameManager : MonoBehaviour
     {
         [SerializeField]
         private GameObject itemPrefab;
         [SerializeField]
         private float itemSpawnSpan = 1f;
 
-        [SerializeField] GameObject _playerPrefab;
+        [SerializeField] bool _isGameEnd = false;
+
+        [SerializeField] GameObject cameraPrefab;
+        [SerializeField] GameObject[] _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
         [SerializeField] GameObject[] _growingItemPrefabs;
         // [SerializeField] List<GroawingItems>() = new List<GroawingItems>();
-        [SerializeField] string[] _playerNickNames;
+        [SerializeField] List<string> _playerNickNames;
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
 
-        public Dictionary<string, LJH.PlayerController> NamePlayerPairs;
+        public Dictionary<string, LJH.Player> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
-
+        
         int itemCount = 0;
 
         BoxCollider2D slimeArea;
@@ -91,9 +97,11 @@ namespace LJH
         {
             // Regest Event
             {
-                BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
-                BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
+                ItemEventAdd();
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
+
+                Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
+
             }
 
 
@@ -110,18 +118,21 @@ namespace LJH
 
             // Setting Players
             {
-                _playerNickNames = TotalGameManager.Instance.playerNickNames;
+                _playerNickNames = TotalGameManager.Instance.playerNickNames.ToList<string>();
+                _playerNickNames.Sort();
                 _superPlayerNickName = TotalGameManager.Instance.host;
                 _myClientNickName = TotalGameManager.Instance.myNickName;
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
-                NamePlayerPairs = new Dictionary<string, LJH.PlayerController>();
+                NamePlayerPairs = new Dictionary<string, LJH.Player>();
                 InGameItemDic = new Dictionary<int, GrowingItem>();
 
-                for (int i = 0; i < _playerNickNames.Length; i++)
+                for (int i = 0; i < _playerNickNames.Count; i++)
                 {
-                    LJH.PlayerController player = Instantiate(_playerPrefab).GetComponent<LJH.PlayerController>();
-                    //player.SetUserName(_playerNickNames[i]);
+                    GameObject pgo = Instantiate(_playerPrefab[i]);//, _playerPositions[i].position, Quaternion.identity);
+                    LJH.Player player = pgo.GetComponent<LJH.Player>();
+                    NamePlayerPairs.Add(_playerNickNames[i], player);
+                    player.SetUserName(_playerNickNames[i]);
 
                     if (isSuperPlayer == true)
                     {
@@ -132,29 +143,32 @@ namespace LJH
                         //tPlayer.SetSuperPlayer(false);
                     }
 
-                    // tPlayer.SetAnimalType(Etype (int)i)
-
-                    player.transform.position = _playerPositions[i].position;
-                    NamePlayerPairs.Add(_playerNickNames[i], player);
-                    if (_playerNickNames[i] == _myClientNickName)
-                    {
-                        PlayerMoveMessage msg = new PlayerMoveMessage(_playerPositions[i].position);
-                        BackEndManager.Instance.InGame.SendDataToInGame(msg);
-                        player.gameObject.AddComponent<InputManager>();
+                    if (_playerNickNames[i].ToString() == _myClientNickName){
+                        Debug.Log(_playerPositions[i].position);
+                        player.SetUserTarget(_playerPositions[i].position);
+                        pgo.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
+                        CinemachineVirtualCamera cam = Instantiate(cameraPrefab, pgo.transform).GetComponent<CinemachineVirtualCamera>() ;
+                        cam.Follow = pgo.transform;
+                        cam.LookAt = pgo.transform;
+                        pgo.transform.position = _playerPositions[i].position;
                     }
+                    else{
+                        pgo.transform.position = _playerPositions[i].position;
+                        //player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                    }
+                    // if (_playerNickNames[i].ToString() == _myClientNickName)
+                    // {
+                        
+                    //     PlayerMoveMessage msg = new PlayerMoveMessage(player.transform.position);
+                    //     BackEndManager.Instance.InGame.SendDataToInGame(msg);
+                    // }
+                    // player.transform.position = _playerPositions[i].position;
+                    // player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
+                    
                 }
             }
 
-            // Setting Items
-            {
-                // �ڽ��� ȣ��Ʈ�� ��쿡 ������ ���� ����
-                if (TotalGameManager.Instance.isHost)
-                {
-                    itemCount = 0;
-                    StartCoroutine(CreateItem());
-                }
-            }
-
+            GameItemInit();
             // ������ ���� ����
             // �������� �Ѹ���, �������� �����. �������� �����Ѵ�.
             // int �ε����� �ް�, �� �ش��ϴ� ���� �����.
@@ -167,62 +181,91 @@ namespace LJH
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
-        IEnumerator CreateItem()
-        {
-            while (true)
-            {
-                int itemType = Random.Range(0, 3);
-                UnityEngine.Vector2 spawnPos = JES.JESFunctions.CreateRandomInstance();
-
-                CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnPos);
-                BackEndManager.Instance.InGame.SendDataToInGame(msg);
-                itemCount++;
-                yield return new WaitForSeconds(itemSpawnSpan);
-            }
-        }
 
         int testCnt = 0;
         private void Update()
         {
-            // ������ ���� üũ
-            // // ������ ���� ����
-            if (Input.GetKeyDown(KeyCode.Space))
+            #region GameEndingConditionCheck
+
+
+            if (_isGameEnd == true)
             {
-                Debug.Log($"{testCnt}�� �ƿ��� ����");
-                BackEndManager.Instance.InGame.SendDataToInGame(new GrabItemMessage(testCnt++));
+                DeclareMatchEnd();
+                _isGameEnd = false;
             }
+
+            #endregion
+
+            ItemUpdate();
+            // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
         }
 
-        #region PasingEventFunc
-
-        private void Parsing_GrabItemEvent(string nickname, int itemCode)
+        private void OnDisable()
         {
-            //NamePlayerPairs[nickname].
-            if (InGameItemDic.ContainsKey(itemCode))
+            UnSubscribeOnLeaveInGameServerEvent();
+        }
+
+        #region EndingMatch
+        void OnLeaveInGameServerEvent(MatchInGameSessionEventArgs args)
+        {
+            if (args.ErrInfo == ErrorCode.Success)
             {
-                Destroy(InGameItemDic[itemCode].gameObject);
-                InGameItemDic.Remove(itemCode);
+                Debug.Log("OnLeaveInGameServer 인게임 서버 접속 종료 : " + args.ErrInfo.ToString());
+            }
+            else
+            {
+                Debug.LogError("OnLeaveInGameServer 인게임 서버 접속 종료 : " + args.ErrInfo + " / " + args.Reason);
             }
         }
 
-        private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
+        void UnSubscribeOnLeaveInGameServerEvent()
         {
-            if (InGameItemDic != null)
+            Backend.Match.OnLeaveInGameServer -= OnLeaveInGameServerEvent;
+        }
+
+        void DeclareMatchEnd()
+        {
+            Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
             {
-                GameObject obj = Instantiate(itemPrefab);
-                obj.transform.position = arg3;
-                GrowingItem item = obj.GetComponent<GrowingItem>();
-                item.ItemCode = itemCode;
-                item.Type = (Define.ItemType)itemType;
-                InGameItemDic.Add(itemCode, item);
-            }       
+                if (args.ErrInfo == ErrorCode.Success)
+                {
+                    Debug.Log("8-2. OnMatchResult 성공 : " + args.ErrInfo.ToString());
+                }
+                else
+                {
+                    Debug.LogError("8-2. OnMatchResult 실패 : " + args.ErrInfo.ToString());
+                }
+
+                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
+         
+
+            };
+
+            Debug.Log("8-1. MatchEnd 호출");
+
+            //MatchGameResult matchGameResult = new MatchGameResult();
+            //matchGameResult.m_winners = new List<SessionId>();
+            //matchGameResult.m_losers = new List<SessionId>();
+
+            //foreach (var session in inGameUserList)
+            //{
+            //    // 순서는 무관합니다.
+            //    matchGameResult.m_winners.Add(session.Value.m_sessionId);
+            //}
+
+            //Backend.Match.MatchEnd(matchGameResult);
+
+            var matchResult = new MatchGameResult();
+
+            Backend.Match.MatchEnd(matchResult);
         } 
         #endregion
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
-            NamePlayerPairs[nickName].PlayerMoveRecvFunc(target);
+            Debug.Log(nickName+"/"+target);
+            NamePlayerPairs[nickName].SetUserTarget(target);
         }
     } 
 }

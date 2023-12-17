@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00_Scenes/JESTestGameScene.unity
     guid: 554191b1831999e4a845ec9f8776f1f9
+  - enabled: 1
+    path: Assets/00_Scenes/Result.unity
+    guid: d5789a64ba567fe46b167d13aeb81129
   m_configObjects: {}

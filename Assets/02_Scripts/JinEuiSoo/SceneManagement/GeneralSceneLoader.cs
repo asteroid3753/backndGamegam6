@@ -39,7 +39,7 @@ namespace MorningBird.SceneManagement
             if (sceneNames[0].Length < 3)
                 return;
 
-            GameSceneLoadManager.Instant.LoadSceneAsync(sceneNames);
+            GameSceneLoadManager.Instance.LoadSceneAsync(sceneNames);
         }
 
         IEnumerator WaintOneFrameAndLoad()
@@ -48,10 +48,10 @@ namespace MorningBird.SceneManagement
             yield return new WaitForEndOfFrame();
             if(_requestUnloadAllScenes == true)
             {
-                GameSceneLoadManager.Instant.UnLoadAllScenes();
+                GameSceneLoadManager.Instance.UnLoadAllScenes();
             }
 
-            GameSceneLoadManager.Instant.LoadSceneAsync(sceneNames);
+            GameSceneLoadManager.Instance.LoadSceneAsync(sceneNames);
 
             Destroy(this.gameObject);
         }

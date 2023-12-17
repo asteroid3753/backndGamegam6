@@ -13,7 +13,8 @@ namespace khj
     public class MatchManager : MonoBehaviour
     {
         public static MatchManager Instance;
-        InGameStart ingame;
+
+        [SerializeField] InGameStart ingame;
         List<MatchCard> matchCardList = new List<MatchCard>();
         public int index = 1;
         
@@ -24,11 +25,15 @@ namespace khj
                 Destroy(gameObject);
             }
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
-        void Start()
+        public void Start()
         {
             ingame = GetComponent<InGameStart>();
+
+        }
+
+        public void Initialize()
+        {
             JoinMatchMakingServer();
         }
 
@@ -202,8 +207,13 @@ namespace khj
                 }
                 else if (args.ErrInfo == ErrorCode.Success)
                 {
-                    Debug.Log("3-3. OnMatchMakingResponse ��Ī ���� �Ϸ�");
+                    Debug.Log("3-3. OnMatchMakingResponse 매칭 성사 완료");
 
+                    if(ingame == null)
+                    {
+                        Debug.Log("비어있어요!~");
+                        ingame = GetComponent<InGameStart>();
+                    }
                     ingame.JoinGameServer(args.RoomInfo);
                 }
                 else

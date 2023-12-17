@@ -47,17 +47,33 @@ namespace LJH{
         {
             switch (itemType)
             {
-                case Define.ItemType.can:
-                    ItemImg = Resources.Load<Sprite>("Item6");
-                    growPoint = 10;
+                case Define.ItemType.backendIcon1:
+                    ItemImg = Resources.Load<Sprite>("Item0");
+                    growPoint = 20;
                     break;
-                case Define.ItemType.apple:
+                case Define.ItemType.backendIcon2:
                     ItemImg = Resources.Load<Sprite>("Item1");
                     growPoint = 20;
                     break;
-                case Define.ItemType.backendIcon:
+                case Define.ItemType.backendIcon3:
                     ItemImg = Resources.Load<Sprite>("Item2");
-                    growPoint = 30;
+                    growPoint = 20;
+                    break;
+                case Define.ItemType.backendIcon4:
+                    ItemImg = Resources.Load<Sprite>("Item3");
+                    growPoint = 20;
+                    break;
+                case Define.ItemType.fan:
+                    ItemImg = Resources.Load<Sprite>("Item4");
+                    growPoint = 100;
+                    break;
+                case Define.ItemType.washingMachine:
+                    ItemImg = Resources.Load<Sprite>("Item5");
+                    growPoint = 100;
+                    break;
+                case Define.ItemType.hotSix:
+                    ItemImg = Resources.Load<Sprite>("Item6");
+                    growPoint = 300;
                     break;
             }
         }

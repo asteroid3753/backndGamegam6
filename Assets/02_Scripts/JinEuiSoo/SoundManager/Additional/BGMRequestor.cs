@@ -76,7 +76,7 @@ namespace MorningBird.Sound
                 _currentSongNumber = 0;
             }
 
-            SoundManager.Instance.RequestPlayBGM(_BGMs[_currentSongNumber], isLoop:false);
+            SoundManager.Instance.RequestPlayBGM(_BGMs[_currentSongNumber], isLoop:true);
             _waitTimeForNextBGM = _BGMs[_currentSongNumber].audioClip.length;
             _isSongEnded = false;
 
@@ -91,7 +91,7 @@ namespace MorningBird.Sound
             _waitTimeForNextBGM = _waitTimeBeforeFirstStart + 2f;
             _isSongEnded = false;
             yield return new WaitForSeconds(_waitTimeBeforeFirstStart);
-            SoundManager.Instance.RequestPlayBGM(_BGMs[0], _BGMPlayFirstStartTime, isLoop: false);
+            SoundManager.Instance.RequestPlayBGM(_BGMs[0], _BGMPlayFirstStartTime, isLoop: true);
             _waitTimeForNextBGM = _BGMs[0].audioClip.length;
 
             if (_titleSong != null)
