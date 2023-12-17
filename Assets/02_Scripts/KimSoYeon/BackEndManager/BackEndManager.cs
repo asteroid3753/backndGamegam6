@@ -54,6 +54,7 @@ namespace KSY
         {
             if (Backend.IsInitialized)
             {
+                Debug.Log("Poll");
                 // 처리된 이벤트 갯수 return
                 // BackEND 송수신 이벤트를 위해 꼭 주기적으로 호출해야함 (실질적 송수신)
                 Backend.Match.Poll();

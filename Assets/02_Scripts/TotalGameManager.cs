@@ -241,6 +241,4 @@ public class TotalGameManager : MonoBehaviour
     {
         ShowingResultCommunicator.Instance.NickNameSlimeSizeRatioPair = scoreDic;
     }
-
-
 }

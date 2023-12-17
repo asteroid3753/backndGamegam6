@@ -5,6 +5,7 @@ using BackEnd;
 using BackEnd.Game;
 using UnityEngine.UI;
 using TMPro;
+using KSY;
 
 namespace khj
 {
@@ -24,6 +25,8 @@ namespace khj
         private void Start()
         {
             var bro = Backend.Initialize();
+            BackEndManager.Instance.InGame.Init();
+
         }
 
         public void TouchToStart()
