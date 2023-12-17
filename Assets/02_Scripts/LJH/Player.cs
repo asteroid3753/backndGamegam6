@@ -11,8 +11,10 @@ namespace LJH{
 
         [SerializeField] public string NickName;
 
-        [SerializeField] GrowingItem havingItem; //������ �ִ� ������
+        [SerializeField] bool havingItem; //������ �ִ� ������
         [SerializeField] GrowingItem nowItem; //�浹������
+
+        SpriteRenderer sprite;
 
         public string GetUserName()
         {
@@ -28,7 +30,7 @@ namespace LJH{
             return flipX;
         }
         //getter Test
-        public GrowingItem GetUserItem(){
+        public bool GetUserItem(){
             return havingItem;
         }
         public GrowingItem GetUserNowItem(){
@@ -50,9 +52,16 @@ namespace LJH{
         }
         //setter Test
         public void SetUserItem(GrowingItem _item){
-            havingItem = _item;
-
-            this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = havingItem.ItemImg;
+            if (_item == null)
+            {
+                havingItem = false;
+                sprite = null;
+            }
+            else
+            {
+                havingItem = true;
+                sprite.sprite = _item.ItemImg;
+            }
         }
         public void SetUserNowItem(GrowingItem _item){
             nowItem = _item;
@@ -70,6 +79,11 @@ namespace LJH{
             float y = Mathf.Lerp(this.transform.position.y, target.y,0.1f);
             
             this.transform.position = new Vector3(x,y,transform.position.z);
+        }
+
+        private void Start()
+        {
+            sprite = gameObject.transform.Find("Item").GetComponent<SpriteRenderer>();
         }
     }
 }

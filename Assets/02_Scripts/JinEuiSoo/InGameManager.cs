@@ -118,8 +118,7 @@ namespace LJH
 
             // Setting Players
             {
-                _playerNickNames = TotalGameManager.Instance.playerNickNames.ToList<string>();
-                _playerNickNames.Sort();
+                _playerNickNames = TotalGameManager.Instance.playerNickNames;
                 _superPlayerNickName = TotalGameManager.Instance.host;
                 _myClientNickName = TotalGameManager.Instance.myNickName;
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
@@ -264,7 +263,6 @@ namespace LJH
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
-            Debug.Log(nickName+"/"+target);
             NamePlayerPairs[nickName].SetUserTarget(target);
         }
     } 

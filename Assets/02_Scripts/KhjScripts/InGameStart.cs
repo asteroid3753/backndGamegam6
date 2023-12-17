@@ -135,7 +135,8 @@ namespace khj
                         userListString += "���۰��̸�";
                     }
                 }
-                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToArray();
+                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToList<string>();
+                TotalGameManager.Instance.playerNickNames.Sort();
 
                 Debug.Log("6-1. OnMatchInGameStart �ΰ��� ����");
                 Debug.Log(userListString);
