@@ -25,7 +25,6 @@ namespace KSY
                 SlimeSizeUpMessage msg = new SlimeSizeUpMessage(Random.Range(0.1f, 1f));
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
             }
-
         }
 
         private void Parsing_SlimeSizeUpEvent(string nickname, float addSize)
