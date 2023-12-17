@@ -124,7 +124,7 @@ namespace khj
                 {
                     if (list.Value.m_isSuperGamer == true)
                     {
-                        TotalGameManager.Instance.isHost = true;
+                        TotalGameManager.Instance.isHost = (list.Value.m_nickname == TotalGameManager.Instance.myNickName);
                         TotalGameManager.Instance.host = list.Value.m_nickname;
                         userListString += "���۰��̸�";
                     }

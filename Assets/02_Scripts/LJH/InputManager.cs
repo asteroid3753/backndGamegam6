@@ -79,7 +79,6 @@ namespace LJH{
 
                 if (isSlime)
                 {
-                    Debug.Log("������ ���̱� ����");
                     if (player.GetUserItem() != 0)
                     {
                         SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(player.GetUserItem());
@@ -87,12 +86,12 @@ namespace LJH{
                     }
                     else
                     {
-                        Debug.Log("������ ���� ����");
+                        Debug.Log("슬라임 먹이 없음");
                     }
                 }
                 else if (player.GetUserNowItem() != null && player.GetUserItem() == 0)
                 {
-                    Debug.Log("������");
+                    Debug.Log("습득:"+player.GetUserNowItem().ItemCode);
                     GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().ItemCode);
                     BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
                 }

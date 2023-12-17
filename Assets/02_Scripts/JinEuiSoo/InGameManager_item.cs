@@ -63,7 +63,6 @@ namespace LJH
 
         private void Parsing_GrabItemEvent(string nickname, int itemCode)
         {
-            //NamePlayerPairs[nickname].
             if (InGameItemDic.ContainsKey(itemCode))
             {
                 NamePlayerPairs[nickname].SetUserItem(InGameItemDic[itemCode]);
