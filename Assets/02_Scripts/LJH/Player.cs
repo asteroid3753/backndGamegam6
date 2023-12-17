@@ -51,7 +51,7 @@ namespace LJH{
         //setter Test
         public void SetUserItem(GrowingItem _item){
             havingItem = _item;
-
+            Debug.Log("아이템 습득");
             this.gameObject.transform.Find("Item").GetComponent<SpriteRenderer>().sprite = havingItem.ItemImg;
         }
         public void SetUserNowItem(GrowingItem _item){

@@ -15,6 +15,8 @@ namespace LJH{
 
         [SerializeField] bool isConrollAble = false;
 
+        [SerializeField] bool isSlime = false;
+
         public Vector2 GetUserPos(){
             return new Vector2(x,y);
         }
@@ -64,22 +66,46 @@ namespace LJH{
             y = player.transform.position.y + (vertical * Time.deltaTime * player.GetUserSpeed());
 
             PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
-            
-            if(player.GetUserNowItem() != null && player.GetUserItem() == null && Input.GetKeyDown(KeyCode.Space)){
-                GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().ItemCode);
-                BackEndManager.Instance.InGame.SendDataToInGame(itemMsg); 
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("");
+                if (isSlime)
+                {
+                    Debug.Log("슬라임 먹이기 가능");
+                    if (player.GetUserItem() != null)
+                    {
+                        SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(player.GetUserItem().GrowPoint);
+                        BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
+                    }
+                    else
+                    {
+                        Debug.Log("슬라임 먹이 없음");
+                    }
+                }
+                else if (player.GetUserNowItem() != null && player.GetUserItem() == null)
+                {
+                    GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().ItemCode);
+                    BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
+                }
             }
+        
 
             BackEndManager.Instance.InGame.SendDataToInGame(msg); 
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if(other.tag == "Item"){
+            if (other.tag == "Item")
+            {
                 GrowingItem item = other.GetComponent<GrowingItem>();
                 if (item != null)
                 {
                     player.SetUserNowItem(item);
                 }
+            }
+            else if (other.tag == "Slime")
+            {
+                isSlime = true;
             }
         }
 
@@ -91,6 +117,10 @@ namespace LJH{
                 {
                     player.SetUserNowItem(null);
                 } 
+            }
+            else if (other.tag == "Slime")
+            {
+                isSlime = false;
             }
         }
         

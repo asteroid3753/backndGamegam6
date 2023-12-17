@@ -105,7 +105,6 @@ namespace LJH
             {
                 ItemEventAdd();
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
-
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
                 BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
             }
@@ -289,6 +288,7 @@ namespace LJH
         {
             GaugeDic[nickname].flexibleWidth = (GaugeDic[nickname].flexibleWidth + addSize) % 100;
             ScoreDic[nickname] += addSize;
+            NamePlayerPairs[nickname].SetUserItem(null);
         }
     } 
 }

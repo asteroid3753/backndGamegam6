@@ -12,6 +12,7 @@ TagManager:
   - Bush
   - Loading
   - Item
+  - Slime
   layers:
   - Default
   - TransparentFX
