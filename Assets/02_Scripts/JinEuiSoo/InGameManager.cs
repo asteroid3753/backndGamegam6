@@ -31,7 +31,6 @@ namespace LJH
         [SerializeField] GameObject cameraPrefab;
         [SerializeField] GameObject[] _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
-        [SerializeField] GameObject[] _growingItemPrefabs;
         // [SerializeField] List<GroawingItems>() = new List<GroawingItems>();
         [SerializeField] List<string> _playerNickNames;
         [SerializeField] string _superPlayerNickName;
