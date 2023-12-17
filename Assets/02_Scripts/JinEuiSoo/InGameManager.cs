@@ -23,6 +23,9 @@ namespace LJH
         [SerializeField]
         private float itemSpawnSpan = 1f;
 
+        [SerializeField]
+        private float slimeEndScale = 0.5f;
+
         [SerializeField] bool _isGameEnd = false;
         [SerializeField] GameObject gaugeObj;
         [SerializeField] GameObject cameraPrefab;
@@ -47,7 +50,7 @@ namespace LJH
 
         BoxCollider2D slimeArea;
         BoxCollider2D groundArea;
-
+        GameObject slimeObj;
         #region Singleton
 
         static InGameManager _instance;
@@ -94,6 +97,7 @@ namespace LJH
 
         void AwakeInitialize()
         {
+            slimeObj = GameObject.Find("Slime");
             slimeArea = GameObject.Find("Slime").GetComponent<BoxCollider2D>();
             groundArea = GameObject.Find("Ground").GetComponent<BoxCollider2D>();
             JES.JESFunctions.SetCollider(groundArea, slimeArea);
@@ -215,6 +219,11 @@ namespace LJH
             ItemUpdate();
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
+            // Slime size check
+            if(slimeObj.transform.localScale.x >= slimeEndScale)
+            {
+                // Game End
+            }
         }
 
         private void OnDisable()
@@ -285,6 +294,12 @@ namespace LJH
 
         private void Parsing_SlimeSizeUpEvent(string nickname, float addSize)
         {
+            if (slimeObj != null)
+            {
+                float size = slimeObj.transform.localScale.x + (addSize / 500);
+                slimeObj.transform.localScale = new Vector3(size, size);
+            }
+
             GaugeDic[nickname].flexibleWidth = (GaugeDic[nickname].flexibleWidth + addSize) % 100;
             ScoreDic[nickname] += addSize;
             NamePlayerPairs[nickname].SetUserItem(null);

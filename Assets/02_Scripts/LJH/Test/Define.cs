@@ -13,7 +13,9 @@ namespace LJH{
             backendIcon4,
             fan,
             washingMachine,
-            hotSix
+            hotSix,
+            berry,
+            acorn
         };
         
     }

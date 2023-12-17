@@ -75,6 +75,14 @@ namespace LJH{
                     ItemImg = Resources.Load<Sprite>("Item6");
                     growPoint = 300;
                     break;
+                case Define.ItemType.berry:
+                    ItemImg = Resources.Load<Sprite>("Item7");
+                    growPoint = 10;
+                    break;
+                case Define.ItemType.acorn:
+                    ItemImg = Resources.Load<Sprite>("Item8");
+                    growPoint = 30;
+                    break;
             }
         }
 
