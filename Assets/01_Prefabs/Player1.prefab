@@ -194,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 2887983425182698019}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.03500009, y: 2.56, z: 0}
+  m_LocalPosition: {x: -0.03500009, y: 3.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -311,7 +311,7 @@ MonoBehaviour:
   userSpeed: 2
   flipX: 0
   NickName: 
-  havingItem: {fileID: 0}
+  havingItem: 0
   nowItem: {fileID: 0}
 --- !u!114 &8023536818209278900
 MonoBehaviour:

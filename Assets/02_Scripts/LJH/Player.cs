@@ -12,7 +12,7 @@ namespace LJH{
 
         [SerializeField] public string NickName;
 
-        [SerializeField] int havingItem; //������ �ִ� ������
+        [SerializeField] int havingItem = -1; //������ �ִ� ������
         [SerializeField] GrowingItem nowItem; //�浹������
 
         SpriteRenderer sprite;
@@ -60,7 +60,7 @@ namespace LJH{
             }
             else
             {
-                havingItem = InGameManager.Instance.InGameItemDic.FirstOrDefault(item => item.Value == _item).Key;
+                havingItem = _item.GrowPoint;
                 sprite.sprite = _item.ItemImg;
             }
         }

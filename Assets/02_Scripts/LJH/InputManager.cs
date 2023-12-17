@@ -70,12 +70,13 @@ namespace LJH{
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("");
+
                 if (isSlime)
                 {
                     Debug.Log("슬라임 먹이기 가능");
-                    if (player.GetUserItem() != -1)
+                    if (player.GetUserItem() == 0)
                     {
-                        SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(InGameManager.Instance.InGameItemDic[player.GetUserItem()].GrowPoint);
+                        SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(player.GetUserItem());
                         BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
                     }
                     else
@@ -83,13 +84,13 @@ namespace LJH{
                         Debug.Log("슬라임 먹이 없음");
                     }
                 }
-                else if (player.GetUserNowItem() != null && player.GetUserItem() == -1)
+                else if (player.GetUserNowItem() != null && player.GetUserItem() == 0)
                 {
+                    Debug.Log("아이템");
                     GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().ItemCode);
                     BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
                 }
             }
-        
 
             BackEndManager.Instance.InGame.SendDataToInGame(msg); 
         }
