@@ -55,8 +55,8 @@ namespace LJH{
         public void SetUserItem(GrowingItem _item){
             if (_item == null)
             {
-                havingItem = -1;
-                sprite = null;
+                havingItem = 0;
+                sprite.sprite = null;
             }
             else
             {
