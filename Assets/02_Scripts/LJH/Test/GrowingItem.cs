@@ -65,15 +65,15 @@ namespace LJH{
                     break;
                 case Define.ItemType.fan:
                     ItemImg = Resources.Load<Sprite>("Item4");
-                    growPoint = 100;
+                    growPoint = 70;
                     break;
                 case Define.ItemType.washingMachine:
                     ItemImg = Resources.Load<Sprite>("Item5");
-                    growPoint = 100;
+                    growPoint = 80;
                     break;
                 case Define.ItemType.hotSix:
                     ItemImg = Resources.Load<Sprite>("Item6");
-                    growPoint = 300;
+                    growPoint = 100;
                     break;
                 case Define.ItemType.berry:
                     ItemImg = Resources.Load<Sprite>("Item7");
@@ -81,7 +81,7 @@ namespace LJH{
                     break;
                 case Define.ItemType.acorn:
                     ItemImg = Resources.Load<Sprite>("Item8");
-                    growPoint = 30;
+                    growPoint = 20;
                     break;
             }
         }

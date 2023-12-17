@@ -1,4 +1,6 @@
-﻿using MorningBird.SceneManagement;
+﻿using JES;
+using KSY;
+using MorningBird.SceneManagement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,7 +65,10 @@ public class TotalGameManager : MonoBehaviour
         }
         gameState = GameState.Login;
         isCreate = true;
+
+        BackEndManager.Instance.Parsing.TotalScoreEvent += Parsing_TotalScoreEvent;
     }
+
     IEnumerator InGameUpdate()
     {
         while (true)
@@ -231,4 +236,11 @@ public class TotalGameManager : MonoBehaviour
             yield return null;
         }
     }
+
+    private void Parsing_TotalScoreEvent(Dictionary<string, float> scoreDic)
+    {
+        ShowingResultCommunicator.Instance.NickNameSlimeSizeRatioPair = scoreDic;
+    }
+
+
 }

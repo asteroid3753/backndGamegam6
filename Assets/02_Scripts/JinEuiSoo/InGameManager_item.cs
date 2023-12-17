@@ -1,5 +1,6 @@
 ﻿using KSY;
 using KSY.Protocol;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine;
 namespace LJH
 {
 
-    public partial class InGameManager : MonoBehaviour
+    public partial class InGameManager : SerializedMonoBehaviour
     {
         [SerializeField]
         int itemMaxCount = 10;
