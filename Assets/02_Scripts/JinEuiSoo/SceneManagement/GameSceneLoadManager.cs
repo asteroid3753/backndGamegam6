@@ -19,7 +19,7 @@ namespace MorningBird.SceneManagement
         /// <summary>
         /// TotalGameSceneManager
         /// </summary>
-        internal static GameSceneLoadManager Instance
+        internal static GameSceneLoadManager Instant
         {
             get
             {

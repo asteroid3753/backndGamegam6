@@ -24,6 +24,10 @@ namespace KSY
         public ParsingManager Parsing { get { return parsing; } }
 
         #endregion
+
+        // TODO : 임시 데이터 나중에 삭제
+        public Dictionary<SessionId, string> players;
+
         private static string managersName = "BackEndManager";
 
         private void Awake()

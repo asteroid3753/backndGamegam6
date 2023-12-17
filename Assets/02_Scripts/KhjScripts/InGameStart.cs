@@ -38,7 +38,7 @@ namespace khj
                 }
             };
             Backend.Match.OnMatchInGameStart = () => {
-                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToList<string>();
+                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToArray();
                 foreach (var list in inGameUserList)
                 {
                     if (list.Value.m_isSuperGamer == true)
@@ -50,10 +50,10 @@ namespace khj
         private void LeaveMatchMaking()
         {
             Backend.Match.OnLeaveMatchMakingServer = (LeaveChannelEventArgs args) => {
-                Debug.Log("OnLeaveMatchMakingServer - ï¿½ï¿½Äª ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : " + args.ToString());
+                Debug.Log("OnLeaveMatchMakingServer - ¸ÅÄª ¼­¹ö Á¢¼Ó Á¾·á : " + args.ToString());
             };
 
-            Debug.Log($"5-a. LeaveMatchMakingServer ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½Å· ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»");
+            Debug.Log($"5-a. LeaveMatchMakingServer ¸ÅÄ¡¸ÞÀÌÅ· ¼­¹ö Á¢¼Ó Á¾·á ¿äÃ»");
 
             Backend.Match.LeaveMatchMakingServer();
         }
@@ -62,23 +62,26 @@ namespace khj
             Backend.Match.OnSessionJoinInServer = (JoinChannelEventArgs args) => {
                 if (args.ErrInfo == ErrorInfo.Success)
                 {
+                    Debug.Log("4-2. OnSessionJoinInServer °ÔÀÓ ¼­¹ö Á¢¼Ó ¼º°ø : " + args.ToString());
                     JoinGameRoom();
                 }
                 else
                 {
-                    Debug.LogError("4-2. OnSessionJoinInServer ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : " + args.ToString());
+                    Debug.LogError("4-2. OnSessionJoinInServer °ÔÀÓ ¼­¹ö Á¢¼Ó ½ÇÆÐ : " + args.ToString());
                 }
 
-                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Äª ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                // °ÔÀÓ ¼­¹ö¿¡ Á¤»óÀûÀ¸·Î Á¢¼ÓÇßÀ¸¸é ¸ÅÄª ¼­¹ö¸¦ Á¾·á
                 LeaveMatchMaking();
             };
+
+            Debug.Log("4-1. JoinGameServer ÀÎ°ÔÀÓ ¼­¹ö Á¢¼Ó ¿äÃ»");
 
             currentGameRoomInfo = gameRoomInfo;
             ErrorInfo errorInfo = null;
 
             if (!Backend.Match.JoinGameServer(currentGameRoomInfo.m_inGameServerEndPoint.m_address, currentGameRoomInfo.m_inGameServerEndPoint.m_port, false, out errorInfo))
             {
-                Debug.LogError("JoinGameServer ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½." + errorInfo);
+                Debug.LogError("JoinGameServer Áß ·ÎÄÃ ¿¡·¯°¡ ¹ß»ýÇß½À´Ï´Ù." + errorInfo);
                 return;
             }
         }
@@ -87,6 +90,8 @@ namespace khj
             Backend.Match.OnSessionListInServer = (MatchInGameSessionListEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Success)
                 {
+                    Debug.Log("5-2. OnSessionListInServer °ÔÀÓ·ë Á¢¼Ó ¼º°ø : " + args.ToString());
+
                     foreach (var list in args.GameRecords)
                     {
                         if (inGameUserList.ContainsKey(list.m_nickname))
@@ -106,7 +111,7 @@ namespace khj
             Backend.Match.OnMatchInGameAccess = (MatchInGameSessionEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Success)
                 {
-                    Debug.Log($"5-3. OnMatchInGameAccess - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½ : {args.GameRecord.m_nickname}({args.GameRecord.m_sessionId})");
+                    Debug.Log($"5-3. OnMatchInGameAccess - À¯Àú°¡ Á¢¼ÓÇß½À´Ï´Ù : {args.GameRecord.m_nickname}({args.GameRecord.m_sessionId})");
                     if (!inGameUserList.ContainsKey(args.GameRecord.m_nickname))
                     {
                         inGameUserList.Add(args.GameRecord.m_nickname, args.GameRecord);
@@ -119,20 +124,19 @@ namespace khj
             };
 
             Backend.Match.OnMatchInGameStart = () => {
-                string userListString = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : \n";
+                string userListString = "Á¢¼ÓÇÑ À¯Àú : \n";
                 foreach (var list in inGameUserList)
                 {
                     if (list.Value.m_isSuperGamer == true)
                     {
                         TotalGameManager.Instance.isHost = true;
                         TotalGameManager.Instance.host = list.Value.m_nickname;
-                        userListString += "ï¿½ï¿½ï¿½Û°ï¿½ï¿½Ì¸ï¿½";
+                        userListString += "½´ÆÛ°ÔÀÌ¸Ó";
                     }
                 }
-                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToList<string>();
-                TotalGameManager.Instance.playerNickNames.Sort();
+                TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToArray();
 
-                Debug.Log("6-1. OnMatchInGameStart ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+                Debug.Log("6-1. OnMatchInGameStart ÀÎ°ÔÀÓ ½ÃÀÛ");
                 Debug.Log(userListString);
             };
 

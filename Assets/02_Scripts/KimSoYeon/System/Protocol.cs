@@ -9,11 +9,9 @@ namespace KSY.Protocol
     public enum MsgType
     {
         PlayerMove = 0, //플레이어 키 입력
-        SlimeSizeUp, // 슬라임 크기 
-        GrabItem, // 아이템 획득
-        CreateItem, // 아이템 생성
-        CreateBg, // 배경 생성
-        TotalScore // 최종 점수
+        SlimeSizeUp,
+        GrabItem,
+        CreateItem
     }
 
     public class Message
@@ -40,10 +38,12 @@ namespace KSY.Protocol
 
     public class SlimeSizeUpMessage : Message
     {
+        public int id;
         public float addSize;
 
-        public SlimeSizeUpMessage(float addSize) : base(MsgType.SlimeSizeUp)
+        public SlimeSizeUpMessage(int id, float addSize) : base(MsgType.SlimeSizeUp)
         {
+            this.id = id;
             this.addSize = addSize;
         }
     }
@@ -71,29 +71,6 @@ namespace KSY.Protocol
             this.itemCode = itemCode;
             this.x = pos.x;
             this.y = pos.y;
-        }
-    }
-
-    public class CreateBgMessage : Message
-    {
-        public int bgType;
-        public float x;
-        public float y;
-
-        public CreateBgMessage(int bgType, int itemCode, Vector2 pos) : base(MsgType.CreateBg)
-        {
-            this.x = pos.x;
-            this.y = pos.y;
-        }
-    }
-
-    public class TotalScoreMessage : Message
-    {
-        public Dictionary<string, float> scoreDic;
-
-        public TotalScoreMessage(Dictionary<string, float> scoreDic) : base(MsgType.TotalScore)
-        {
-            this.scoreDic = scoreDic;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace JES
     {
         [SerializeField] JES.TestPlayer player;
         
-         //JES.InputManager inputManager;
+        JES.InputManager inputManager;
 
         //item test
         //[SerializeField] GrowingItem nowItem;
@@ -45,7 +45,7 @@ namespace JES
         //    }
         //}
 
-        private void PlayerMoveRecvFunc(string nickname, Vector2 vec)
+        private void PlayerMoveRecvFunc(Vector2 vec)
         {
             // ������ 
             player.SetUserTarget(vec);

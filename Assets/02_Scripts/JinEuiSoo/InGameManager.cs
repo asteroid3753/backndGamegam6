@@ -1,56 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using LJH;
+using LJH;
+using Player = LJH.Player;
 using BackEnd;
 using BackEnd.Tcp;
 using MorningBird.SceneManagement;
 using MorningBird.Sound;
+using System.Numerics;
 using KSY;
 using BackEnd.Game;
 using KSY.Protocol;
-using UnityEngine.SceneManagement;
-using System.Linq;
-using Cinemachine;
-using UnityEngine.UI;
-using Sirenix.OdinInspector;
+using Protocol;
 
-namespace LJH
+namespace JES
 {
-    public partial class InGameManager : SerializedMonoBehaviour
+    public class InGameManager : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject itemPrefab;
-        [SerializeField]
-        private float itemSpawnSpan = 1f;
-
-        [SerializeField]
-        private float slimeEndScale = 0.5f;
-
-        [SerializeField] bool _isGameEnd = false;
-        [SerializeField] GameObject gaugeObj;
-        [SerializeField] GameObject cameraPrefab;
-        [SerializeField] GameObject[] _playerPrefab;
+        [SerializeField] GameObject _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
+        [SerializeField] GameObject[] _growingItemPrefabs;
         // [SerializeField] List<GroawingItems>() = new List<GroawingItems>();
-        [SerializeField] List<string> _playerNickNames;
+        [SerializeField] string[] _playerNickNames;
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
-        [SerializeField] Color[] _gaugeColors = new Color[4] { new Color32(230, 151, 220, 255), new Color32(156, 214, 224, 255),
-        new Color32(156, 113, 79, 255), new Color32(220, 170, 255, 255)};
 
-        public Dictionary<string, LJH.Player> NamePlayerPairs;
+        [SerializeField] Dictionary<string, TestPlayer> _namePlayerPairs;
+        public Dictionary<string, TestPlayer> NamePlayerPairs;
 
-        public Dictionary<int, GrowingItem> InGameItemDic;
-
-        public Dictionary<string, LayoutElement> GaugeDic;
-        public Dictionary<string, float> ScoreDic;
-
-        int itemCount = 0;
-
-        BoxCollider2D slimeArea;
-        BoxCollider2D groundArea;
-        GameObject slimeObj;
         #region Singleton
 
         static InGameManager _instance;
@@ -97,23 +74,11 @@ namespace LJH
 
         void AwakeInitialize()
         {
-            slimeObj = GameObject.Find("Slime");
-            slimeArea = GameObject.Find("Slime").GetComponent<BoxCollider2D>();
-            groundArea = GameObject.Find("Ground").GetComponent<BoxCollider2D>();
-            JES.JESFunctions.SetCollider(groundArea, slimeArea);
+
         }
 
         void Start()
         {
-            // Regest Event
-            {
-                ItemEventAdd();
-                BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
-                Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
-                BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
-            }
-
-
             StartCoroutine(IEWaitAndStart());
 
         }
@@ -121,27 +86,35 @@ namespace LJH
         IEnumerator IEWaitAndStart()
         {
 
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(0.5f);
+
+            // Regest Event
+            {
+                BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
+            }
 
             // Setting Players
             {
                 _playerNickNames = TotalGameManager.Instance.playerNickNames;
                 _superPlayerNickName = TotalGameManager.Instance.host;
                 _myClientNickName = TotalGameManager.Instance.myNickName;
-                bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
-                NamePlayerPairs = new Dictionary<string, LJH.Player>();
-                InGameItemDic = new Dictionary<int, GrowingItem>();
-                GaugeDic = new Dictionary<string, LayoutElement>();
-                ScoreDic = new Dictionary<string, float>();
-                for (int i = 0; i < _playerNickNames.Count; i++)
+                NamePlayerPairs = new Dictionary<string, TestPlayer>();
+
+                for (int i = 0; i < _playerNickNames.Length; i++)
                 {
-                    GameObject pgo = Instantiate(_playerPrefab[i]);//, _playerPositions[i].position, Quaternion.identity);
-                    LJH.Player player = pgo.GetComponent<LJH.Player>();
-                    NamePlayerPairs.Add(_playerNickNames[i], player);
-                    player.SetUserName(_playerNickNames[i]);
-                    AddGauge(_playerNickNames[i], _gaugeColors[i]);
-                    ScoreDic.Add(_playerNickNames[i], 0f);
+                    bool isSuperPlayer = false;
+                    if (_playerNickNames[i] == _superPlayerNickName)
+                    {
+                        isSuperPlayer = true;
+                    }
+
+
+                    GameObject tGO = Instantiate(_playerPrefab);
+                    TestPlayer tplayer = tGO.GetComponent<TestPlayer>();
+
+                    tplayer.PlayerNickName = _playerNickNames[i];
+                    tplayer.MyClientNickName = _myClientNickName;
 
                     if (isSuperPlayer == true)
                     {
@@ -152,166 +125,45 @@ namespace LJH
                         //tPlayer.SetSuperPlayer(false);
                     }
 
-                    if (_playerNickNames[i].ToString() == _myClientNickName){
-                        Debug.Log(_playerPositions[i].position);
-                        player.SetUserTarget(_playerPositions[i].position);
-                        pgo.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
-                        CinemachineVirtualCamera cam = Instantiate(cameraPrefab, pgo.transform).GetComponent<CinemachineVirtualCamera>() ;
-                        cam.gameObject.GetComponent<CinemachineConfiner>().m_BoundingShape2D = GameObject.Find("Bound").GetComponent<Collider2D>();
-                        cam.Follow = pgo.transform;
-                        cam.LookAt = pgo.transform;
-                        pgo.transform.position = _playerPositions[i].position;
-                    }
-                    else{
-                        pgo.transform.position = _playerPositions[i].position;
-                        //player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
-                    }
-                    // if (_playerNickNames[i].ToString() == _myClientNickName)
-                    // {
-                        
-                    //     PlayerMoveMessage msg = new PlayerMoveMessage(player.transform.position);
-                    //     BackEndManager.Instance.InGame.SendDataToInGame(msg);
-                    // }
-                    // player.transform.position = _playerPositions[i].position;
-                    // player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
-                    
+                    // tPlayer.SetAnimalType(Etype (int)i)
+
+                    tGO.transform.position = _playerPositions[i].position;
+
+                    NamePlayerPairs.Add(_playerNickNames[i], tplayer);
                 }
             }
 
-            GameItemInit();
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¸ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
-            // int ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ°ï¿½, ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
+            // ÀÌ°É ÇØµµ ¹®Á¦.
+            // ÀÚ½ÅÀÌ ´©±¸ÀÎÁö ¾Ë¾Æ¾ß ÇÏ°í, ±×¸®°í ±×°Ô ÀÚ½ÅÀÎ°É ¾Ë¾Æ¾ß ÇÑ´Ù.
+            // ±×¸®°í ÀÌ¸¦ °É·¯¼­ Çàµ¿ÇØ¾ß ÇÑ´Ù.
+
+            // Setting Items
+            {
+
+            }
+
+            // ¾ÆÀÌÅÛ °ü·Ã ·ÎÁ÷
+            // ¾ÆÀÌÅÛÀ» »Ñ¸®°í, ¾ÆÀÌÅÛÀ» Áö¿î´Ù. ¾ÆÀÌÅÛÀ» °ü¸®ÇÑ´Ù.
+            // int ÀÎµ¦½º¸¦ ¹Þ°í, ±× ÇØ´çÇÏ´Â °ÍÀ» Áö¿î´Ù.
             // 
-            // nullï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½Ñ´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ñ´ï¿½.
-            // nullï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¾î¼­, nullï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï¸ï¿½ Catchï¿½Ï¸é¼­ ï¿½ï¿½ï¿½ï¿½ï¿½Å²ï¿½ï¿½.
+            // nullÀÌ ¹ß»ýÇÒ ¶§´Â, µÑ´Ù ¾ò´Â °ÍÀ¸·Î Ã³¸®ÇÑ´Ù.
+            // nullÀÌ ¹ß»ýÇÒ ¼ö ÀÖ¾î¼­, nullÀÌ ¹ß»ýÇÏ¸é CatchÇÏ¸é¼­ Á¾·á½ÃÅ²´Ù.
 
 
             //GrabItemMessage msg = new GrabItemMessage(333);
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
-        private void AddGauge(string nickname, Color color)
-        {
-            GameObject imgobj = new GameObject { name = $"Player({nickname})" };
-            imgobj.transform.SetParent(gaugeObj.transform);
-            Image img = imgobj.AddComponent<Image>();
-            LayoutElement layoutEle = imgobj.AddComponent<LayoutElement>();
-            img.color = color;
-            layoutEle.flexibleWidth = 1;
-            InGameManager.Instance.GaugeDic.Add(nickname, layoutEle);
-        }
-
-        int testCnt = 0;
         private void Update()
         {
-            #region GameEndingConditionCheck
-
-
-
-
-            #endregion
-
-            ItemUpdate();
-            // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
-
-            if (TotalGameManager.Instance.isHost || _isGameEnd == true)
-            {
-                if (slimeObj.transform.localScale.x >= slimeEndScale || _isGameEnd == true)
-                {
-                    // Game End
-                    TotalScoreMessage scoreMsg = new TotalScoreMessage(ScoreDic);
-                    BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);
-                    DeclareMatchEnd();
-
-                    _isGameEnd = false;
-                }
-            }
-
-            if(Backend.Match.IsInGameServerConnect() == false)
-            {
-                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
-            }
+            // °ÔÀÓÀÇ ¿£µù Ã¼Å©
+            // // °ÔÀÓÀÇ ¿£µù ¼±¾ð
 
         }
 
-        private void OnDisable()
+        private void Parsing_GrabItemEvent(int obj)
         {
-            UnSubscribeOnLeaveInGameServerEvent();
-        }
-
-        #region EndingMatch
-        void OnLeaveInGameServerEvent(MatchInGameSessionEventArgs args)
-        {
-            if (args.ErrInfo == ErrorCode.Success)
-            {
-                Debug.Log("OnLeaveInGameServer ì¸ê²Œìž„ ì„œë²„ ì ‘ì† ì¢…ë£Œ : " + args.ErrInfo.ToString());
-            }
-            else
-            {
-                Debug.LogError("OnLeaveInGameServer ì¸ê²Œìž„ ì„œë²„ ì ‘ì† ì¢…ë£Œ : " + args.ErrInfo + " / " + args.Reason);
-            }
-        }
-
-        void UnSubscribeOnLeaveInGameServerEvent()
-        {
-            Backend.Match.OnLeaveInGameServer -= OnLeaveInGameServerEvent;
-        }
-
-        void DeclareMatchEnd()
-        {
-            Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
-            {
-                if (args.ErrInfo == ErrorCode.Success)
-                {
-                    Debug.Log("8-2. OnMatchResult ì„±ê³µ : " + args.ErrInfo.ToString());
-                }
-                else
-                {
-                    Debug.LogError("8-2. OnMatchResult ì‹¤íŒ¨ : " + args.ErrInfo.ToString());
-                }
-
-                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
-         
-
-            };
-
-            Debug.Log("8-1. MatchEnd í˜¸ì¶œ");
-
-            //MatchGameResult matchGameResult = new MatchGameResult();
-            //matchGameResult.m_winners = new List<SessionId>();
-            //matchGameResult.m_losers = new List<SessionId>();
-
-            //foreach (var session in inGameUserList)
-            //{
-            //    // ìˆœì„œëŠ” ë¬´ê´€í•©ë‹ˆë‹¤.
-            //    matchGameResult.m_winners.Add(session.Value.m_sessionId);
-            //}
-
-            //Backend.Match.MatchEnd(matchGameResult);
-
-            var matchResult = new MatchGameResult();
-           
-            Backend.Match.MatchEnd(matchResult);
-        } 
-        #endregion
-
-        private void Parsing_PlayerMove(string nickName, Vector2 target)
-        {
-            NamePlayerPairs[nickName].SetUserTarget(target);
-        }
-
-        private void Parsing_SlimeSizeUpEvent(string nickname, float addSize)
-        {
-            if (slimeObj != null)
-            {
-                float size = slimeObj.transform.localScale.x + (addSize / 500);
-                slimeObj.transform.localScale = new Vector3(size, size);
-            }
-
-            GaugeDic[nickname].flexibleWidth = (GaugeDic[nickname].flexibleWidth + addSize) % 100;
-            ScoreDic[nickname] += addSize;
-            NamePlayerPairs[nickname].SetUserItem(null);
+            Debug.Log(obj);
         }
     } 
 }

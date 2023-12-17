@@ -1,7 +1,4 @@
-﻿using JES;
-using KSY;
-using MorningBird.SceneManagement;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +35,7 @@ public class TotalGameManager : MonoBehaviour
     public bool isHost = false;
     public string host;
     public string myNickName;
-    public List<string> playerNickNames;
+    public string[] playerNickNames;
 
     void Awake()
     {
@@ -65,10 +62,7 @@ public class TotalGameManager : MonoBehaviour
         }
         gameState = GameState.Login;
         isCreate = true;
-
-        BackEndManager.Instance.Parsing.TotalScoreEvent += Parsing_TotalScoreEvent;
     }
-
     IEnumerator InGameUpdate()
     {
         while (true)
@@ -127,8 +121,6 @@ public class TotalGameManager : MonoBehaviour
     private void GameResult()
     {
         OnGameResult();
-        GameSceneLoadManager.Instance.UnLoadAllScenes();
-        GameSceneLoadManager.Instance.LoadSceneAsync("Result");
     }
 
     private void GameReconnect()
@@ -198,8 +190,8 @@ public class TotalGameManager : MonoBehaviour
             return;
         }
 
-        MorningBird.SceneManagement.GameSceneLoadManager.Instance.UnLoadAllScenes();
-        MorningBird.SceneManagement.GameSceneLoadManager.Instance.LoadSceneAsync(scene);
+        MorningBird.SceneManagement.GameSceneLoadManager.Instant.UnLoadAllScenes();
+        MorningBird.SceneManagement.GameSceneLoadManager.Instant.LoadSceneAsync(scene);
 
     }
 
@@ -236,11 +228,4 @@ public class TotalGameManager : MonoBehaviour
             yield return null;
         }
     }
-
-    private void Parsing_TotalScoreEvent(Dictionary<string, float> scoreDic)
-    {
-        ShowingResultCommunicator.Instance.NickNameSlimeSizeRatioPair = scoreDic;
-    }
-
-
 }

@@ -1,25 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace LJH{
     public class Player : MonoBehaviour
     {
+        [SerializeField] int userID;
+        [SerializeField] string userName;
         [SerializeField] Vector2 target;
         [SerializeField] float userSpeed = 2.0f;
         [SerializeField] bool flipX = false;
 
+        [SerializeField] private string nickName;
         [SerializeField] public string NickName;
+        [SerializeField] public string SetNickName => nickName;
 
-        [SerializeField] int havingItem; //������ �ִ� ������
-        [SerializeField] GrowingItem nowItem; //�浹������
+        //test
+        [SerializeField] GrowingItem havingItem;
 
-        SpriteRenderer sprite;
+        [SerializeField] GrowingItem nowItem;
 
-        public string GetUserName()
-        {
-            return NickName;
+        //init
+        public Player(int _id, string _name, float _speed){
+            userID = _id;
+            userName = _name;
+            userSpeed = _speed;
+        }
+
+        //getter
+        public int GetUserID(){
+            return userID;
+        }
+        public string GetUserName(){
+            return userName;
         }
         public Vector2 GetUserTarget(){
             return target;
@@ -31,16 +44,20 @@ namespace LJH{
             return flipX;
         }
         //getter Test
-        public int GetUserItem(){
+        public GrowingItem GetUserItem(){
             return havingItem;
         }
         public GrowingItem GetUserNowItem(){
             return nowItem;
         }
 
+
         //setter
+        public void SetUserID(int _id){
+            userID = _id;
+        }
         public void SetUserName(string _name){
-            NickName = _name;
+            userName = _name;
         }
         public void SetUserTarget(Vector2 _target){
             target = _target;
@@ -53,16 +70,7 @@ namespace LJH{
         }
         //setter Test
         public void SetUserItem(GrowingItem _item){
-            if (_item == null)
-            {
-                havingItem = -1;
-                sprite = null;
-            }
-            else
-            {
-                havingItem = InGameManager.Instance.InGameItemDic.FirstOrDefault(item => item.Value == _item).Key;
-                sprite.sprite = _item.ItemImg;
-            }
+            havingItem = _item;
         }
         public void SetUserNowItem(GrowingItem _item){
             nowItem = _item;
@@ -80,11 +88,6 @@ namespace LJH{
             float y = Mathf.Lerp(this.transform.position.y, target.y,0.1f);
             
             this.transform.position = new Vector3(x,y,transform.position.z);
-        }
-
-        private void Start()
-        {
-            sprite = gameObject.transform.Find("Item").GetComponent<SpriteRenderer>();
         }
     }
 }

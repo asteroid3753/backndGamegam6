@@ -13,52 +13,51 @@ namespace khj
     public class MatchManager : MonoBehaviour
     {
         public static MatchManager Instance;
-
-        [SerializeField] InGameStart ingame;
+        InGameStart ingame;
         List<MatchCard> matchCardList = new List<MatchCard>();
-        public int index = 1;
         
         void Awake()
         {
             if (Instance != null)
             {
-                Destroy(gameObject);
+                Destroy(Instance);
             }
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        public void Start()
-        {
-            ingame = GetComponent<InGameStart>();
-
-        }
-
-        public void Initialize()
+        void Start()
         {
             JoinMatchMakingServer();
         }
 
-        void JoinMatchMakingServer()
+        public void JoinMatchMakingServer()
         {
+            ingame = GetComponent<InGameStart>();
+
+            //Backend.Match.OnException = (Exception e) => { Debug.LogError(e.ToString()); };
+
             Backend.Match.OnJoinMatchMakingServer = (JoinChannelEventArgs args) => {
                 if (args.ErrInfo == ErrorInfo.Success)
                 {
+                    Debug.Log("1-2. OnJoinMatchMakingServer ¼º°ø");
                     CreateMatchRoom();
                     GetMatchList();
                 }
+                else
+                {
+                    Debug.LogError("1-2. OnJoinMatchMakingServer ½ÇÆÐ");
+                }
             };
 
-            Join();
-        }
-
-        public void Join() {
             ErrorInfo errorInfo;
+
             if (Backend.Match.JoinMatchMakingServer(out errorInfo))
             {
-                Debug.Log("1-1. JoinMatchMakingServer ï¿½ï¿½Ã» : " + errorInfo.ToString());
+                Debug.Log("1-1. JoinMatchMakingServer ¿äÃ» : " + errorInfo.ToString());
             }
             else
             {
-                Debug.LogError("1-1. JoinMatchMakingServer ï¿½ï¿½ï¿½ï¿½ : " + errorInfo.ToString());
+                Debug.LogError("1-1. JoinMatchMakingServer ¿¡·¯ : " + errorInfo.ToString());
             }
         }
 
@@ -185,10 +184,6 @@ namespace khj
                     matchCardList.Add(matchCard);
                 }
 
-                for (int i = 0; i < matchCardList.Count; i++)
-                {
-                    Debug.Log($"{i} ë²ˆì§¸ ë§¤ì¹˜ì¹´ë“œ : \n" + matchCardList[i].ToString());
-                }
                 RequestMatchMaking();
             });
         }
@@ -197,45 +192,36 @@ namespace khj
             Backend.Match.OnMatchMakingResponse = (MatchMakingResponseEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Match_InProgress)
                 {
-                    int second = matchCardList[index].transit_to_sandbox_timeout_ms / 1000;
+                    int second = matchCardList[0].transit_to_sandbox_timeout_ms / 1000;
 
                     //if (second > 0)
                     //{
-                    //    Debug.Log($"{second}ï¿½ï¿½ ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ë´Ï´ï¿½.");
+                    //    Debug.Log($"{second}ÃÊ µÚ¿¡ »÷µå¹Ú½º È°¼ºÈ­°¡ µË´Ï´Ù.");
                     //    StartCoroutine(WaitFor10Seconds(second));
                     //}
                 }
                 else if (args.ErrInfo == ErrorCode.Success)
                 {
-                    Debug.Log("3-3. OnMatchMakingResponse ë§¤ì¹­ ì„±ì‚¬ ì™„ë£Œ");
+                    Debug.Log("3-3. OnMatchMakingResponse ¸ÅÄª ¼º»ç ¿Ï·á");
 
-                    if(ingame == null)
-                    {
-                        Debug.Log("ë¹„ì–´ìžˆì–´ìš”!~");
-                        ingame = GetComponent<InGameStart>();
-                    }
                     ingame.JoinGameServer(args.RoomInfo);
                 }
                 else
                 {
-                    Debug.LogError("3-2. OnMatchMakingResponse ï¿½ï¿½Äª ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ : " + args.ToString());
+                    Debug.LogError("3-2. OnMatchMakingResponse ¸ÅÄª ½ÅÃ» ÁøÇàÁß ¿¡·¯ ¹ß»ý : " + args.ToString());
                 }
             };
 
-            Debug.Log("3-1. RequestMatchMaking ï¿½ï¿½Äª ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½");
-            Debug.Log(index);
-            Debug.Log(matchCardList[index].matchType);
-            Debug.Log(matchCardList[index].matchModeType);
-            Debug.Log(matchCardList[index].inDate);
+            Debug.Log("3-1. RequestMatchMaking ¸ÅÄª ½ÅÃ» ½ÃÀÛ");
 
-            Backend.Match.RequestMatchMaking(matchCardList[index].matchType, matchCardList[index].matchModeType, matchCardList[index].inDate);
+            Backend.Match.RequestMatchMaking(matchCardList[0].matchType, matchCardList[0].matchModeType, matchCardList[0].inDate);
         }
         IEnumerator WaitFor10Seconds(int second)
         {
             var delay = new WaitForSeconds(1.0f);
             for (int i = 0; i < second; i++)
             {
-                Debug.Log($"{i}ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                Debug.Log($"{i}ÃÊ °æ°ú");
                 yield return delay;
             }
             TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Ready);
@@ -245,19 +231,23 @@ namespace khj
             Backend.Match.OnMatchMakingRoomCreate = (MatchMakingInteractionEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Success)
                 {
-                    Debug.Log("2-2. OnMatchMakingRoomCreate ï¿½ï¿½ï¿½ï¿½");
-                    Backend.Match.RequestMatchMaking(matchCardList[index].matchType, matchCardList[index].matchModeType, matchCardList[index].inDate);
+                    Debug.Log("2-2. OnMatchMakingRoomCreate ¼º°ø");
+                    Backend.Match.RequestMatchMaking(matchCardList[0].matchType, matchCardList[0].matchModeType, matchCardList[0].inDate);
                 }
                 else
                 {
-                    Debug.LogError("2-2. OnMatchMakingRoomCreate ï¿½ï¿½ï¿½ï¿½");
+                    Debug.LogError("2-2. OnMatchMakingRoomCreate ½ÇÆÐ");
                 }
             };
 
-            Debug.Log("2-1. CreateMatchRoom ï¿½ï¿½Ã»");
+            Debug.Log("2-1. CreateMatchRoom ¿äÃ»");
             Backend.Match.CreateMatchRoom();
         }
 
+        void ShowReadyPanel()
+        {
+
+        }
         void Update()
         {
             if (Backend.IsInitialized)
@@ -285,7 +275,7 @@ namespace khj
         public int defaultPoint;
         public int version;
         public string result_processing_type;
-        public Dictionary<string, int> savingPoint = new Dictionary<string, int>(); // ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¶ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+        public Dictionary<string, int> savingPoint = new Dictionary<string, int>(); // ÆÀÀü/°³ÀÎÀü¿¡ µû¶ó Å°°ªÀÌ ´Þ¶óÁú ¼ö ÀÖÀ½.
 
         public override string ToString()
         {
