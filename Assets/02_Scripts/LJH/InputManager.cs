@@ -12,6 +12,7 @@ namespace LJH{
     {  
         float x, y;
         Player player;
+        float uy = 22.5f, dy = -24.3f, lx = -42.8f, rx = 41.5f;
 
         [SerializeField] bool isConrollAble = false;
 
@@ -61,18 +62,23 @@ namespace LJH{
             else{
                 this.GetComponent<Animator>().SetBool("Walk",false);
             }
-
+            
+            
             x = player.transform.position.x + (horizontal * Time.deltaTime * player.GetUserSpeed());
             y = player.transform.position.y + (vertical * Time.deltaTime * player.GetUserSpeed());
-
-            PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
+            
+            //lx = -42.8 rx = 41.5 uy = 22.5 dy = -24.3
+            if((lx <= x && x <= rx) && (dy <= y && y <= uy)){
+                PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
+                BackEndManager.Instance.InGame.SendDataToInGame(msg); 
+            }
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Debug.Log("");
                 if (isSlime)
                 {
-                    Debug.Log("½½¶óÀÓ ¸ÔÀÌ±â °¡´É");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½");
                     if (player.GetUserItem() != -1)
                     {
                         SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(InGameManager.Instance.InGameItemDic[player.GetUserItem()].GrowPoint);
@@ -80,7 +86,7 @@ namespace LJH{
                     }
                     else
                     {
-                        Debug.Log("½½¶óÀÓ ¸ÔÀÌ ¾øÀ½");
+                        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                     }
                 }
                 else if (player.GetUserNowItem() != null && player.GetUserItem() == -1)
@@ -91,7 +97,6 @@ namespace LJH{
             }
         
 
-            BackEndManager.Instance.InGame.SendDataToInGame(msg); 
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
