@@ -153,6 +153,7 @@ namespace LJH
                         player.SetUserTarget(_playerPositions[i].position);
                         pgo.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
                         CinemachineVirtualCamera cam = Instantiate(cameraPrefab, pgo.transform).GetComponent<CinemachineVirtualCamera>() ;
+                        cam.gameObject.GetComponent<CinemachineConfiner>().m_BoundingShape2D = GameObject.Find("Bound").GetComponent<Collider2D>();
                         cam.Follow = pgo.transform;
                         cam.LookAt = pgo.transform;
                         pgo.transform.position = _playerPositions[i].position;
