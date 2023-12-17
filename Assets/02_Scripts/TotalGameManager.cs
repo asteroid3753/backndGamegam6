@@ -36,7 +36,7 @@ public class TotalGameManager : MonoBehaviour
     public bool isHost = false;
     public string host;
     public string myNickName;
-    public string[] playerNickNames;
+    public List<string> playerNickNames;
 
     void Awake()
     {
