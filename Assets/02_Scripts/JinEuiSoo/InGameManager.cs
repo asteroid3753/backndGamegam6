@@ -12,6 +12,7 @@ using KSY.Protocol;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using Cinemachine;
+using UnityEngine.UI;
 
 namespace LJH
 {
@@ -23,7 +24,7 @@ namespace LJH
         private float itemSpawnSpan = 1f;
 
         [SerializeField] bool _isGameEnd = false;
-
+        [SerializeField] GameObject gaugeObj;
         [SerializeField] GameObject cameraPrefab;
         [SerializeField] GameObject[] _playerPrefab;
         [SerializeField] Transform[] _playerPositions;
@@ -32,11 +33,16 @@ namespace LJH
         [SerializeField] List<string> _playerNickNames;
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
+        [SerializeField] Color[] _gaugeColors = new Color[4] { new Color32(230, 151, 220, 255), new Color32(156, 214, 224, 255),
+        new Color32(156, 113, 79, 255), new Color32(220, 170, 255, 255)};
 
         public Dictionary<string, LJH.Player> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
-        
+
+        public Dictionary<string, LayoutElement> GaugeDic;
+        public Dictionary<string, float> ScoreDic;
+
         int itemCount = 0;
 
         BoxCollider2D slimeArea;
@@ -101,7 +107,7 @@ namespace LJH
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
 
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
-
+                BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
             }
 
 
@@ -114,8 +120,6 @@ namespace LJH
 
             yield return new WaitForSeconds(.5f);
 
-
-
             // Setting Players
             {
                 _playerNickNames = TotalGameManager.Instance.playerNickNames.ToList<string>();
@@ -126,13 +130,16 @@ namespace LJH
 
                 NamePlayerPairs = new Dictionary<string, LJH.Player>();
                 InGameItemDic = new Dictionary<int, GrowingItem>();
-
+                GaugeDic = new Dictionary<string, LayoutElement>();
+                ScoreDic = new Dictionary<string, float>();
                 for (int i = 0; i < _playerNickNames.Count; i++)
                 {
                     GameObject pgo = Instantiate(_playerPrefab[i]);//, _playerPositions[i].position, Quaternion.identity);
                     LJH.Player player = pgo.GetComponent<LJH.Player>();
                     NamePlayerPairs.Add(_playerNickNames[i], player);
                     player.SetUserName(_playerNickNames[i]);
+                    AddGauge(_playerNickNames[i], _gaugeColors[i]);
+                    ScoreDic.Add(_playerNickNames[i], 0f);
 
                     if (isSuperPlayer == true)
                     {
@@ -181,6 +188,16 @@ namespace LJH
             //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
+        private void AddGauge(string nickname, Color color)
+        {
+            GameObject imgobj = new GameObject { name = $"Player({nickname})" };
+            imgobj.transform.SetParent(gaugeObj.transform);
+            Image img = imgobj.AddComponent<Image>();
+            LayoutElement layoutEle = imgobj.AddComponent<LayoutElement>();
+            img.color = color;
+            layoutEle.flexibleWidth = 1;
+            InGameManager.Instance.GaugeDic.Add(nickname, layoutEle);
+        }
 
         int testCnt = 0;
         private void Update()
@@ -266,6 +283,12 @@ namespace LJH
         {
             Debug.Log(nickName+"/"+target);
             NamePlayerPairs[nickName].SetUserTarget(target);
+        }
+
+        private void Parsing_SlimeSizeUpEvent(string nickname, float addSize)
+        {
+            GaugeDic[nickname].flexibleWidth = (GaugeDic[nickname].flexibleWidth + addSize) % 100;
+            ScoreDic[nickname] += addSize;
         }
     } 
 }

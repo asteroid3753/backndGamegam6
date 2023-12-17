@@ -39,12 +39,10 @@ namespace KSY.Protocol
 
     public class SlimeSizeUpMessage : Message
     {
-        public int id;
         public float addSize;
 
-        public SlimeSizeUpMessage(int id, float addSize) : base(MsgType.SlimeSizeUp)
+        public SlimeSizeUpMessage(float addSize) : base(MsgType.SlimeSizeUp)
         {
-            this.id = id;
             this.addSize = addSize;
         }
     }

@@ -75,13 +75,22 @@ namespace LJH{
 
         private void OnTriggerEnter2D(Collider2D other) {
             if(other.tag == "Item"){
-                player.SetUserNowItem(other.GetComponent<GrowingItem>());
+                GrowingItem item = other.GetComponent<GrowingItem>();
+                if (item != null)
+                {
+                    player.SetUserNowItem(item);
+                }
             }
         }
+
         private void OnTriggerExit2D(Collider2D other)
         {
             if(other.tag == "Item"){
-                player.SetUserNowItem(null);
+                GrowingItem item = other.GetComponent<GrowingItem>();
+                if (item != null)
+                {
+                    player.SetUserNowItem(null);
+                } 
             }
         }
         

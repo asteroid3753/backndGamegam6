@@ -14,7 +14,7 @@ namespace KSY
         #region 
         #endregion
         public event Action<string, Vector2> PlayerMoveEvent;
-        public event Action<int, float> SlimeSizeUpEvent;
+        public event Action<string, float> SlimeSizeUpEvent;
         public event Action<string, int> GrabItemEvent;
         public event Action<int, int, Vector2> CreateItemEvent;
 
@@ -56,7 +56,7 @@ namespace KSY
                     break;
                 case MsgType.SlimeSizeUp:
                     SlimeSizeUpMessage sizeUpMsg = DataParser.ReadJsonData<SlimeSizeUpMessage>(args.BinaryUserData);
-                    SlimeSizeUpMsgEvent(sizeUpMsg);
+                    SlimeSizeUpMsgEvent(args.From.NickName, sizeUpMsg);
                     break;
                 case MsgType.GrabItem:
                     GrabItemMessage grabItemMsg = DataParser.ReadJsonData<GrabItemMessage>(args.BinaryUserData);
@@ -80,14 +80,14 @@ namespace KSY
             }
         }
 
-        private void SlimeSizeUpMsgEvent(SlimeSizeUpMessage data)
+        private void SlimeSizeUpMsgEvent(string nickname, SlimeSizeUpMessage data)
         {
-            SlimeSizeUpEvent?.Invoke(data.id, data.addSize);
+            SlimeSizeUpEvent?.Invoke(nickname, data.addSize);
         }
 
-        private void GrabItemMsgEvent(string nikname, GrabItemMessage data)
+        private void GrabItemMsgEvent(string nickname, GrabItemMessage data)
         {
-            GrabItemEvent?.Invoke(nikname, data.itemCode);
+            GrabItemEvent?.Invoke(nickname, data.itemCode);
         }
 
         private void CreateItemMsgEvent(CreateItemMessage data)

@@ -26,8 +26,9 @@ namespace LJH
         {
             BackEndManager.Instance.Parsing.GrabItemEvent += Parsing_GrabItemEvent;
             BackEndManager.Instance.Parsing.CreateItemEvent += Parsing_CreateItemEvent;
+            BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
         }
-
+        
         private void GameItemInit()
         {
             if (TotalGameManager.Instance.isHost)
@@ -83,6 +84,12 @@ namespace LJH
                 InGameItemDic.Add(itemCode, item);
             }
         }
+
+        private void Parsing_SlimeSizeUpEvent(int arg1, float arg2)
+        {
+            
+        }
+
         #endregion
     }
 }
