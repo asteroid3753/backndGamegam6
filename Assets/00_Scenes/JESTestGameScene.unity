@@ -9358,6 +9358,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1759356900}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      propertyPath: slimeEndScale
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPositions.Array.data[0]
       value: 
       objectReference: {fileID: 1055019955}
