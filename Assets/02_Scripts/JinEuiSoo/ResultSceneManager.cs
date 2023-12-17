@@ -75,7 +75,7 @@ namespace JES
         public void BackToLogin()
         {
             GameSceneLoadManager.Instance.UnLoadAllScenes();
-            GameSceneLoadManager.Instance.LoadSceneAsync("Match");
+            GameSceneLoadManager.Instance.LoadSceneAsync("Login");
         }
 
         public void Quit()
