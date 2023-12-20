@@ -246,7 +246,7 @@ public class TotalGameManager : MonoBehaviour
         {
             playerResultSocres.Add(playerNickNames[i], scoreArr[i]);
 
-            Debug.Log($"점수표 - {playerNickNames[i]}: {scoreArr[i]}");
+            resultSlimeSize += scoreArr[i];
         }
     }
 }
