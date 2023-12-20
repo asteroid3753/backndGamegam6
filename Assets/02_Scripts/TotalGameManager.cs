@@ -52,8 +52,6 @@ public class TotalGameManager : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         InGameUpdateCoroutine = InGameUpdate();
-
-        DontDestroyOnLoad(this.gameObject);
     }
 
     void Start()
