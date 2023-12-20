@@ -179,16 +179,6 @@ namespace LJH
             }
 
             GameItemInit();
-            // ������ ���� ����
-            // �������� �Ѹ���, �������� �����. �������� �����Ѵ�.
-            // int �ε����� �ް�, �� �ش��ϴ� ���� �����.
-            // 
-            // null�� �߻��� ����, �Ѵ� ��� ������ ó���Ѵ�.
-            // null�� �߻��� �� �־, null�� �߻��ϸ� Catch�ϸ鼭 �����Ų��.
-
-
-            //GrabItemMessage msg = new GrabItemMessage(333);
-            //BackEndManager.Instance.InGame.SendDataToInGame(msg);
         }
 
         private void AddGauge(string nickname, Color color)
@@ -199,6 +189,7 @@ namespace LJH
             LayoutElement layoutEle = imgobj.AddComponent<LayoutElement>();
             img.color = color;
             layoutEle.flexibleWidth = 1;
+            layoutEle.transform.localScale = Vector3.one;
             InGameManager.Instance.GaugeDic.Add(nickname, layoutEle);
         }
 
@@ -304,6 +295,7 @@ namespace LJH
                 slimeObj.transform.localScale = new Vector3(size, size);
             }
 
+            // TODO : Gauge 수정
             GaugeDic[nickname].flexibleWidth = (GaugeDic[nickname].flexibleWidth + addSize) % 100;
             ScoreDic[nickname] += addSize;
             NamePlayerPairs[nickname].SetUserItem(null);

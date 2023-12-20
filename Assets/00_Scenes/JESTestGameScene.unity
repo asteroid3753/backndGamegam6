@@ -5688,9 +5688,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4533772100331150606, guid: f0fddbc8a424a2b40a186ccf4c5fe76e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5375505928968694387, guid: f0fddbc8a424a2b40a186ccf4c5fe76e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9090771744538962970, guid: f0fddbc8a424a2b40a186ccf4c5fe76e, type: 3}
       propertyPath: m_Name
       value: GameSceneTutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 9090771744538962970, guid: f0fddbc8a424a2b40a186ccf4c5fe76e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7751,6 +7763,10 @@ PrefabInstance:
     - target: {fileID: 4956366709116237812, guid: 92fab60cfbccb284591bd25455a6ac98, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956366709116237812, guid: 92fab60cfbccb284591bd25455a6ac98, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5690775073547416688, guid: 92fab60cfbccb284591bd25455a6ac98, type: 3}
       propertyPath: m_Pivot.x
