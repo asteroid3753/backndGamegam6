@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 // using MorningBird.UI;
 using Sirenix.OdinInspector;
+using TransitionsPlus;
+using MorningBird.Sound;
+using System.Threading.Tasks;
+using UnityEngine.Events;
 
 namespace MorningBird.SceneManagement
 {
@@ -15,7 +19,7 @@ namespace MorningBird.SceneManagement
 
         #region Singleton
         
-        static GameSceneLoadManager _gameSceneManager;
+        static GameSceneLoadManager _instance;
         /// <summary>
         /// TotalGameSceneManager
         /// </summary>
@@ -23,22 +27,36 @@ namespace MorningBird.SceneManagement
         {
             get
             {
-                if (_gameSceneManager == null)
+                if (_instance == null)
                 {
                     var obj = FindObjectOfType<GameSceneLoadManager>();
 
                     if (obj != null)
                     {
-                        _gameSceneManager = obj;
+                        _instance = obj;
                     }
                     else
                     {
-                        var newSingleton = GameObject.Find("GameSceneLoadManager").GetComponent<GameSceneLoadManager>();
-                        _gameSceneManager = newSingleton;
+                        var newSingleton = GameObject.Find("TotalGameManager").GetComponent<GameSceneLoadManager>();
+                        _instance = newSingleton;
                     }
                 }
-                return _gameSceneManager;
+                return _instance;
             }
+        }
+
+        private void Awake()
+        {
+            #region Singleton Instantiate
+            var objs = FindObjectsOfType<SoundManager>();
+            if (objs.Length > 1)
+            {
+                Debug.LogError("New SoundManager Added And Destroy Automatically");
+                Destroy(this.gameObject);
+                return;
+            }
+            #endregion
+            AwakeInitialize();
         }
 
         #endregion
@@ -55,37 +73,17 @@ namespace MorningBird.SceneManagement
 
         [FoldoutGroup("Conditions"), SerializeField] List<AsyncOperation> sceneLoadingList = new List<AsyncOperation>();
 #pragma warning disable CS0414 // 사용되지 않은 변수에 대한 경고 끄기
-        [FoldoutGroup("Conditions"), SerializeField] bool _isAllScenesLoaded;
+        [FoldoutGroup("Conditions"), SerializeField] public bool _isAllScenesLoaded;
 #pragma warning restore CS0414 // 사용되지 않은 변수에 대한 경고 끄기
-        // [FoldoutGroup("DebugVariables"), SerializeField] CinematicControllManager_Common _cinematicControllM;
-        // [FoldoutGroup("DebugVariables"), SerializeField] LoadingScreenShowerManager _loadingScreenM;
-        
+        [FoldoutGroup("Transition Controll")] [SerializeField] SceneTransitionManager _transitionSceneManager;
+
         #endregion
 
+        #region Transition
 
-        bool _isLoadingScreen = false;
+        //[FoldoutGroup("Transition"), SerializeField] UnityEvent _onTransitionEnded;
 
-        private void Awake()
-        {
-            AwakeInitialize();
-        }
-
-        private void FixedUpdate()
-        {
-#if UNITY_EDITOR
-            if (_testLoading)
-            {
-                _testLoading = false;
-                LoadSceneAsync(_testStringArr);
-            }
-
-            if (_testUnLoading)
-            {
-                _testUnLoading = false;
-                UnLoadSceneAsync(_testStringArr);
-            }
-#endif
-        }
+        #endregion
 
         void AwakeInitialize()
         {
@@ -111,33 +109,37 @@ namespace MorningBird.SceneManagement
                 }
             }
 
+        }
 
+        private void FixedUpdate()
+        {
+#if UNITY_EDITOR
+            if (_testLoading)
+            {
+                _testLoading = false;
+                LoadSceneAsync(_testStringArr);
+            }
+
+            if (_testUnLoading)
+            {
+                _testUnLoading = false;
+                UnLoadSceneAsync(_testStringArr);
+            }
+#endif
         }
 
         void SetSceneLoadBoolToFalse()
         {
-            _isAllScenesLoaded = false;
-            if (_isLoadingScreen == true)
-            {
-                InitializeLoadingScreen();
-            }
 
-            void InitializeLoadingScreen()
-            {
-                // _loadingScreenM.TurnOnLoadingScreen(5f);
-            }
+#if UNITY_EDITOR
+            Debug.Log("Set SceneLoad bool to false"); 
+#endif
+            _isAllScenesLoaded = false;
         }
 
         void SetSceneLoadBoolToTrue()
         {
             _isAllScenesLoaded = true;
-            DeInitializeLoadingScreen();
-
-            void DeInitializeLoadingScreen()
-            {
-                _isLoadingScreen = false;
-                // _loadingScreenM.TurnOffLoadingScreen();
-            }
         }
 
         Scene[] GetCurrentOpenedScenes()
@@ -154,55 +156,162 @@ namespace MorningBird.SceneManagement
             return scenes;
         }
 
-        public void LoadSceneAsync(string sceneName, bool isLoadingScreenOn = false)
-        {
-            sceneLoadingList.Add(SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
+        #region Transition
 
-            _isLoadingScreen = isLoadingScreenOn;
+        async Task StartTransition(TransitionType transitionType)
+        {
+            await _transitionSceneManager.StartTransition(transitionType);
+        }
+
+        async Task WaitEndTransition()
+        {
+            await Task.Run(async () =>
+            {
+                while (_isAllScenesLoaded == false)
+                {
+                    await Task.Delay(250);
+                }
+            });
+
+            await StartTransition(TransitionType.FadeOut_TurnToWhite);
+
+        }
+
+        #endregion
+
+        IEnumerator WaitUntilScenesLoadedAndSetActiveScene(string sceneName)
+        {
+
+            while (sceneLoadingList.Count > 0)
+            {
+                yield return new WaitForSeconds(0.25f);
+#if UNITY_EDITOR
+                Debug.Log($"SceneLoading Screen keeping On");
+#endif
+
+                float totalRatioOfPregress = new();
+                int preserveScenesCount = sceneLoadingList.Count;
+                for (int i = 0; i < sceneLoadingList.Count; i++)
+                {
+                    AsyncOperation operation = sceneLoadingList[i];
+                    totalRatioOfPregress += operation.progress;
+
+                    if (operation.isDone == true)
+                    {
+                        sceneLoadingList.Remove(operation);
+                    }
+                }
+
+                // Check Total Progress
+                if (sceneLoadingList.Count == 0)
+                {
+                    totalRatioOfPregress = 1;
+                }
+                else
+                {
+                    totalRatioOfPregress = totalRatioOfPregress / preserveScenesCount;
+                }
+#if UNITY_EDITOR
+                Debug.Log($"Scene Loading {totalRatioOfPregress} Complite.");
+#endif
+            }
+#if UNITY_EDITOR
+
+
+            Debug.Log($"SceneLoading Screen Turn Off");
+#endif
+            SetSceneLoadBoolToTrue();
+            sceneLoadingList.Clear();
+            SetCenterOfScenes(sceneName);
+
+        }
+
+        public async void LoadSceneAsync(string sceneName, bool isUseTransitionEffect = true)
+        {
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
+            sceneLoadingList.Add(SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
 
             SetSceneLoadBoolToFalse();
             StartCoroutine(WaitUntilScenesLoadedAndSetActiveScene(sceneName));
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
         }
 
-        public void LoadSceneAsync(string[] sceneName, bool isLoadingScreenOn = false)
+        public async void LoadSceneAsync(string[] sceneName, bool isUseTransitionEffect = true)
         {
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
             for (int i = 0; i < sceneName.Length; i++)
             {
                 var name = sceneName[i];
                 sceneLoadingList.Add(SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive));
             }
 
-
-            _isLoadingScreen = isLoadingScreenOn;
-
             SetSceneLoadBoolToFalse();
             StartCoroutine(WaitUntilScenesLoadedAndSetActiveScene(sceneName[0]));
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
         }
 
-        public void UnLoadSceneAsync(string sceneName)
+        public async void UnLoadSceneAsync(string sceneName, bool isUseTransitionEffect = false)
         {
+
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
+
             SceneManager.UnloadSceneAsync(sceneName);
             SetSceneLoadBoolToFalse();
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
         }
 
-        public void UnLoadSceneAsync(string[] sceneName)
+        public async void UnLoadSceneAsync(string[] sceneName, bool isUseTransitionEffect = false)
         {
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
             foreach (var scene in sceneName)
             {
                 SceneManager.UnloadSceneAsync(scene);
             }
 
             SetSceneLoadBoolToFalse();
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
         }
 
-        public void UnLoadAllSceneAsyncAndLoadSceneAsync(string sceneName, string[] exceptingScene = null)
+        public async void UnLoadAllScenes(string[] exceptingScene = null, bool isUseTransitionEffect = false)
         {
-            UnLoadAllScenes(exceptingScene);
-            LoadSceneAsync(sceneName);
-        }
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
 
-        public void UnLoadAllScenes(string[] exceptingScene = null)
-        {
+
             Scene[] scenes = GetCurrentOpenedScenes();
 
             List<string> sceneList = new List<string>();
@@ -229,18 +338,86 @@ namespace MorningBird.SceneManagement
             }
 
             UnLoadSceneAsync(sceneList.ToArray());
+
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
+
         }
 
-        public void UnLoadAllSceneAsyncAndLoadSceneAsync(GroupSceneLoader sceneLoaderClass)
+        public async void UnLoadAllSceneAndLoadSceneAsync(string sceneName, string[] exceptingScene = null, bool isUseTransitionEffect = false)
         {
-            UnLoadAllScenes();
-            sceneLoaderClass.LoadScene();
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
+
+            UnLoadAllScenes(exceptingScene);
+            LoadSceneAsync(sceneName, false);
+
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
+
         }
 
-        public void UnLoadAllSceneAsyncAndLoadSceneAsync(GeneralSceneLoader sceneLoaderClass)
+        public async void UnLoadAllSceneAndLoadSceneAsync(string[] sceneNames, string[] exceptingScene = null, bool isUseTransitionEffect = false)
         {
-            UnLoadAllScenes();
-            sceneLoaderClass.LoadScene();
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
+
+            UnLoadAllScenes(exceptingScene);
+            LoadSceneAsync(sceneNames, false);
+
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
+        }
+
+        public async void UnLoadAllSceneAndLoadSceneAsync(GroupSceneLoader sceneLoaderClass, bool isUseTransitionEffect = false)
+        {
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
+
+            UnLoadAllScenes(isUseTransitionEffect : false);
+            sceneLoaderClass.LoadScene(false);
+
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
+        }
+
+        public async void UnLoadAllSceneAndLoadSceneAsync(GeneralSceneLoader sceneLoaderClass, bool isUseTransitionEffect = false)
+        {
+            if (isUseTransitionEffect == true)
+            {
+                await StartTransition(TransitionType.FadeIn_TurnToBlack);
+            }
+
+
+            UnLoadAllScenes(isUseTransitionEffect : false);
+            sceneLoaderClass.LoadScene(false);
+
+
+            if (isUseTransitionEffect == true)
+            {
+                await WaitEndTransition();
+            }
         }
 
         public void SetCenterOfScenes(string sceneName)
@@ -269,51 +446,6 @@ namespace MorningBird.SceneManagement
             return;
         }
 
-        IEnumerator WaitUntilScenesLoadedAndSetActiveScene(string sceneName)
-        {
-            while (sceneLoadingList.Count > 0)
-            {
 
-#if UNITY_EDITOR
-                Debug.Log($"SceneLoading Screen Turn On");
-                Debug.Log($"SceneLoading Screen keeping On");
-#endif
-
-                yield return new WaitForSeconds(0.25f);
-
-                float totalRatioOfPregress = new();
-                int preserveScenesCount = sceneLoadingList.Count;
-                for (int i = 0; i < sceneLoadingList.Count; i++)
-                {
-                    AsyncOperation operation = sceneLoadingList[i];
-                    totalRatioOfPregress += operation.progress;
-
-                    if (operation.isDone == true)
-                    {
-                        sceneLoadingList.Remove(operation);
-                    }
-                }
-
-                // Check Total Progress
-                if(sceneLoadingList.Count == 0)
-                {
-                    totalRatioOfPregress = 1;
-                }
-                else
-                {
-                    totalRatioOfPregress = totalRatioOfPregress / preserveScenesCount;
-                }
-#if UNITY_EDITOR
-                Debug.Log($"Scene Loading {totalRatioOfPregress} Complite.");
-#endif
-            }
-#if UNITY_EDITOR
-            Debug.Log($"SceneLoading Screen Turn Off");
-#endif
-            SetSceneLoadBoolToTrue();
-            sceneLoadingList.Clear();
-            SetCenterOfScenes(sceneName);
-
-        }
     }
 }

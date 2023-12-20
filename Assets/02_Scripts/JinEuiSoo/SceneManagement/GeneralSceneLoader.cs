@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 namespace MorningBird.SceneManagement
@@ -30,7 +31,18 @@ namespace MorningBird.SceneManagement
             Debug.Log(UnityEngine.SceneManagement.SceneManager.GetSceneAt(0).path);
         }
 
-        public void LoadScene()
+        [SerializeField] bool _test;
+
+        private void Update()
+        {
+            if(_test == true)
+            {
+                _test = false;
+                StartCoroutine(WaintOneFrameAndLoad());
+            }
+        }
+
+        public void LoadScene(bool isTransitionOn = true)
         {
 
             if (sceneNames.Length == 0)
@@ -39,7 +51,7 @@ namespace MorningBird.SceneManagement
             if (sceneNames[0].Length < 3)
                 return;
 
-            GameSceneLoadManager.Instance.LoadSceneAsync(sceneNames);
+            GameSceneLoadManager.Instance.LoadSceneAsync(sceneNames, isTransitionOn);
         }
 
         IEnumerator WaintOneFrameAndLoad()

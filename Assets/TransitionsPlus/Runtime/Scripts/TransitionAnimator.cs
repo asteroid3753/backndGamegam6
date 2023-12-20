@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
 
-namespace TransitionsPlus {
+namespace TransitionsPlus
+{
 
     public delegate void TransitionEvent();
 
-    public enum RenderMode {
+    public enum RenderMode
+    {
         FullScreen = 0,
         InsideUI = 1,
         VR = 2
@@ -18,7 +20,8 @@ namespace TransitionsPlus {
 
     [ExecuteAlways]
     [HelpURL("https://kronnect.com/guides-category/transitions-plus/")]
-    public class TransitionAnimator : MonoBehaviour {
+    public class TransitionAnimator : MonoBehaviour
+    {
 
         // public
 
@@ -86,7 +89,8 @@ namespace TransitionsPlus {
         readonly Vector4[] centers = new Vector4[MAX_CENTERS];
         float captureProgress;
 
-        static class ShaderParams {
+        static class ShaderParams
+        {
             public static readonly int T = Shader.PropertyToID("_T");
             public static readonly int NoiseIntensity = Shader.PropertyToID("_NoiseIntensity");
             public static readonly int VignetteIntensity = Shader.PropertyToID("_VignetteIntensity");
@@ -124,58 +128,72 @@ namespace TransitionsPlus {
 
         }
 
-        public void SetProfile(TransitionProfile profile) {
+        public void SetProfile(TransitionProfile profile)
+        {
             this.profile = profile;
             UpdateMaterialProperties();
         }
 
-        private void OnEnable() {
-            if (playing && progress < 1f && profile != null && profile.duration > 0) {
+        private void OnEnable()
+        {
+            if (playing && progress < 1f && profile != null && profile.duration > 0)
+            {
                 startTime = Time.time - progress * profile.duration;
             }
         }
 
-        private void OnDisable() {
-            if (profile != null) {
+        private void OnDisable()
+        {
+            if (profile != null)
+            {
                 profile.onSettingsChanged -= UpdateMaterialProperties;
             }
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             ReleaseCameraTextures();
         }
 
-        void OnValidate() {
+        void OnValidate()
+        {
             UpdateMaterialProperties();
         }
 
-        void Start() {
+        void Start()
+        {
             UpdateMaterialProperties();
 #if UNITY_EDITOR
-// inside Editor, the capure/toggle canvas from UpdateMaterialProperties() is delayed on frame to avoid OnValidate errors so we force the refresh here, to ensure camera image is present on frame 0
+            // inside Editor, the capure/toggle canvas from UpdateMaterialProperties() is delayed on frame to avoid OnValidate errors so we force the refresh here, to ensure camera image is present on frame 0
             CaptureCameras();
             ToggleCanvas();
 #endif
-            if (Application.isPlaying) {
-                if (autoPlay) {
+            if (Application.isPlaying)
+            {
+                if (autoPlay)
+                {
                     Invoke(nameof(StartTransition), playDelay);
                 }
             }
         }
 
-        void StartTransition() {
+        void StartTransition()
+        {
             playing = true;
             startTime = Time.time;
-            if (profile != null && profile.sound != null) {
+            if (profile != null && profile.sound != null)
+            {
                 Invoke(nameof(PlayAudio), profile.soundDelay);
             }
         }
 
-        void Update() {
+        void Update()
+        {
 
             if (screenMat == null) return;
 
-            if (autoFollow && followTarget != null && mainCamera != null) {
+            if (autoFollow && followTarget != null && mainCamera != null)
+            {
                 Vector2 center = mainCamera.WorldToViewportPoint(followTarget.position + followPositionOffset);
                 center.x -= 0.5f;
                 center.y -= 0.5f;
@@ -188,60 +206,78 @@ namespace TransitionsPlus {
             float t = profile.duration > 0 ? Mathf.Clamp01((Time.time - startTime) / profile.duration) : 1;
             SetProgress(t);
 
-            if (t >= 1) {
-                enabled = false;
+            if (t >= 1)
+            {
+                playing = false;
                 onTransitionEnd?.Invoke();
-                if (fadeToCamera && switchActiveCamera) {
-                    if (secondCamera != null) {
+                if (fadeToCamera && switchActiveCamera)
+                {
+                    if (secondCamera != null)
+                    {
                         secondCamera.gameObject.SetActive(true);
-                        if (mainCamera != null) {
+                        if (mainCamera != null)
+                        {
                             mainCamera.gameObject.SetActive(false);
                         }
                     }
                 }
-                if (autoDestroy) {
-                    if (destroyAllTransitions) {
+                if (autoDestroy)
+                {
+                    if (destroyAllTransitions)
+                    {
                         TransitionAnimator[] animators = FindObjectsOfType<TransitionAnimator>();
-                        foreach (TransitionAnimator anim in animators) {
+                        foreach (TransitionAnimator anim in animators)
+                        {
                             Destroy(anim.gameObject, destroyDelay);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         Destroy(gameObject, destroyDelay);
                     }
                 }
-                if (loadSceneAtEnd && !string.IsNullOrEmpty(sceneNameToLoad)) {
+                if (loadSceneAtEnd && !string.IsNullOrEmpty(sceneNameToLoad))
+                {
                     SceneManager.LoadScene(sceneNameToLoad, sceneLoadMode);
                 }
             }
         }
 
-        public void UpdateMaterialProperties() {
+        public void UpdateMaterialProperties()
+        {
 
             if (gameObject == null) return;
 
-            if (canvas == null) {
+            if (canvas == null)
+            {
                 canvas = GetComponentInChildren<Canvas>();
                 if (canvas == null) return;
             }
             canvas.sortingOrder = sortingOrder;
 
-            if (defaultScreen == null) {
+            if (defaultScreen == null)
+            {
                 defaultScreen = canvas.GetComponentInChildren<RawImage>();
             }
 
-            if (renderMode == RenderMode.InsideUI) {
+            if (renderMode == RenderMode.InsideUI)
+            {
                 screen = customScreen;
-                if (screen == null) {
+                if (screen == null)
+                {
                     screen = defaultScreen;
                 }
-            } else {
+            }
+            else
+            {
                 screen = defaultScreen;
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.delayCall += () => {
                     try
                     {
                         UnityEditor.EditorApplication.delayCall += () => {
-                            if (canvas != null) {
+                            if (canvas != null)
+                            {
                                 UpdateCanvasProperties();
                             }
                         };
@@ -257,7 +293,8 @@ namespace TransitionsPlus {
 
             if (mainCamera == null) mainCamera = Camera.main;
 
-            if (profile == null) {
+            if (profile == null)
+            {
                 canvas.enabled = false;
                 return;
             }
@@ -272,9 +309,11 @@ namespace TransitionsPlus {
 
             screenMat = screen.material;
             string transitionTypeName = profile.type.ToString();
-            if (screenMat == null || screenMat.name != transitionTypeName) {
+            if (screenMat == null || screenMat.name != transitionTypeName)
+            {
                 Shader shader = Shader.Find("TransitionsPlus/" + transitionTypeName);
-                if (shader == null) {
+                if (shader == null)
+                {
                     Debug.LogError("Shader for transition " + transitionTypeName + " can't be loaded.");
                     return;
                 }
@@ -293,10 +332,13 @@ namespace TransitionsPlus {
             screenMat.SetFloat(ShaderParams.ToonDotIntensity, profile.type.SupportsToon() ? profile.toonDotIntensity : 0);
             screenMat.SetFloat(ShaderParams.ToonDotRadius, profile.toonDotRadius);
             screenMat.SetInt(ShaderParams.ToonDotCount, profile.type.SupportsToon() ? profile.toonDotCount : 1);
-            if (profile.type.SupportsRotation()) {
+            if (profile.type.SupportsRotation())
+            {
                 screenMat.SetFloat(ShaderParams.Rotation, profile.rotation * Mathf.Deg2Rad);
                 screenMat.SetFloat(ShaderParams.RotationMultiplier, profile.rotationMultiplier);
-            } else {
+            }
+            else
+            {
                 screenMat.SetFloat(ShaderParams.Rotation, 0);
                 screenMat.SetFloat(ShaderParams.RotationMultiplier, 0);
             }
@@ -315,10 +357,14 @@ namespace TransitionsPlus {
 
             screenMat.shaderKeywords = null;
             screenMat.enabledKeywords = null;
-            if (profile.colorMode == ColorMode.Texture || fadeToCamera) {
+            if (profile.colorMode == ColorMode.Texture || fadeToCamera)
+            {
                 screenMat.EnableKeyword(ShaderParams.SKW_TEXTURE);
-            } else if (profile.colorMode == ColorMode.Gradient) {
-                switch (profile.gradientMode) {
+            }
+            else if (profile.colorMode == ColorMode.Gradient)
+            {
+                switch (profile.gradientMode)
+                {
                     case GradientMode.Opacity:
                         screenMat.EnableKeyword(ShaderParams.SKW_GRADIENT_OPACITY);
                         break;
@@ -336,15 +382,18 @@ namespace TransitionsPlus {
                         break;
                 }
             }
-            if ((profile.toonDotIntensity > 0 || profile.toonGradientIntensity > 1f) && profile.type.SupportsToon()) {
+            if ((profile.toonDotIntensity > 0 || profile.toonGradientIntensity > 1f) && profile.type.SupportsToon())
+            {
                 screenMat.EnableKeyword(ShaderParams.SKW_TOON);
             }
 
             // compute cells centers
-            if (profile.type.SupportsCentersCount()) {
+            if (profile.type.SupportsCentersCount())
+            {
                 Random.State state = Random.state;
                 Random.InitState(profile.seed);
-                for (int k = 0; k < profile.centersCount; k++) {
+                for (int k = 0; k < profile.centersCount; k++)
+                {
                     Vector2 position;
                     position.x = Random.value;
                     position.y = Random.value;
@@ -361,21 +410,28 @@ namespace TransitionsPlus {
             }
 
 
-            if (gradientTex == null) {
+            if (gradientTex == null)
+            {
                 gradientTex = new Texture2D(256, 1);
                 gradientTex.wrapMode = TextureWrapMode.Clamp;
             }
-            if (gradientColors == null || gradientColors.Length != 256) {
+            if (gradientColors == null || gradientColors.Length != 256)
+            {
                 gradientColors = new Color[256];
             }
-            if (profile.colorMode == ColorMode.SingleColor) {
+            if (profile.colorMode == ColorMode.SingleColor)
+            {
                 Color whiteColor = Color.white;
-                for (int k = 0; k < 256; k++) {
+                for (int k = 0; k < 256; k++)
+                {
                     float f = k / 255f;
                     gradientColors[k] = whiteColor;
                 }
-            } else {
-                for (int k = 0; k < 256; k++) {
+            }
+            else
+            {
+                for (int k = 0; k < 256; k++)
+                {
                     float f = k / 255f;
                     gradientColors[k] = profile.gradient.Evaluate(f);
                 }
@@ -391,65 +447,86 @@ namespace TransitionsPlus {
             AssignSecondCameraTextureAndColor();
         }
 
-        void UpdateCanvasProperties() {
-            if (renderMode == RenderMode.VR && mainCamera != null) {
+        void UpdateCanvasProperties()
+        {
+            if (renderMode == RenderMode.VR && mainCamera != null)
+            {
                 canvas.renderMode = UnityEngine.RenderMode.ScreenSpaceCamera;
                 canvas.planeDistance = 1;
                 canvas.worldCamera = mainCamera;
-            } else {
+            }
+            else
+            {
                 canvas.renderMode = UnityEngine.RenderMode.ScreenSpaceOverlay;
             }
         }
 
-        void AssignSecondCameraTextureAndColor() {
+        void AssignSecondCameraTextureAndColor()
+        {
             if (profile == null || screenMat == null || screen == null) return;
-            if (fadeToCamera && rtSecond != null) {
+            if (fadeToCamera && rtSecond != null)
+            {
                 screen.texture = rtSecond;
                 screenMat.SetTexture(ShaderParams.MainTex, rtSecond);
-            } else if (profile.colorMode == ColorMode.Texture) {
+            }
+            else if (profile.colorMode == ColorMode.Texture)
+            {
                 screen.texture = profile.texture;
                 screenMat.SetTexture(ShaderParams.MainTex, profile.texture);
-            } else {
+            }
+            else
+            {
                 screen.texture = Texture2D.whiteTexture;
                 screenMat.SetTexture(ShaderParams.MainTex, Texture2D.whiteTexture);
             }
 
-            if (profile.colorMode == ColorMode.SingleColor) {
+            if (profile.colorMode == ColorMode.SingleColor)
+            {
                 screenMat.color = profile.color;
-            } else {
+            }
+            else
+            {
                 screenMat.color = Color.white;
             }
         }
 
 
-        void AssignFirstCameraTexture() {
+        void AssignFirstCameraTexture()
+        {
             if (profile == null || screenMat == null) return;
             screenMat.SetTexture(ShaderParams.FirstCameraTex, rtFirst);
         }
 
-        void ToggleCanvas() {
+        void ToggleCanvas()
+        {
             if (canvas == null) return;
-            if (renderMode == RenderMode.InsideUI && screen != defaultScreen) {
+            if (renderMode == RenderMode.InsideUI && screen != defaultScreen)
+            {
                 canvas.enabled = false;
                 return;
             }
 
-            if (profile != null) {
+            if (profile != null)
+            {
                 canvas.enabled = profile.invert ? progress < 1f : progress > 0;
             }
         }
 
-        void CaptureCameras() {
-            if (captureProgress == 0 || rtFirst == null) {
+        void CaptureCameras()
+        {
+            if (captureProgress == 0 || rtFirst == null)
+            {
                 CaptureFirstCameraTexture();
             }
-            if (captureProgress == 0 || rtSecond == null) {
+            if (captureProgress == 0 || rtSecond == null)
+            {
                 CaptureSecondCameraTexture();
             }
             captureProgress = progress;
         }
 
-        void CaptureFirstCameraTexture() {
+        void CaptureFirstCameraTexture()
+        {
             ReleaseFirstCameraTexture();
             if (profile == null || !profile.type.RequiresFirstCameraCapture() || mainCamera == null) return;
 
@@ -461,7 +538,8 @@ namespace TransitionsPlus {
             AssignFirstCameraTexture();
         }
 
-        void CaptureSecondCameraTexture() {
+        void CaptureSecondCameraTexture()
+        {
             ReleaseSecondCameraTexture();
             if (!fadeToCamera || secondCamera == null) return;
 
@@ -473,20 +551,25 @@ namespace TransitionsPlus {
             AssignSecondCameraTextureAndColor();
         }
 
-        void ReleaseCameraTextures() {
+        void ReleaseCameraTextures()
+        {
             ReleaseFirstCameraTexture();
             ReleaseSecondCameraTexture();
         }
 
-        void ReleaseFirstCameraTexture() {
-            if (rtFirst != null) {
+        void ReleaseFirstCameraTexture()
+        {
+            if (rtFirst != null)
+            {
                 rtFirst.Release();
                 DestroyImmediate(rtFirst);
             }
         }
 
-        void ReleaseSecondCameraTexture() {
-            if (rtSecond != null) {
+        void ReleaseSecondCameraTexture()
+        {
+            if (rtSecond != null)
+            {
                 rtSecond.Release();
                 DestroyImmediate(rtSecond);
             }
@@ -494,12 +577,15 @@ namespace TransitionsPlus {
 
         #region API
 
-        public void SetProgress(float t) {
+        public void SetProgress(float t)
+        {
             t = Mathf.Clamp01(t);
             progress = t;
 
-            if (profile != null) {
-                if (profile.type.SupportsTimeMultiplier()) {
+            if (profile != null)
+            {
+                if (profile.type.SupportsTimeMultiplier())
+                {
                     t *= profile.timeMultiplier;
                 }
                 screenMat.SetFloat(ShaderParams.T, profile.invert ? 1f - t : t);
@@ -507,7 +593,8 @@ namespace TransitionsPlus {
 
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.delayCall += () => {
-                try {
+                try
+                {
                     UnityEditor.EditorApplication.delayCall += () => {
                         CaptureCameras();
                         ToggleCanvas();
@@ -521,18 +608,22 @@ namespace TransitionsPlus {
 #endif
         }
 
-        public void PlayAudio() {
+        public void PlayAudio()
+        {
             if (profile == null || profile.sound == null) return;
             AudioListener listener = FindObjectOfType<AudioListener>();
-            if (listener != null) {
+            if (listener != null)
+            {
                 AudioSource.PlayClipAtPoint(profile.sound, listener.transform.position);
             }
         }
 
 
-        public static GameObject CreateTransition() {
+        public static GameObject CreateTransition()
+        {
             GameObject o = Resources.Load<GameObject>("Prefabs/Transitions Plus");
-            if (o == null) {
+            if (o == null)
+            {
                 Debug.LogError("Couldn't find Transitions Root prefab.");
                 return null;
             }
@@ -543,12 +634,55 @@ namespace TransitionsPlus {
             return o;
         }
 
-        static TransitionAnimator CreateTransitionAnimator() {
+        static TransitionAnimator CreateTransitionAnimator()
+        {
             GameObject o = CreateTransition();
             return o.GetComponentInChildren<TransitionAnimator>();
         }
 
-        public static TransitionAnimator Start(TransitionProfile profile, bool autoDestroy = true, float destroyDelay = 1f, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, bool autoFollow = false, Transform followTarget = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default) {
+        public void StartTransition(TransitionProfile profile, bool autoDestroy = false, float destroyDelay = 1f, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, bool autoFollow = false, Transform followTarget = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default)
+        {
+
+            TransitionAnimator animator = this;
+
+            SetProgress(0);
+
+            animator.autoDestroy = autoDestroy;
+            animator.destroyDelay = destroyDelay;
+            animator.autoFollow = autoFollow;
+            animator.followTarget = followTarget;
+            animator.followPositionOffset = followPositionOffset;
+            if (sortingOrder > int.MinValue)
+            {
+                animator.sortingOrder = sortingOrder;
+            }
+            animator.playDelay = playDelay;
+            if (!string.IsNullOrEmpty(sceneNameToLoad))
+            {
+                animator.loadSceneAtEnd = true;
+                animator.sceneNameToLoad = sceneNameToLoad;
+                animator.sceneLoadMode = sceneLoadMode;
+            }
+            else if (fadeToCamera && secondCamera)
+            {
+                animator.fadeToCamera = true;
+                animator.mainCamera = mainCamera;
+                animator.secondCamera = secondCamera;
+                animator.switchActiveCamera = switchActiveCamera;
+            }
+            animator.SetProfile(profile);
+
+
+            StartTransition();
+            if (playing && progress < 1f && profile != null && profile.duration > 0)
+            {
+                startTime = Time.time - progress * profile.duration;
+            }
+
+        }
+
+        public static TransitionAnimator Start(TransitionProfile profile, bool autoDestroy = true, float destroyDelay = 1f, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, bool autoFollow = false, Transform followTarget = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default)
+        {
 
             TransitionAnimator animator = CreateTransitionAnimator();
             animator.autoDestroy = autoDestroy;
@@ -556,15 +690,19 @@ namespace TransitionsPlus {
             animator.autoFollow = autoFollow;
             animator.followTarget = followTarget;
             animator.followPositionOffset = followPositionOffset;
-            if (sortingOrder > int.MinValue) {
+            if (sortingOrder > int.MinValue)
+            {
                 animator.sortingOrder = sortingOrder;
             }
             animator.playDelay = playDelay;
-            if (!string.IsNullOrEmpty(sceneNameToLoad)) {
+            if (!string.IsNullOrEmpty(sceneNameToLoad))
+            {
                 animator.loadSceneAtEnd = true;
                 animator.sceneNameToLoad = sceneNameToLoad;
                 animator.sceneLoadMode = sceneLoadMode;
-            } else if (fadeToCamera && secondCamera) {
+            }
+            else if (fadeToCamera && secondCamera)
+            {
                 animator.fadeToCamera = true;
                 animator.mainCamera = mainCamera;
                 animator.secondCamera = secondCamera;
@@ -575,19 +713,25 @@ namespace TransitionsPlus {
 
         }
 
-        public static TransitionAnimator Start(TransitionType type, float duration = 2f, Color color = default, Gradient gradient = null, Texture2D texture = null, Vector2 center = default, bool keepAspectRatio = false, float rotation = 0, float rotationMultiplier = 0, float toonDotIntensity = 0, int toonGradientIntensity = 1, float noiseIntensity = 0.5f, Texture2D noiseTex = null, Vector2 noiseScale = default, bool invert = false, bool autoDestroy = true, float vignetteIntensity = 0.5f, float contrast = 1f, int splits = 5, int centersCount = 8, int seed = 0, int cellsDivisions = 64, float spread = 16f, float destroyDelay = 1, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, AudioClip sound = null, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, float timeMultiplier = 1f, bool autoFollow = false, Transform followTarget = null, Texture2D shapeTexture = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default) {
+        public static TransitionAnimator Start(TransitionType type, float duration = 2f, Color color = default, Gradient gradient = null, Texture2D texture = null, Vector2 center = default, bool keepAspectRatio = false, float rotation = 0, float rotationMultiplier = 0, float toonDotIntensity = 0, int toonGradientIntensity = 1, float noiseIntensity = 0.5f, Texture2D noiseTex = null, Vector2 noiseScale = default, bool invert = false, bool autoDestroy = true, float vignetteIntensity = 0.5f, float contrast = 1f, int splits = 5, int centersCount = 8, int seed = 0, int cellsDivisions = 64, float spread = 16f, float destroyDelay = 1, string sceneNameToLoad = null, LoadSceneMode sceneLoadMode = LoadSceneMode.Single, AudioClip sound = null, bool fadeToCamera = false, Camera mainCamera = null, Camera secondCamera = null, bool switchActiveCamera = true, float timeMultiplier = 1f, bool autoFollow = false, Transform followTarget = null, Texture2D shapeTexture = null, int sortingOrder = int.MinValue, float playDelay = 0, Vector3 followPositionOffset = default)
+        {
 
             TransitionProfile profile = ScriptableObject.CreateInstance<TransitionProfile>();
             profile.type = type;
             profile.duration = duration;
             profile.invert = invert;
-            if (gradient != null) {
+            if (gradient != null)
+            {
                 profile.colorMode = ColorMode.Gradient;
                 profile.gradient = gradient;
-            } else if (texture != null) {
+            }
+            else if (texture != null)
+            {
                 profile.colorMode = ColorMode.Texture;
                 profile.texture = texture;
-            } else {
+            }
+            else
+            {
                 profile.colorMode = ColorMode.SingleColor;
                 profile.color = color != default ? color : Color.black;
             }

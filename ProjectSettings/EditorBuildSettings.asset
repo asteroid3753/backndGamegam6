@@ -38,4 +38,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00_Scenes/Result.unity
     guid: d5789a64ba567fe46b167d13aeb81129
+  - enabled: 1
+    path: Assets/TransitionsPlus/Demos/Scene Loading/Second Scene.unity
+    guid: 446755d44cff44f1495d039b060ea905
+  - enabled: 1
+    path: Assets/TransitionsPlus/Demos/Scene Loading/Main Scene.unity
+    guid: 66fe5cf05ff1d4725a553058aa61e45a
   m_configObjects: {}

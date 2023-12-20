@@ -20,12 +20,14 @@ namespace MorningBird.SceneManagement
 
         [SerializeField] string _dotsSubScene;
 
+        [SerializeField] bool _isTransitionOn = true;
+
         private void Start()
         {
             StartCoroutine(WaitOneFrameAndLoad());
         }
 
-        public void LoadScene()
+        public void LoadScene(bool isTransitionOn = true)
         {
             if (sceneMain.Length < 3 || sceneBody.Length < 3)
             {
@@ -36,10 +38,10 @@ namespace MorningBird.SceneManagement
                 // wait for second
             }
 
-            InnerSceneLoading();
+            InnerSceneLoading(isTransitionOn);
         }
 
-        private void InnerSceneLoading()
+        private void InnerSceneLoading(bool isTransitionOn = true)
         {
             // Declrare array
             List<string> sceneList = new();
@@ -95,11 +97,11 @@ namespace MorningBird.SceneManagement
             // LoadScene
             if (sceneList.Count == 1)
             {
-                GameSceneLoadManager.Instance.LoadSceneAsync(sceneList[0]);
+                GameSceneLoadManager.Instance.LoadSceneAsync(sceneList[0], isTransitionOn);
             }
             else
             {
-                GameSceneLoadManager.Instance.LoadSceneAsync(sceneList.ToArray());
+                GameSceneLoadManager.Instance.LoadSceneAsync(sceneList.ToArray(), isTransitionOn);
             }
         }
 

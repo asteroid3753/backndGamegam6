@@ -19,7 +19,7 @@ namespace MorningBird.Sound
     {
         #region Singleton Settings
 
-        private static SoundManager _soundManager;
+        private static SoundManager _instance;
 
         /// <summary>
         /// SoundManager
@@ -28,21 +28,21 @@ namespace MorningBird.Sound
         {
             get
             {
-                if (_soundManager == null)
+                if (_instance == null)
                 {
                     SoundManager obj = FindObjectOfType<SoundManager>();
 
                     if (obj != null)
                     {
-                        _soundManager = obj;
+                        _instance = obj;
                     }
                     else
                     {
                         var newSingleton = new GameObject("SoundManager").AddComponent<SoundManager>();
-                        _soundManager = newSingleton;
+                        _instance = newSingleton;
                     }
                 }
-                return _soundManager;
+                return _instance;
             }
         }
 
