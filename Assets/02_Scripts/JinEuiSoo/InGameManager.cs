@@ -235,8 +235,6 @@ namespace LJH
                     // Game End
                     TotalScoreMessage scoreMsg = new TotalScoreMessage(scoreArr);
                     BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);
-
-                    TotalGameManager.Instance.resultSlimeSize = totalScore;
                     DeclareMatchEnd();
 
                     _isGameEnd = false;
