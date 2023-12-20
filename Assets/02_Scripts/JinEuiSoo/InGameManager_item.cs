@@ -14,14 +14,6 @@ namespace LJH
         int itemMaxCount = 10;
 
         private int itemTypeCount;
-        private void ItemUpdate()
-        {
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    GrabItemMessage msg = new GrabItemMessage(NamePlayerPairs[_myClientNickName].GetUserNowItem().ItemCode);
-            //    BackEndManager.Instance.InGame.SendDataToInGame(msg);
-            //}
-        }
 
         private void ItemEventAdd()
         {

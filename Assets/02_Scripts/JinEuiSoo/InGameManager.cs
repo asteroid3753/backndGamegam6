@@ -117,6 +117,22 @@ namespace LJH
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
                 BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
+
+                Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
+                {
+                    if (args.ErrInfo == ErrorCode.Success)
+                    {
+                        Debug.Log("8-2. OnMatchResult 성공 : " + args.ErrInfo.ToString());
+                    }
+                    else
+                    {
+                        Debug.LogError("8-2. OnMatchResult 실패 : " + args.ErrInfo.ToString());
+                    }
+
+                    TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
+
+
+                };
             }
 
 
@@ -202,12 +218,7 @@ namespace LJH
         {
             #region GameEndingConditionCheck
 
-
-
-
             #endregion
-
-            ItemUpdate();
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
             if (TotalGameManager.Instance.isHost || _isGameEnd == true)
@@ -259,22 +270,6 @@ namespace LJH
 
         void DeclareMatchEnd()
         {
-            Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
-            {
-                if (args.ErrInfo == ErrorCode.Success)
-                {
-                    Debug.Log("8-2. OnMatchResult 성공 : " + args.ErrInfo.ToString());
-                }
-                else
-                {
-                    Debug.LogError("8-2. OnMatchResult 실패 : " + args.ErrInfo.ToString());
-                }
-
-                TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
-         
-
-            };
-
             Debug.Log("8-1. MatchEnd 호출");
 
             //MatchGameResult matchGameResult = new MatchGameResult();

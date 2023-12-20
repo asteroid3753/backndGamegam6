@@ -9479,8 +9479,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6446871937054840964, guid: 73be28aea062a814dbce97831e07d217, type: 3}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      propertyPath: itemMaxCount
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: slimeEndScale
-      value: 1.3
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: serializationData.Prefab

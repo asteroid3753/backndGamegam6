@@ -70,7 +70,7 @@ namespace LJH{
             //lx = -42.8 rx = 41.5 uy = 22.5 dy = -24.3
             if((lx <= x && x <= rx) && (dy <= y && y <= uy)){
                 PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
-                BackEndManager.Instance.InGame.SendDataToInGame(msg); 
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
