@@ -14,11 +14,15 @@ using System.Linq;
 using Cinemachine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using TMPro;
 
 namespace LJH
 {
     public partial class InGameManager : SerializedMonoBehaviour
     {
+        [SerializeField]
+        private GameObject gaugePrefab;
+
         [SerializeField]
         private GameObject itemPrefab;
         [SerializeField]
@@ -36,17 +40,19 @@ namespace LJH
         [SerializeField] List<string> _playerNickNames;
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
-        [SerializeField] Color[] _gaugeColors = new Color[4] { new Color32(230, 151, 220, 255), new Color32(156, 214, 224, 255),
-        new Color32(156, 113, 79, 255), new Color32(220, 170, 255, 255)};
+        [SerializeField] Color[] _gaugeColors = new Color[4] { new Color32(255, 255, 255, 255), new Color32(100, 112, 255, 255),
+        new Color32(255, 201, 98, 255), new Color32(186, 83, 255, 255)};
 
         public Dictionary<string, LJH.Player> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
 
-        public Dictionary<string, LayoutElement> GaugeDic;
+        public Dictionary<string, GaugeElement> GaugeDic;
         public Dictionary<string, float> ScoreDic;
 
         int itemCount = 0;
+
+        private float totalScore = 0;
 
         BoxCollider2D slimeArea;
         BoxCollider2D groundArea;
@@ -132,7 +138,7 @@ namespace LJH
 
                 NamePlayerPairs = new Dictionary<string, LJH.Player>();
                 InGameItemDic = new Dictionary<int, GrowingItem>();
-                GaugeDic = new Dictionary<string, LayoutElement>();
+                GaugeDic = new Dictionary<string, GaugeElement>();
                 ScoreDic = new Dictionary<string, float>();
                 for (int i = 0; i < _playerNickNames.Count; i++)
                 {
@@ -183,14 +189,12 @@ namespace LJH
 
         private void AddGauge(string nickname, Color color)
         {
-            GameObject imgobj = new GameObject { name = $"Player({nickname})" };
-            imgobj.transform.SetParent(gaugeObj.transform);
-            Image img = imgobj.AddComponent<Image>();
-            LayoutElement layoutEle = imgobj.AddComponent<LayoutElement>();
-            img.color = color;
-            layoutEle.flexibleWidth = 1;
-            layoutEle.transform.localScale = Vector3.one;
-            InGameManager.Instance.GaugeDic.Add(nickname, layoutEle);
+            float initPercent = 100 / _playerNickNames.Count;
+            GameObject obj = Instantiate(gaugePrefab, gaugeObj.transform);
+            GaugeElement gaugeElement = obj.GetComponent<GaugeElement>();
+            gaugeElement.Percent = initPercent;
+            gaugeElement.GaugeColor = color;
+            GaugeDic.Add(nickname, gaugeElement);
         }
 
         int testCnt = 0;
@@ -295,9 +299,16 @@ namespace LJH
                 slimeObj.transform.localScale = new Vector3(size, size);
             }
 
-            // TODO : Gauge 수정
-            GaugeDic[nickname].flexibleWidth = (GaugeDic[nickname].flexibleWidth + addSize) % 100;
+            totalScore += addSize;
             ScoreDic[nickname] += addSize;
+
+            for (int i = 0; i < ScoreDic.Count; i++)
+            {
+                string name = _playerNickNames[i];
+                float percent = ScoreDic[name] / totalScore * 100f;
+                GaugeDic[name].Percent = percent;    
+            }
+           
             NamePlayerPairs[nickname].SetUserItem(null);
         }
     } 
