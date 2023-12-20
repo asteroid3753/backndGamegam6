@@ -76,7 +76,7 @@ namespace KSY
             Vector2 moveVector = new Vector2(data.x, data.y);
 
             // if Now Vector diffrent
-            if (!moveVector.Equals(InGameManager.Instance.NamePlayerPairs[nickname].GetUserTarget()))
+            if (!moveVector.Equals(InGameManager.Instance.NamePlayerPairs[nickname].MovingTarget))
             {
                 PlayerMoveEvent?.Invoke(nickname, moveVector);
             }

@@ -1,90 +1,104 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace LJH{
-    public class Player : MonoBehaviour
+namespace LJH
+{
+    public class Player : SerializedMonoBehaviour
     {
-        [SerializeField] Vector2 target;
-        [SerializeField] float userSpeed = 2.0f;
-        [SerializeField] bool flipX = false;
-
-        [SerializeField] public string NickName;
-
-        [SerializeField] int havingItem = -1; //������ �ִ� ������
-        [SerializeField] GrowingItem nowItem; //�浹������
-
-        SpriteRenderer sprite;
-
-        public string GetUserName()
+        [SerializeField] Vector2 _movningTarget;
+        public Vector2 MovingTarget 
         {
-            return NickName;
+            get => _movningTarget;
+            set
+            {
+                _movningTarget = value;
+                Debug.Log($"ServerGetPosition : {_movningTarget} ");
+            }
+
         }
-        public Vector2 GetUserTarget(){
-            return target;
+
+        [SerializeField] float _movingSpeed = 2.0f;
+        public float MovingSpeed
+        {
+            get => _movingSpeed;
+            set
+            {
+                _movingSpeed = value;
+            }
         }
-        public float GetUserSpeed(){
-            return userSpeed;
+
+        [SerializeField] bool isFlipX = false;
+        public bool IsFlipX
+        {
+            get => isFlipX;
+            set => isFlipX = value;
         }
-        public bool GetUserFlip(){
-            return flipX;
+
+        [SerializeField] public string NickName { get; set; }
+
+        [SerializeField] int havingItem = -1; 
+        [SerializeField] GrowingItem _currentTargetItem;
+        public GrowingItem CurrentTargetItem
+        {
+            get => _currentTargetItem;
+            set
+            {
+                _currentTargetItem = value;
+            }
         }
+
+        SpriteRenderer spriteRenderer;
+
         //getter Test
-        public int GetUserItem(){
+        public int GetUserItem()
+        {
             return havingItem;
         }
-        public GrowingItem GetUserNowItem(){
-            return nowItem;
-        }
 
-        //setter
-        public void SetUserName(string _name){
-            NickName = _name;
-        }
-        public void SetUserTarget(Vector2 _target){
-            target = _target;
-        }
-        public void SetUserSpeed(float _speed){
-            userSpeed = _speed;
-        }
-        public void SetUserFlip(bool _flipX){
-            flipX = _flipX;
-        }
         //setter Test
-        public void SetUserItem(GrowingItem _item){
+        public void SetUserItem(GrowingItem _item)
+        {
             if (_item == null)
             {
                 havingItem = 0;
-                sprite.sprite = null;
+                spriteRenderer.sprite = null;
             }
             else
             {
                 havingItem = _item.GrowPoint;
-                sprite.sprite = _item.ItemImg;
+                spriteRenderer.sprite = _item.ItemImg;
             }
         }
-        public void SetUserNowItem(GrowingItem _item){
-            nowItem = _item;
-        }
 
-        private void Update() {
-            if(target.x - this.transform.position.x > 0.1f){
-                SetUserFlip(true); //right
-            }
-            if(target.x - this.transform.position.x < -0.1f){
-                SetUserFlip(false); //right
+        private void Update()
+        {
+            // Set Player Position
+            {
+                float x = Mathf.Lerp(this.transform.position.x, MovingTarget.x, 0.5f);
+                float y = Mathf.Lerp(this.transform.position.y, MovingTarget.y, 0.5f);
+
+                this.transform.position = new Vector3(x, y, transform.position.z);
             }
 
-            float x = Mathf.Lerp(this.transform.position.x, target.x,0.1f);
-            float y = Mathf.Lerp(this.transform.position.y, target.y,0.1f);
-            
-            this.transform.position = new Vector3(x,y,transform.position.z);
+            // Set Player Flip
+            {
+                if (MovingTarget.x - this.transform.position.x > 0.1f)
+                {
+                    isFlipX = true; // right
+                }
+                if (MovingTarget.x - this.transform.position.x < -0.1f)
+                {
+                    isFlipX = false; // left
+                }
+            }
         }
 
         private void Start()
         {
-            sprite = gameObject.transform.Find("Item").GetComponent<SpriteRenderer>();
+            spriteRenderer = gameObject.transform.Find("Item").GetComponent<SpriteRenderer>();
         }
     }
 }

@@ -6,26 +6,31 @@ using KSY;
 using BackEnd.Tcp;
 using BackEnd;
 using Unity.VisualScripting;
+using Sirenix.OdinInspector;
 
-namespace LJH{
-    public class InputManager : MonoBehaviour
-    {  
+namespace LJH
+{
+    public class InputManager : SerializedMonoBehaviour
+    {
         float x, y;
         Player player;
         float uy = 22.5f, dy = -24.3f, lx = -42.8f, rx = 41.5f;
 
         [SerializeField] bool isConrollAble = false;
-
         [SerializeField] bool isSlime = false;
+        [SerializeField] Rigidbody2D _rigidBody;
 
-        public Vector2 GetUserPos(){
-            return new Vector2(x,y);
+
+        public Vector2 GetUserPos()
+        {
+            return new Vector2(x, y);
         }
 
         // Start is called before the first frame update
         void Start()
         {
             player = GetComponent<Player>();
+            _rigidBody = this.GetComponent<Rigidbody2D>();
 
             isConrollAble = false;
 
@@ -49,63 +54,107 @@ namespace LJH{
             if (isConrollAble == false)
                 return;
 
-            if(TotalGameManager.Instance.myNickName != player.GetUserName())
+            if (TotalGameManager.Instance.myNickName != player.NickName)
             {
                 return;
             }
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
 
-            if(horizontal != 0 || vertical != 0){
-                this.GetComponent<Animator>().SetBool("Walk",true);
+            float horizontal;
+            float vertical;
+
+            // Get Input
+            {
+                horizontal = Input.GetAxisRaw("Horizontal");
+                vertical = Input.GetAxisRaw("Vertical");
             }
-            else{
-                this.GetComponent<Animator>().SetBool("Walk",false);
+
+
+            Vector2 movingVector = new Vector2(horizontal, vertical);
+            movingVector = movingVector.normalized;
+
+
+            // Set Player Animation
+            {
+                if (movingVector.magnitude >= 0.1f)
+                {
+                    this.GetComponent<Animator>().SetBool("Walk", true);
+                }
+                else
+                {
+                    this.GetComponent<Animator>().SetBool("Walk", false);
+                }
             }
             
-            
-            x = player.transform.position.x + (horizontal * Time.deltaTime * player.GetUserSpeed());
-            y = player.transform.position.y + (vertical * Time.deltaTime * player.GetUserSpeed());
-            
+
+            movingVector *= player.MovingSpeed * Time.deltaTime;
+            _rigidBody.velocity = movingVector;
+
+            // 코드 보존
+#if true
             //lx = -42.8 rx = 41.5 uy = 22.5 dy = -24.3
-            if((lx <= x && x <= rx) && (dy <= y && y <= uy)){
+            if ((lx <= x && x <= rx) && (dy <= y && y <= uy))
+            {
                 PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
+            } 
+#endif
+            // Send Moving Message To Server
+            if (MorningBird.TimeSafer.Instance.GetFixed50msSafer == true)
+            {
+                Vector2 currentPosition = this.transform.position;
+
+                PlayerMoveMessage msg = new PlayerMoveMessage(currentPosition);
+                BackEndManager.Instance.InGame.SendDataToInGame(msg);
+
+                Debug.Log($"ServerSendingPosition : {currentPosition}");
+            }
+        }
+
+        private void Update()
+        {
+            // Player moving // not use
+            {
+
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            // Player GetItem
             {
-                Debug.Log("");
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Debug.Log("");
 
-                if (isSlime)
-                {
-                    if (player.GetUserItem() != 0)
+                    if (isSlime)
                     {
-                        SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(player.GetUserItem());
-                        BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
+                        if (player.GetUserItem() != 0)
+                        {
+                            SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(player.GetUserItem());
+                            BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
+                        }
+                        else
+                        {
+                            Debug.Log("슬라임 먹이 없음");
+                        }
                     }
-                    else
+                    else if (player.CurrentTargetItem != null && player.GetUserItem() == 0)
                     {
-                        Debug.Log("슬라임 먹이 없음");
+                        Debug.Log("습득:" + player.CurrentTargetItem.ItemCode);
+                        GrabItemMessage itemMsg = new GrabItemMessage(player.CurrentTargetItem.ItemCode);
+                        BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
                     }
                 }
-                else if (player.GetUserNowItem() != null && player.GetUserItem() == 0)
-                {
-                    Debug.Log("습득:"+player.GetUserNowItem().ItemCode);
-                    GrabItemMessage itemMsg = new GrabItemMessage(player.GetUserNowItem().ItemCode);
-                    BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
-                }
+
             }
 
         }
 
-        private void OnTriggerEnter2D(Collider2D other) {
+        private void OnTriggerEnter2D(Collider2D other)
+        {
             if (other.tag == "Item")
             {
                 GrowingItem item = other.GetComponent<GrowingItem>();
                 if (item != null)
                 {
-                    player.SetUserNowItem(item);
+                    player.CurrentTargetItem = item;
                 }
             }
             else if (other.tag == "Slime")
@@ -116,19 +165,20 @@ namespace LJH{
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if(other.tag == "Item"){
+            if (other.tag == "Item")
+            {
                 GrowingItem item = other.GetComponent<GrowingItem>();
                 if (item != null)
                 {
-                    player.SetUserNowItem(null);
-                } 
+                    player.CurrentTargetItem = null;
+                }
             }
             else if (other.tag == "Slime")
             {
                 isSlime = false;
             }
         }
-        
+
     }
 }
 

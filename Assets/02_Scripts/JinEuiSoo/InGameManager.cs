@@ -161,7 +161,7 @@ namespace LJH
                     GameObject pgo = Instantiate(_playerPrefab[i]);//, _playerPositions[i].position, Quaternion.identity);
                     LJH.Player player = pgo.GetComponent<LJH.Player>();
                     NamePlayerPairs.Add(_playerNickNames[i], player);
-                    player.SetUserName(_playerNickNames[i]);
+                    player.NickName = _playerNickNames[i];
                     AddGauge(_playerNickNames[i], _gaugeColors[i]);
                     ScoreDic.Add(_playerNickNames[i], 0f);
 
@@ -176,7 +176,7 @@ namespace LJH
 
                     if (_playerNickNames[i].ToString() == _myClientNickName){
                         Debug.Log(_playerPositions[i].position);
-                        player.SetUserMovingTarget(_playerPositions[i].position);
+                        player.MovingTarget = _playerPositions[i].position;
                         pgo.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
                         CinemachineVirtualCamera cam = Instantiate(cameraPrefab, pgo.transform).GetComponent<CinemachineVirtualCamera>() ;
                         cam.gameObject.GetComponent<CinemachineConfiner>().m_BoundingShape2D = GameObject.Find("Bound").GetComponent<Collider2D>();
@@ -290,7 +290,7 @@ namespace LJH
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
-            NamePlayerPairs[nickName].SetUserMovingTarget(target);
+            NamePlayerPairs[nickName].MovingTarget = target;
         }
 
         private void Parsing_SlimeSizeUpEvent(string nickname, float addSize)

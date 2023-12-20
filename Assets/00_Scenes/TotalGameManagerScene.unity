@@ -332,7 +332,7 @@ MonoBehaviour:
   _fadeInProfile: {fileID: 11400000, guid: 772782974ab41be4c959a1e10030dbcf, type: 2}
   _fadeOutProfile: {fileID: 11400000, guid: 725febad702c82543a8c38bb76b3b558, type: 2}
   _isTransitionStarted: 0
---- !u!28 &448324245
+--- !u!28 &447218527
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -447,6 +447,7 @@ GameObject:
   - component: {fileID: 588188898}
   - component: {fileID: 588188899}
   - component: {fileID: 588188900}
+  - component: {fileID: 588188901}
   m_Layer: 0
   m_Name: TotalGameManager
   m_TagString: Untagged
@@ -516,6 +517,18 @@ MonoBehaviour:
   myNickName: 
   playerNickNames: []
   resultSlimeSize: 0
+--- !u!114 &588188901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588188897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 803b4403ba4ac9947a50b8255a0b2204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!21 &948453938
 Material:
   serializedVersion: 8
@@ -540,7 +553,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 448324245}
+        m_Texture: {fileID: 447218527}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:

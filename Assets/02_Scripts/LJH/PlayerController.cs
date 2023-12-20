@@ -17,12 +17,12 @@ namespace LJH{
         void Start()
         {
             player = GetComponent<LJH.Player>();
-            player.SetUserSpeed(100f);
+            
         }
 
         private void FixedUpdate() {
             //UserMove
-            this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.GetUserFlip();
+            this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>().flipX = player.IsFlipX;
            
         }
     }
