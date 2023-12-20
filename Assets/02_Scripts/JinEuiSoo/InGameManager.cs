@@ -214,9 +214,18 @@ namespace LJH
             {
                 if (slimeObj.transform.localScale.x >= slimeEndScale || _isGameEnd == true)
                 {
+                    float[] scoreArr = new float[4];
+
+                    for(int i = 0; i< ScoreDic.Count; i++)
+                    {
+                        scoreArr[i] = ScoreDic[_playerNickNames[i]];
+                    }
+                   
                     // Game End
-                    TotalScoreMessage scoreMsg = new TotalScoreMessage(ScoreDic);
+                    TotalScoreMessage scoreMsg = new TotalScoreMessage(scoreArr);
                     BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);
+
+                    TotalGameManager.Instance.resultSlimeSize = totalScore;
                     DeclareMatchEnd();
 
                     _isGameEnd = false;

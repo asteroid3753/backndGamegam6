@@ -4,44 +4,48 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GaugeElement : MonoBehaviour
+namespace KSY
 {
-    private TextMeshProUGUI textGUI;
-
-    private LayoutElement element;
-
-    private Image img;
-
-    private float percent;
-    public float Percent
+    public class GaugeElement : MonoBehaviour
     {
-        get  { return percent; }
-        set 
-        { 
-            percent = value;
-            element.flexibleWidth = percent;
-            // 소수점 한자리 수 까지 표현
-            textGUI.text = $"{percent.ToString("F1")}%";
-        }
-    }
+        private TextMeshProUGUI textGUI;
 
-    private Color gaugeColor;
-    public Color GaugeColor
-    {
-        get  { return gaugeColor; }
-        set
+        private LayoutElement element;
+
+        private Image img;
+
+        private float percent;
+        public float Percent
         {
-            gaugeColor = value;
-            img.color = gaugeColor;
+            get { return percent; }
+            set
+            {
+                percent = value;
+                element.flexibleWidth = percent;
+                // 소수점 한자리 수 까지 표현
+                textGUI.text = $"{percent.ToString("F1")}%";
+            }
         }
 
+        private Color gaugeColor;
+        public Color GaugeColor
+        {
+            get { return gaugeColor; }
+            set
+            {
+                gaugeColor = value;
+                img.color = gaugeColor;
+            }
+
+        }
+
+        void Awake()
+        {
+            img = GetComponent<Image>();
+            textGUI = GetComponentInChildren<TextMeshProUGUI>();
+            element = GetComponent<LayoutElement>();
+            element.transform.localScale = Vector3.one;
+        }
     }
 
-    void Awake()
-    {
-        img = GetComponent<Image>();
-        textGUI = GetComponentInChildren<TextMeshProUGUI>();
-        element = GetComponent<LayoutElement>();
-        element.transform.localScale = Vector3.one;
-    }
 }

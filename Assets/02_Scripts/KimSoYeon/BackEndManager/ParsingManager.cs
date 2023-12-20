@@ -17,7 +17,7 @@ namespace KSY
         public event Action<string, float> SlimeSizeUpEvent;
         public event Action<string, int> GrabItemEvent;
         public event Action<int, int, Vector2> CreateItemEvent;
-        public event Action<Dictionary<string, float>> TotalScoreEvent;
+        public event Action<float[]> TotalScoreEvent;
 
         public void Init()
         {
@@ -99,7 +99,7 @@ namespace KSY
 
         private void TotalScoreMsgEvent(TotalScoreMessage data)
         {
-            TotalScoreEvent?.Invoke(data.scoreDic);
+            TotalScoreEvent?.Invoke((float[])data.scoreArr.Clone());
         }
     } 
 }

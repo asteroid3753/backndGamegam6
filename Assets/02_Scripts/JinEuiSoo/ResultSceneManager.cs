@@ -18,31 +18,26 @@ namespace JES
 
         private void Start()
         {
-            float lastSize = ShowingResultCommunicator.Instance.LastSize;
-            IOrderedEnumerable<KeyValuePair<string, float>> nickNameSlimeRatioPair = ShowingResultCommunicator.Instance.NickNameSlimeSizeRatioPair.OrderByDescending(x => x.Value);
 
-            Dictionary<string, float> SortDictionary(Dictionary<string, float> dict)
+            if (TotalGameManager.Instance.playerResultSocres.Count < 1)
             {
-                // 내림차순은 ascending을 descending으로 변경
-                var sortVar = from item in dict
-                              orderby item.Value descending
-                              select item;
+                Debug.Log("Player 점수가 도착하지 않음");
+                // TODO: 네트워크 문제로 palyer 점수가 없을 경우, 로컬 점수로 대체
+            }
+            else
+            {
+                var queryDic = TotalGameManager.Instance.playerResultSocres.OrderByDescending(x => x.Value);
 
-                return sortVar.ToDictionary(x => x.Key, x => x.Value);
+                int i = 0;
+                foreach(var item in queryDic) 
+                {
+                    _playerNames[i].text = item.Key;
+                    _ratios[i].text = item.Value.ToString("F1");
+                    i++;
+                }
             }
 
-            int t_order = 0;
-
-            foreach (var item in nickNameSlimeRatioPair)
-            {
-                _playerNames[t_order].text = item.Key;
-                _ratios[t_order].text = item.Value.ToString();
-
-                t_order++;
-            }
-
-            _lastSize.text = lastSize.ToString();
-
+            _lastSize.text = TotalGameManager.Instance.resultSlimeSize.ToString("F1");
         }
 
         [Button]

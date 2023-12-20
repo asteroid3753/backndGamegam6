@@ -131,6 +131,8 @@ namespace khj
                 }
                 TotalGameManager.Instance.playerNickNames = inGameUserList.Keys.ToList<string>();
                 TotalGameManager.Instance.playerNickNames.Sort();
+                TotalGameManager.Instance.resultSlimeSize = 0;
+                TotalGameManager.Instance.playerResultSocres.Clear();
 
                 Debug.Log("6-1. OnMatchInGameStart �ΰ��� ����");
                 Debug.Log(userListString);

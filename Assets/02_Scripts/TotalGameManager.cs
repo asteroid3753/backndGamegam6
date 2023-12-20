@@ -1,5 +1,6 @@
 ﻿using JES;
 using KSY;
+using LJH;
 using MorningBird.SceneManagement;
 using System;
 using System.Collections;
@@ -40,6 +41,11 @@ public class TotalGameManager : MonoBehaviour
     public string myNickName;
     public List<string> playerNickNames;
 
+    #region ResultValue
+    public float resultSlimeSize = 0;
+    public Dictionary<string, float> playerResultSocres;
+    #endregion
+
     void Awake()
     {
         if (!Instance)
@@ -63,7 +69,7 @@ public class TotalGameManager : MonoBehaviour
         }
         gameState = GameState.Login;
         isCreate = true;
-
+        playerResultSocres = new Dictionary<string, float>();
         BackEndManager.Instance.Parsing.TotalScoreEvent += Parsing_TotalScoreEvent;
     }
 
@@ -196,8 +202,7 @@ public class TotalGameManager : MonoBehaviour
             return;
         }
 
-        MorningBird.SceneManagement.GameSceneLoadManager.Instance.UnLoadAllScenes();
-        MorningBird.SceneManagement.GameSceneLoadManager.Instance.LoadSceneAsync(scene);
+        MorningBird.SceneManagement.GameSceneLoadManager.Instance.UnLoadAllSceneAndLoadSceneAsync(scene, isUseTransitionEffect: true);
 
     }
 
@@ -235,8 +240,13 @@ public class TotalGameManager : MonoBehaviour
         }
     }
 
-    private void Parsing_TotalScoreEvent(Dictionary<string, float> scoreDic)
+    private void Parsing_TotalScoreEvent(float[] scoreArr)
     {
-        ShowingResultCommunicator.Instance.NickNameSlimeSizeRatioPair = scoreDic;
+        for(int i = 0; i < scoreArr.Length; i++) 
+        {
+            playerResultSocres.Add(playerNickNames[i], scoreArr[i]);
+
+            Debug.Log($"점수표 - {playerNickNames[i]}: {scoreArr[i]}");
+        }
     }
 }

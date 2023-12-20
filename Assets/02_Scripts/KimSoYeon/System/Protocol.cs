@@ -89,11 +89,11 @@ namespace KSY.Protocol
 
     public class TotalScoreMessage : Message
     {
-        public Dictionary<string, float> scoreDic;
+        public float[] scoreArr;
 
-        public TotalScoreMessage(Dictionary<string, float> scoreDic) : base(MsgType.TotalScore)
+        public TotalScoreMessage(float[] scoreArr) : base(MsgType.TotalScore)
         {
-            this.scoreDic = scoreDic;
+            this.scoreArr = (float[])scoreArr.Clone();
         }
     }
 }
