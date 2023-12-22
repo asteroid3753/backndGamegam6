@@ -6,8 +6,10 @@ using UnityEngine;
 
 namespace LJH
 {
-    public class Player : SerializedMonoBehaviour
+    public class Player_Logic : SerializedMonoBehaviour
     {
+        [SerializeField, FoldoutGroup("PreDefine")] Player_Visual _playerVisual;
+
         [SerializeField] Vector2 _movningTarget;
         public Vector2 MovingTarget 
         {
@@ -15,7 +17,7 @@ namespace LJH
             set
             {
                 _movningTarget = value;
-                Debug.Log($"ServerGetPosition : {_movningTarget} ");
+                //Debug.Log($"ServerGetPosition : {_movningTarget} ");
             }
 
         }
@@ -39,7 +41,7 @@ namespace LJH
 
         [SerializeField] public string NickName { get; set; }
 
-        [SerializeField] int havingItem = -1; 
+        [SerializeField] int _currentHavingItemIdex = -1; 
         [SerializeField] GrowingItem _currentTargetItem;
         public GrowingItem CurrentTargetItem
         {
@@ -50,12 +52,14 @@ namespace LJH
             }
         }
 
-        SpriteRenderer spriteRenderer;
+        [SerializeField] float _logicMoveLearpingTime = 0.15f;
+
+        SpriteRenderer _itemSpriteRenderer;
 
         //getter Test
         public int GetUserItem()
         {
-            return havingItem;
+            return _currentHavingItemIdex;
         }
 
         //setter Test
@@ -63,22 +67,22 @@ namespace LJH
         {
             if (_item == null)
             {
-                havingItem = 0;
-                spriteRenderer.sprite = null;
+                _currentHavingItemIdex = 0;
+                _itemSpriteRenderer.sprite = null;
             }
             else
             {
-                havingItem = _item.GrowPoint;
-                spriteRenderer.sprite = _item.ItemImg;
+                _currentHavingItemIdex = _item.GrowPoint;
+                _itemSpriteRenderer.sprite = _item.ItemImg;
             }
         }
 
         private void Update()
         {
-            // Set Player Position
+            // Set Player Position to MoveTargetPosition
             {
-                float x = Mathf.Lerp(this.transform.position.x, MovingTarget.x, 0.5f);
-                float y = Mathf.Lerp(this.transform.position.y, MovingTarget.y, 0.5f);
+                float x = Mathf.Lerp(this.transform.position.x, MovingTarget.x, _logicMoveLearpingTime);
+                float y = Mathf.Lerp(this.transform.position.y, MovingTarget.y, _logicMoveLearpingTime);
 
                 this.transform.position = new Vector3(x, y, transform.position.z);
             }
@@ -94,11 +98,27 @@ namespace LJH
                     isFlipX = false; // left
                 }
             }
+
+            // Set Player Animation
+            {
+                Vector2 calculateIsMoving;
+                calculateIsMoving = MovingTarget - new Vector2(this.transform.position.x, this.transform.position.y);
+                bool isPlayerMoving = calculateIsMoving.magnitude >= 0.1f;
+
+                if (isPlayerMoving == true)
+                {
+                    _playerVisual.IsWalk = true;
+                }
+                else
+                {
+                    _playerVisual.IsWalk = false;
+                }
+            }
         }
 
         private void Start()
         {
-            spriteRenderer = gameObject.transform.Find("Item").GetComponent<SpriteRenderer>();
+            _itemSpriteRenderer = _playerVisual.transform.Find("Item").GetComponent<SpriteRenderer>();
         }
     }
 }

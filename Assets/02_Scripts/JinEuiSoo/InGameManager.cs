@@ -40,10 +40,11 @@ namespace LJH
         [SerializeField] List<string> _playerNickNames;
         [SerializeField] string _superPlayerNickName;
         [SerializeField] string _myClientNickName;
-        [SerializeField] Color[] _gaugeColors = new Color[4] { new Color32(255, 255, 255, 255), new Color32(100, 112, 255, 255),
+        [SerializeField]
+        Color[] _gaugeColors = new Color[4] { new Color32(255, 255, 255, 255), new Color32(100, 112, 255, 255),
         new Color32(255, 201, 98, 255), new Color32(186, 83, 255, 255)};
 
-        public Dictionary<string, LJH.Player> NamePlayerPairs;
+        public Dictionary<string, LJH.Player_Logic> NamePlayerPairs;
 
         public Dictionary<int, GrowingItem> InGameItemDic;
 
@@ -57,9 +58,11 @@ namespace LJH
         BoxCollider2D slimeArea;
         BoxCollider2D groundArea;
         GameObject slimeObj;
+
         #region Singleton
 
         static InGameManager _instance;
+
         /// <summary>
         /// TotalGameSceneManager
         /// </summary>
@@ -85,8 +88,6 @@ namespace LJH
             }
         }
 
-        #endregion
-
         private void Awake()
         {
             #region Singleton Instantiate
@@ -100,6 +101,8 @@ namespace LJH
             #endregion
             AwakeInitialize();
         }
+
+        #endregion
 
         void AwakeInitialize()
         {
@@ -135,7 +138,6 @@ namespace LJH
                 };
             }
 
-
             StartCoroutine(IEWaitAndStart());
 
         }
@@ -152,19 +154,47 @@ namespace LJH
                 _myClientNickName = TotalGameManager.Instance.myNickName;
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
-                NamePlayerPairs = new Dictionary<string, LJH.Player>();
+                NamePlayerPairs = new Dictionary<string, LJH.Player_Logic>();
                 InGameItemDic = new Dictionary<int, GrowingItem>();
                 GaugeDic = new Dictionary<string, GaugeElement>();
                 ScoreDic = new Dictionary<string, float>();
+
                 for (int i = 0; i < _playerNickNames.Count; i++)
                 {
-                    GameObject pgo = Instantiate(_playerPrefab[i]);//, _playerPositions[i].position, Quaternion.identity);
-                    LJH.Player player = pgo.GetComponent<LJH.Player>();
-                    NamePlayerPairs.Add(_playerNickNames[i], player);
-                    player.NickName = _playerNickNames[i];
+                    // Declare Varialbles
+                    #region 
+                    GameObject playerSetGO;
+                    GameObject moverGO;
+                    GameObject logicGO;
+                    GameObject visualGO;
+
+                    Player_Mover mover;
+                    Player_Logic logic;
+                    Player_Visual visual;
+                    #endregion
+
+                    // Instantiate and Set Variables
+                    #region 
+                    playerSetGO = Instantiate(_playerPrefab[i]);
+                    moverGO = playerSetGO.transform.Find("Player_Mover").gameObject;
+                    logicGO = playerSetGO.transform.Find("Player_Logic").gameObject;
+                    visualGO = playerSetGO.transform.Find("Player_Visual").gameObject; // inCase, this might need it in the future..
+
+                    mover = moverGO.GetComponent<Player_Mover>();
+                    logic = logicGO.GetComponent<Player_Logic>();
+                    visual = moverGO.GetComponent<Player_Visual>(); // inCase, this might need it in the future..
+                    #endregion
+
+                    // Set InGameManager
+                    #region 
+                    NamePlayerPairs.Add(_playerNickNames[i], logic);
+                    logic.NickName = _playerNickNames[i];
                     AddGauge(_playerNickNames[i], _gaugeColors[i]);
                     ScoreDic.Add(_playerNickNames[i], 0f);
+                    #endregion
 
+                    // Check SuperPlayer
+                    #region 
                     if (isSuperPlayer == true)
                     {
                         //tPlayer.SetSuperPlayer(true);
@@ -173,30 +203,42 @@ namespace LJH
                     {
                         //tPlayer.SetSuperPlayer(false);
                     }
+                    #endregion
 
-                    if (_playerNickNames[i].ToString() == _myClientNickName){
-                        Debug.Log(_playerPositions[i].position);
-                        player.MovingTarget = _playerPositions[i].position;
-                        pgo.AddComponent<InputManager>().SetFirstPos(_playerPositions[i].position);
-                        CinemachineVirtualCamera cam = Instantiate(cameraPrefab, pgo.transform).GetComponent<CinemachineVirtualCamera>() ;
+                    // Check player and myclientname is Same. And Do soemthing
+                    #region
+                    if (_playerNickNames[i].ToString() == _myClientNickName)
+                    {
+
+                        // Set Player Initialize Position
+                        #region 
+                        logic.MovingTarget = _playerPositions[i].position;
+                        logicGO.transform.position = _playerPositions[i].position;
+                        // Debug.Log(_playerPositions[i].position); 
+                        #endregion
+
+                        // Set Cinemachine
+                        #region 
+                        mover.SetFirstPos(_playerPositions[i].position);
+                        CinemachineVirtualCamera cam = Instantiate(cameraPrefab, logicGO.transform).GetComponent<CinemachineVirtualCamera>();
                         cam.gameObject.GetComponent<CinemachineConfiner>().m_BoundingShape2D = GameObject.Find("Bound").GetComponent<Collider2D>();
-                        cam.Follow = pgo.transform;
-                        cam.LookAt = pgo.transform;
-                        pgo.transform.position = _playerPositions[i].position;
+                        cam.Follow = logicGO.transform;
+                        cam.LookAt = logicGO.transform;
+                        #endregion
                     }
-                    else{
-                        pgo.transform.position = _playerPositions[i].position;
-                        //player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
-                    }
-                    // if (_playerNickNames[i].ToString() == _myClientNickName)
-                    // {
-                        
-                    //     PlayerMoveMessage msg = new PlayerMoveMessage(player.transform.position);
-                    //     BackEndManager.Instance.InGame.SendDataToInGame(msg);
-                    // }
-                    // player.transform.position = _playerPositions[i].position;
-                    // player.GetComponent<Player>().SetUserTarget(_playerPositions[i].position);
-                    
+                    else
+                    {
+                        // Set Player Initialize Position
+                        #region
+                        logic.MovingTarget = _playerPositions[i].position;
+                        logicGO.transform.position = _playerPositions[i].position;
+                        #endregion
+
+                        // Destory Mover
+                        Destroy(moverGO);
+
+                    } 
+                    #endregion
                 }
             }
 
@@ -227,11 +269,11 @@ namespace LJH
                 {
                     float[] scoreArr = new float[4];
 
-                    for(int i = 0; i< ScoreDic.Count; i++)
+                    for (int i = 0; i < ScoreDic.Count; i++)
                     {
                         scoreArr[i] = ScoreDic[_playerNickNames[i]];
                     }
-                   
+
                     // Game End
                     TotalScoreMessage scoreMsg = new TotalScoreMessage(scoreArr);
                     BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);
@@ -283,9 +325,9 @@ namespace LJH
             //Backend.Match.MatchEnd(matchGameResult);
 
             var matchResult = new MatchGameResult();
-           
+
             Backend.Match.MatchEnd(matchResult);
-        } 
+        }
         #endregion
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
@@ -308,10 +350,10 @@ namespace LJH
             {
                 string name = _playerNickNames[i];
                 float percent = ScoreDic[name] / totalScore * 100f;
-                GaugeDic[name].Percent = percent;    
+                GaugeDic[name].Percent = percent;
             }
-           
+
             NamePlayerPairs[nickname].SetUserItem(null);
         }
-    } 
+    }
 }

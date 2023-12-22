@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using KSY.Protocol;
 using KSY;
-using BackEnd.Tcp;
-using BackEnd;
-using Unity.VisualScripting;
 using Sirenix.OdinInspector;
 
 namespace LJH
 {
-    public class InputManager : SerializedMonoBehaviour
+    public class Player_Mover : SerializedMonoBehaviour
     {
         float x, y;
-        Player player;
         float uy = 22.5f, dy = -24.3f, lx = -42.8f, rx = 41.5f;
 
+        [SerializeField] Player_Logic player;
         [SerializeField] bool isConrollAble = false;
         [SerializeField] bool isSlime = false;
         [SerializeField] Rigidbody2D _rigidBody;
 
+        [SerializeField] Vector2 _inputVector;
 
         public Vector2 GetUserPos()
         {
@@ -29,7 +27,6 @@ namespace LJH
         // Start is called before the first frame update
         void Start()
         {
-            player = GetComponent<Player>();
             _rigidBody = this.GetComponent<Rigidbody2D>();
 
             isConrollAble = false;
@@ -59,45 +56,12 @@ namespace LJH
                 return;
             }
 
-            float horizontal;
-            float vertical;
-
-            // Get Input
-            {
-                horizontal = Input.GetAxisRaw("Horizontal");
-                vertical = Input.GetAxisRaw("Vertical");
-            }
-
-
-            Vector2 movingVector = new Vector2(horizontal, vertical);
-            movingVector = movingVector.normalized;
-
-
-            // Set Player Animation
-            {
-                if (movingVector.magnitude >= 0.1f)
-                {
-                    this.GetComponent<Animator>().SetBool("Walk", true);
-                }
-                else
-                {
-                    this.GetComponent<Animator>().SetBool("Walk", false);
-                }
-            }
+            Vector2 moveVector = _inputVector.normalized;
             
 
-            movingVector *= player.MovingSpeed * Time.deltaTime;
-            _rigidBody.velocity = movingVector;
+            moveVector *= player.MovingSpeed * Time.deltaTime;
+            _rigidBody.velocity = moveVector;
 
-            // 코드 보존
-#if true
-            //lx = -42.8 rx = 41.5 uy = 22.5 dy = -24.3
-            if ((lx <= x && x <= rx) && (dy <= y && y <= uy))
-            {
-                PlayerMoveMessage msg = new PlayerMoveMessage(new Vector2(x, y));
-                BackEndManager.Instance.InGame.SendDataToInGame(msg);
-            } 
-#endif
             // Send Moving Message To Server
             if (MorningBird.TimeSafer.Instance.GetFixed50msSafer == true)
             {
@@ -106,15 +70,24 @@ namespace LJH
                 PlayerMoveMessage msg = new PlayerMoveMessage(currentPosition);
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
 
-                Debug.Log($"ServerSendingPosition : {currentPosition}");
+                // Debug.Log($"ServerSendingPosition : {currentPosition}");
             }
         }
 
         private void Update()
         {
-            // Player moving // not use
+            // Player Get input
             {
+                float horizontal;
+                float vertical;
 
+                // Get Input
+                {
+                    horizontal = Input.GetAxisRaw("Horizontal");
+                    vertical = Input.GetAxisRaw("Vertical");
+                }
+
+                _inputVector = new Vector2(horizontal, vertical);
             }
 
             // Player GetItem

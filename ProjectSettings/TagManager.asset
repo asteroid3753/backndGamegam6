@@ -24,8 +24,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Player_Logic
+  - Player_Mover
   - 
   - 
   - 
