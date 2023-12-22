@@ -124,7 +124,7 @@ namespace LJH
                 }
             }
 
-            if (NickName == TotalGameManager.Instance.MyClientNickName)
+            if (NickName != TotalGameManager.Instance.MyClientNickName)
             {
                 return;
             }
