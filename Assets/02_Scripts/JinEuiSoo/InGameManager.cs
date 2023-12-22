@@ -151,7 +151,7 @@ namespace LJH
             {
                 _playerNickNames = TotalGameManager.Instance.playerNickNames;
                 _superPlayerNickName = TotalGameManager.Instance.host;
-                _myClientNickName = TotalGameManager.Instance.myNickName;
+                _myClientNickName = TotalGameManager.Instance.MyClientNickName;
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
                 NamePlayerPairs = new Dictionary<string, LJH.Player_Logic>();

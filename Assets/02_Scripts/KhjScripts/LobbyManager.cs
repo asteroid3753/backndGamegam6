@@ -59,7 +59,7 @@ namespace khj
 
         void StartMatch()
         {
-            TotalGameManager.Instance.myNickName = nickName;
+            TotalGameManager.Instance.MyClientNickName = nickName;
             TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.MatchLobby);
         }
         void SignUp()

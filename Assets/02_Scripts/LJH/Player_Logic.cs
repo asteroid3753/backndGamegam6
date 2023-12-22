@@ -124,6 +124,11 @@ namespace LJH
                 }
             }
 
+            if (NickName == TotalGameManager.Instance.MyClientNickName)
+            {
+                return;
+            }
+
             // Detecting Nerby Item and Slime
             {
                 DetectingNerbyItemAndSlime();

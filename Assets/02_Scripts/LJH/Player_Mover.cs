@@ -51,7 +51,7 @@ namespace LJH
             if (isConrollAble == false)
                 return;
 
-            if (TotalGameManager.Instance.myNickName != player.NickName)
+            if (TotalGameManager.Instance.MyClientNickName != player.NickName)
             {
                 return;
             }

@@ -38,7 +38,7 @@ public class TotalGameManager : MonoBehaviour
 
     public bool isHost = false;
     public string host;
-    public string myNickName;
+    public string MyClientNickName;
     public List<string> playerNickNames;
 
     #region ResultValue
