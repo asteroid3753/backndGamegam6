@@ -482,9 +482,9 @@ MonoBehaviour:
       Data: 
   _playerVisual: {fileID: 5707380809052226946}
   _movningTarget: {x: 0, y: 0}
-  _movingSpeed: 1000
+  _movingSpeed: 650
   isFlipX: 0
-  havingItem: 0
+  _currentHavingItemIdex: -1
   _currentTargetItem: {fileID: 0}
   _logicMoveLearpingTime: 0.175
 --- !u!70 &2536133387572522786
