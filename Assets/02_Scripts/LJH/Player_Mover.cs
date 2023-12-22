@@ -14,7 +14,7 @@ namespace LJH
 
         [SerializeField] Player_Logic player;
         [SerializeField] bool isConrollAble = false;
-        [SerializeField] bool isSlime = false;
+        //[SerializeField] bool isSlime = false;
         [SerializeField] Rigidbody2D _rigidBody;
 
         [SerializeField] Vector2 _inputVector;
@@ -90,67 +90,41 @@ namespace LJH
                 _inputVector = new Vector2(horizontal, vertical);
             }
 
-            // Player GetItem
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    Debug.Log("");
-
-                    if (isSlime)
-                    {
-                        if (player.GetUserItem() != 0)
-                        {
-                            SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(player.GetUserItem());
-                            BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
-                        }
-                        else
-                        {
-                            Debug.Log("슬라임 먹이 없음");
-                        }
-                    }
-                    else if (player.CurrentTargetItem != null && player.GetUserItem() == 0)
-                    {
-                        Debug.Log("습득:" + player.CurrentTargetItem.ItemCode);
-                        GrabItemMessage itemMsg = new GrabItemMessage(player.CurrentTargetItem.ItemCode);
-                        BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
-                    }
-                }
-
-            }
-
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.tag == "Item")
-            {
-                GrowingItem item = other.GetComponent<GrowingItem>();
-                if (item != null)
-                {
-                    player.CurrentTargetItem = item;
-                }
-            }
-            else if (other.tag == "Slime")
-            {
-                isSlime = true;
-            }
-        }
+        //private void OnTriggerEnter2D(Collider2D other)
+        //{
+        //    //if (other.tag == "Item")
+        //    //{
+        //    //    GrowingItem item = other.GetComponent<GrowingItem>();
+        //    //    if (item != null)
+        //    //    {
+        //    //        player.CurrentTargetItem = item;
+        //    //    }
+        //    //}
+        //    //else 
+        //    if (other.tag == "Slime")
+        //    {
+        //        isSlime = true;
+        //    }
+        //}
 
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (other.tag == "Item")
-            {
-                GrowingItem item = other.GetComponent<GrowingItem>();
-                if (item != null)
-                {
-                    player.CurrentTargetItem = null;
-                }
-            }
-            else if (other.tag == "Slime")
-            {
-                isSlime = false;
-            }
-        }
+        //private void OnTriggerExit2D(Collider2D other)
+        //{
+        //    //if (other.tag == "Item")
+        //    //{
+        //    //    GrowingItem item = other.GetComponent<GrowingItem>();
+        //    //    if (item != null)
+        //    //    {
+        //    //        player.CurrentTargetItem = null;
+        //    //    }
+        //    //}
+        //    //else
+        //    if (other.tag == "Slime")
+        //    {
+        //        isSlime = false;
+        //    }
+        //}
 
     }
 }

@@ -55,8 +55,8 @@ namespace LJH
 
         private float totalScore = 0;
 
-        BoxCollider2D slimeArea;
-        BoxCollider2D groundArea;
+        [SerializeField] BoxCollider2D slimeArea;
+        [SerializeField] BoxCollider2D groundArea;
         GameObject slimeObj;
 
         #region Singleton
@@ -107,8 +107,8 @@ namespace LJH
         void AwakeInitialize()
         {
             slimeObj = GameObject.Find("Slime");
-            slimeArea = GameObject.Find("Slime").GetComponent<BoxCollider2D>();
-            groundArea = GameObject.Find("Ground").GetComponent<BoxCollider2D>();
+            //slimeArea = GameObject.Find("Slime").GetComponent<BoxCollider2D>();
+            //groundArea = GameObject.Find("Ground").GetComponent<BoxCollider2D>();
             JES.JESFunctions.SetCollider(groundArea, slimeArea);
         }
 

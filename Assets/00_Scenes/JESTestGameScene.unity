@@ -5871,7 +5871,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163218012}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -5889,11 +5889,11 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.009339571, y: -0.0010434091}
@@ -5907,7 +5907,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1150854, y: 0.63787216}
+  m_Size: {x: 0.99, y: 0.52}
   m_EdgeRadius: 0
 --- !u!1 &1188108820
 GameObject:
@@ -10243,16 +10243,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1759356900}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      propertyPath: slimeArea
+      value: 
+      objectReference: {fileID: 992732855}
+    - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      propertyPath: groundArea
+      value: 
+      objectReference: {fileID: 1163218016}
+    - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: gaugePrefab
       value: 
       objectReference: {fileID: 6446871937054840964, guid: 73be28aea062a814dbce97831e07d217, type: 3}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: itemMaxCount
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: slimeEndScale
-      value: 0.3
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.size
@@ -10261,7 +10269,7 @@ PrefabInstance:
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.data[0]
       value: 

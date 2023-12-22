@@ -1,3 +1,6 @@
+using BackEndChat.Message;
+using KSY.Protocol;
+using KSY;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +13,7 @@ namespace LJH
     {
         [SerializeField, FoldoutGroup("PreDefine")] Player_Visual _playerVisual;
 
-        [SerializeField] Vector2 _movningTarget;
+        [SerializeField, FoldoutGroup("About Moving")] Vector2 _movningTarget;
         public Vector2 MovingTarget 
         {
             get => _movningTarget;
@@ -22,7 +25,7 @@ namespace LJH
 
         }
 
-        [SerializeField] float _movingSpeed = 2.0f;
+        [SerializeField, FoldoutGroup("About Moving")] float _movingSpeed = 2.0f;
         public float MovingSpeed
         {
             get => _movingSpeed;
@@ -32,17 +35,20 @@ namespace LJH
             }
         }
 
-        [SerializeField] bool isFlipX = false;
+        [SerializeField, FoldoutGroup("About Moving")] bool isFlipX = false;
         public bool IsFlipX
         {
             get => isFlipX;
             set => isFlipX = value;
         }
 
-        [SerializeField] public string NickName { get; set; }
+        [SerializeField, FoldoutGroup("About Moving")] float _logicMoveLearpingTime = 0.15f;
 
-        [SerializeField] int _currentHavingItemIdex = -1; 
-        [SerializeField] GrowingItem _currentTargetItem;
+        [SerializeField, FoldoutGroup("Player Information")] public string NickName { get; set; }
+
+        [SerializeField, FoldoutGroup("About Item")] int _currentHavingItemIdex = 0; 
+        [SerializeField, FoldoutGroup("About Item")] int _currentItemGrowingPoint = 0; 
+        [SerializeField, FoldoutGroup("About Item")] GrowingItem _currentTargetItem;
         public GrowingItem CurrentTargetItem
         {
             get => _currentTargetItem;
@@ -52,15 +58,10 @@ namespace LJH
             }
         }
 
-        [SerializeField] float _logicMoveLearpingTime = 0.15f;
+        [SerializeField, FoldoutGroup("About Item")] float _itemDetectingArea = 1.5f;
+        [SerializeField, FoldoutGroup("About Item")] bool _findSlime; 
 
         SpriteRenderer _itemSpriteRenderer;
-
-        //getter Test
-        public int GetUserItem()
-        {
-            return _currentHavingItemIdex;
-        }
 
         //setter Test
         public void SetUserItem(GrowingItem _item)
@@ -68,13 +69,21 @@ namespace LJH
             if (_item == null)
             {
                 _currentHavingItemIdex = 0;
+                _currentItemGrowingPoint = 0;
                 _itemSpriteRenderer.sprite = null;
             }
             else
             {
-                _currentHavingItemIdex = _item.GrowPoint;
+                //_currentHavingItemIdex = _item.GrowPoint;
+                _currentHavingItemIdex = _item.ItemCode;
+                _currentItemGrowingPoint = _item.GrowPoint;
                 _itemSpriteRenderer.sprite = _item.ItemImg;
             }
+        }
+
+        private void FixedUpdate()
+        {
+
         }
 
         private void Update()
@@ -114,6 +123,116 @@ namespace LJH
                     _playerVisual.IsWalk = false;
                 }
             }
+
+            // Detecting Nerby Item and Slime
+            {
+                DetectingNerbyItemAndSlime();
+            }
+
+            // GetGrowingItem
+            {
+                GetGrowingItem();
+
+            }
+
+            void GetGrowingItem()
+            {
+                if (Input.GetKeyDown(KeyCode.Space) == false)
+                {
+                    return;
+                }
+
+                bool canTakeItem = (CurrentTargetItem != null) == true && (_currentHavingItemIdex == 0) == true;
+
+                if (canTakeItem == true)
+                {
+                    GrabItemMessage itemMsg = new GrabItemMessage(CurrentTargetItem.ItemCode);
+                    BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
+                    Debug.Log($"Send Meg to Server _Grab Item_ : item index {CurrentTargetItem.ItemCode} .");
+                    return;
+                }
+
+                bool haveItem = (_currentHavingItemIdex != 0) == true;
+                bool canGiveItemToSlime = _findSlime == true && haveItem;
+
+                if (canGiveItemToSlime)
+                {
+                    SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(_currentItemGrowingPoint);
+                    BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
+                    Debug.Log($"Send Meg to Server _Give item to slime_ : item Grow Point {_currentItemGrowingPoint} .");
+                }
+
+            }
+        }
+
+        void DetectingNerbyItemAndSlime()
+        {
+            // Find Item
+            List<Collider2D> nerbyItemList = Physics2D.OverlapCircleAll(this.transform.position, _itemDetectingArea).ToList();
+
+            // refine GrowingItem only
+            for (int i = nerbyItemList.Count - 1; i >= 0; i--)
+            {
+                Collider2D content = nerbyItemList[i];
+
+                if (content.transform.tag == "Slime")
+                {
+                    _findSlime = true;
+                    continue;
+                }
+
+                if (content.transform.TryGetComponent<GrowingItem>(out _) == false)
+                {
+                    nerbyItemList.Remove(content);
+                }
+            }
+
+            // Early Return
+            if (nerbyItemList.Count == 0)
+            {
+                _currentTargetItem = null;
+                return;
+            }
+
+            // calculate each of distance
+            Vector2 logicPosition = this.transform.position;
+            Vector2 targetPosition;
+
+            float lastShortestLength = 0f;
+            int leastShortestItemIdex = 0;
+
+            // find most nearest item
+            for (int i = 0; i < nerbyItemList.Count; i++)
+            {
+                Collider2D item = nerbyItemList[i];
+
+                targetPosition = item.transform.position;
+
+                Vector2 directionToItem = targetPosition - logicPosition;
+                float distanceToItem = directionToItem.magnitude;
+
+                // If the index is 0, just set. For declare stand.
+                if (i == 0)
+                {
+                    lastShortestLength = distanceToItem;
+                    leastShortestItemIdex = 0;
+                    continue;
+                }
+
+                if (distanceToItem < lastShortestLength)
+                {
+                    leastShortestItemIdex = i;
+                }
+            }
+
+            GrowingItem growingItem = nerbyItemList[leastShortestItemIdex].transform.GetComponent<GrowingItem>();
+
+            _currentTargetItem = growingItem;
+        }
+
+        private void LateUpdate()
+        {
+            _findSlime = false;
         }
 
         private void Start()

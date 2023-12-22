@@ -62,9 +62,12 @@ MonoBehaviour:
   _movningTarget: {x: 0, y: 0}
   _movingSpeed: 650
   isFlipX: 0
-  _currentHavingItemIdex: -1
-  _currentTargetItem: {fileID: 0}
   _logicMoveLearpingTime: 0.175
+  _currentHavingItemIdex: 0
+  _currentItemGrowingPoint: 0
+  _currentTargetItem: {fileID: 0}
+  _itemDetectingArea: 1.5
+  _findSlime: 0
 --- !u!70 &765231019757194373
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -808,7 +811,6 @@ MonoBehaviour:
     SerializationNodes: []
   player: {fileID: 6672177667630927840}
   isConrollAble: 0
-  isSlime: 0
   _rigidBody: {fileID: 8925253833794940291}
   _inputVector: {x: 0, y: 0}
 --- !u!70 &3447517081143573233
