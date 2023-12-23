@@ -16,6 +16,8 @@ namespace khj
         [SerializeField] TMP_InputField nameInputField;
         string nickName;
 
+        [SerializeField] bool _isLoginButtonClicked = false;
+
         void Awake()
         {
             titlePanel.SetActive(true);
@@ -35,6 +37,13 @@ namespace khj
 
         public void Login()
         {
+            if(_isLoginButtonClicked == true)
+            {
+                return;
+            }
+
+            _isLoginButtonClicked = true;
+
             nickName = nameInputField.text;
             var bro = Backend.BMember.CustomLogin(nickName, nickName);
 
