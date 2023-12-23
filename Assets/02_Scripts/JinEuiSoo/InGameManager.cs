@@ -223,6 +223,8 @@ namespace LJH
                         cam.Follow = logicGO.transform;
                         cam.LookAt = logicGO.transform;
                         #endregion
+
+
                     }
                     else
                     {
@@ -230,6 +232,11 @@ namespace LJH
                         #region
                         logic.MovingTarget = _playerPositions[i].position;
                         logicGO.transform.position = _playerPositions[i].position;
+                        #endregion
+
+                        // Set Player Logic Layer
+                        #region 
+                        logicGO.layer = LayerMask.NameToLayer("Default");
                         #endregion
 
                         // Destory Mover

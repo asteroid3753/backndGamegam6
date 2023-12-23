@@ -720,7 +720,7 @@ GameObject:
   - component: {fileID: 788141461758133074}
   - component: {fileID: 7988963316888641831}
   - component: {fileID: 6867673582276454840}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
