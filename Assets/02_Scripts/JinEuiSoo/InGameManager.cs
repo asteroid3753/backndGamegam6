@@ -305,12 +305,17 @@ namespace LJH
             else
             {
                 Debug.LogError("OnLeaveInGameServer 인게임 서버 접속 종료 : " + args.ErrInfo + " / " + args.Reason);
+                UnSubscribeOnLeaveInGameServerEvent();
             }
         }
 
         void UnSubscribeOnLeaveInGameServerEvent()
         {
+            BackEndManager.Instance.Parsing.PlayerMoveEvent -= Parsing_PlayerMove;
             Backend.Match.OnLeaveInGameServer -= OnLeaveInGameServerEvent;
+            BackEndManager.Instance.Parsing.SlimeSizeUpEvent -= Parsing_SlimeSizeUpEvent;
+            BackEndManager.Instance.Parsing.GrabItemEvent -= Parsing_GrabItemEvent;
+            BackEndManager.Instance.Parsing.CreateItemEvent -= Parsing_CreateItemEvent;
         }
 
         void DeclareMatchEnd()
