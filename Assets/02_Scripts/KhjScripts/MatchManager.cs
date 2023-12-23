@@ -54,11 +54,11 @@ namespace khj
             ErrorInfo errorInfo;
             if (Backend.Match.JoinMatchMakingServer(out errorInfo))
             {
-                Debug.Log("1-1. JoinMatchMakingServer ��û : " + errorInfo.ToString());
+                Debug.Log("1-1. JoinMatchMakingServer 요청 : " + errorInfo.ToString());
             }
             else
             {
-                Debug.LogError("1-1. JoinMatchMakingServer ���� : " + errorInfo.ToString());
+                Debug.LogError("1-1. JoinMatchMakingServer 에러 : " + errorInfo.ToString());
             }
         }
 
@@ -185,10 +185,10 @@ namespace khj
                     matchCardList.Add(matchCard);
                 }
 
-                for (int i = 0; i < matchCardList.Count; i++)
-                {
-                    Debug.Log($"{i} 번째 매치카드 : \n" + matchCardList[i].ToString());
-                }
+                //for (int i = 0; i < matchCardList.Count; i++)
+                //{
+                //    Debug.Log($"{i} 번째 매치카드 : \n" + matchCardList[i].ToString());
+                //}
                 RequestMatchMaking();
             });
         }
@@ -197,11 +197,13 @@ namespace khj
             Backend.Match.OnMatchMakingResponse = (MatchMakingResponseEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Match_InProgress)
                 {
+                    Debug.Log("3-2. OnMatchMakingResponse 매칭 신청 진행중");
+
                     int second = matchCardList[index].transit_to_sandbox_timeout_ms / 1000;
 
                     //if (second > 0)
                     //{
-                    //    Debug.Log($"{second}�� �ڿ� ����ڽ� Ȱ��ȭ�� �˴ϴ�.");
+                    //    Debug.Log($"{second}초 뒤에 샌드박스 활성화가 됩니다.");
                     //    StartCoroutine(WaitFor10Seconds(second));
                     //}
                 }
@@ -211,18 +213,17 @@ namespace khj
 
                     if(ingame == null)
                     {
-                        Debug.Log("비어있어요!~");
                         ingame = GetComponent<InGameStart>();
                     }
                     ingame.JoinGameServer(args.RoomInfo);
                 }
                 else
                 {
-                    Debug.LogError("3-2. OnMatchMakingResponse ��Ī ��û ������ ���� �߻� : " + args.ToString());
+                    Debug.LogError("3-2. OnMatchMakingResponse 매칭 신청 진행중 에러 발생 : " + args.ToString());
                 }
             };
 
-            Debug.Log("3-1. RequestMatchMaking ��Ī ��û ����");
+            Debug.Log("3-1. RequestMatchMaking 매칭 신청 시작");
             Debug.Log(index);
             Debug.Log(matchCardList[index].matchType);
             Debug.Log(matchCardList[index].matchModeType);
@@ -235,7 +236,7 @@ namespace khj
             var delay = new WaitForSeconds(1.0f);
             for (int i = 0; i < second; i++)
             {
-                Debug.Log($"{i}�� ���");
+                Debug.Log($"{i}초 경과");
                 yield return delay;
             }
             TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Ready);
@@ -245,16 +246,16 @@ namespace khj
             Backend.Match.OnMatchMakingRoomCreate = (MatchMakingInteractionEventArgs args) => {
                 if (args.ErrInfo == ErrorCode.Success)
                 {
-                    Debug.Log("2-2. OnMatchMakingRoomCreate ����");
+                    Debug.Log("2-2. OnMatchMakingRoomCreate 성공");
                     Backend.Match.RequestMatchMaking(matchCardList[index].matchType, matchCardList[index].matchModeType, matchCardList[index].inDate);
                 }
                 else
                 {
-                    Debug.LogError("2-2. OnMatchMakingRoomCreate ����");
+                    Debug.LogError("2-2. OnMatchMakingRoomCreate 실패");
                 }
             };
 
-            Debug.Log("2-1. CreateMatchRoom ��û");
+            Debug.Log("2-1. CreateMatchRoom 요청");
             Backend.Match.CreateMatchRoom();
         }
 
