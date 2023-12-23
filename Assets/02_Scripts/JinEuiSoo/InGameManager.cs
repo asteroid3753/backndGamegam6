@@ -24,6 +24,9 @@ namespace LJH
         private GameObject gaugePrefab;
 
         [SerializeField]
+        private SlimeSizeUI slimeUIPrefab;
+
+        [SerializeField]
         private GameObject itemPrefab;
         [SerializeField]
         private float itemSpawnSpan = 1f;
@@ -107,6 +110,7 @@ namespace LJH
         void AwakeInitialize()
         {
             slimeObj = GameObject.Find("Slime");
+            slimeUIPrefab.InitSlimeSize = slimeEndScale;
             //slimeArea = GameObject.Find("Slime").GetComponent<BoxCollider2D>();
             //groundArea = GameObject.Find("Ground").GetComponent<BoxCollider2D>();
             JES.JESFunctions.SetCollider(groundArea, slimeArea);
@@ -342,15 +346,19 @@ namespace LJH
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
+            if (_isGameEnd) return;
             NamePlayerPairs[nickName].MovingTarget = target;
         }
 
         private void Parsing_SlimeSizeUpEvent(string nickname, float addSize)
         {
+            if (_isGameEnd) return;
             if (slimeObj != null)
             {
                 float size = slimeObj.transform.localScale.x + (addSize / 500);
-                slimeObj.transform.localScale = new Vector3(size, size);
+                Vector3 scale = new Vector3(size, size);
+                slimeObj.transform.localScale = scale;
+                slimeUIPrefab.SlimeSize = scale;
             }
 
             totalScore += addSize;
