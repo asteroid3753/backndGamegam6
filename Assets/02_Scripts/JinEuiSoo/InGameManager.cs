@@ -341,11 +341,13 @@ namespace LJH
 
         private void Parsing_PlayerMove(string nickName, Vector2 target)
         {
+            if (_isGameEnd) return;
             NamePlayerPairs[nickName].MovingTarget = target;
         }
 
         private void Parsing_SlimeSizeUpEvent(string nickname, float addSize)
         {
+            if (_isGameEnd) return;
             if (slimeObj != null)
             {
                 float size = slimeObj.transform.localScale.x + (addSize / 500);

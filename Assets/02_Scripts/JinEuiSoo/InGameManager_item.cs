@@ -54,6 +54,7 @@ namespace LJH
 
         private void Parsing_GrabItemEvent(string nickname, int itemCode)
         {
+            if (_isGameEnd) return;
             Debug.Log($"{nickname}이 {itemCode}를 주웠다!");
             if (InGameItemDic.ContainsKey(itemCode))
             {
@@ -66,6 +67,7 @@ namespace LJH
 
         private void Parsing_CreateItemEvent(int itemType, int itemCode, UnityEngine.Vector2 arg3)
         {
+            if (_isGameEnd) return;
             if (InGameItemDic != null)
             {
                 GameObject obj = Instantiate(itemPrefab);
