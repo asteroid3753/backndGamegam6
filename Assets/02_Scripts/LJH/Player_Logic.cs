@@ -12,6 +12,8 @@ namespace LJH
     public class Player_Logic : SerializedMonoBehaviour
     {
         [SerializeField, FoldoutGroup("PreDefine")] Player_Visual _playerVisual;
+        [SerializeField, FoldoutGroup("PreDefine")] MorningBird.Sound.AudioStorage _dashSound;
+        public MorningBird.Sound.AudioStorage DashSound => _dashSound;
 
         [SerializeField, FoldoutGroup("About Moving")] Vector2 _movningTarget;
         public Vector2 MovingTarget 

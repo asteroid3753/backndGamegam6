@@ -767,8 +767,9 @@ MonoBehaviour:
       Entry: 6
       Data: 
   _playerVisual: {fileID: 9105164862093311283}
+  _dashSound: {fileID: 11400000, guid: 49b86b75fa16a4145a34ff0071759e31, type: 2}
   _movningTarget: {x: 0, y: 0}
-  _movingSpeed: 650
+  _movingSpeed: 200
   isFlipX: 0
   _logicMoveLearpingTime: 0.175
   _currentHavingItemIdex: -1
@@ -894,8 +895,12 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   player: {fileID: 788141461758133074}
-  isConrollAble: 0
   _rigidBody: {fileID: 8302195144422744964}
+  _dashPower: 150
+  _dashCoolTIme: 2
+  _isDashOn: 0
+  _dashWaitInnerTime: 0
+  isConrollAble: 0
   _inputVector: {x: 0, y: 0}
 --- !u!70 &8412304461150402227
 CapsuleCollider2D:
@@ -945,8 +950,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0.85
-  m_AngularDrag: 0.85
+  m_LinearDrag: 20
+  m_AngularDrag: 1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
