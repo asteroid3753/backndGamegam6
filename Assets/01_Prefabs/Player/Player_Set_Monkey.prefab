@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 564774899815490576}
   - component: {fileID: 1169385774019270156}
   - component: {fileID: 5002394944779518123}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player_Logic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
