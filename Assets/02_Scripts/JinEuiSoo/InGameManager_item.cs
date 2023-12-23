@@ -54,6 +54,7 @@ namespace LJH
 
         private void Parsing_GrabItemEvent(string nickname, int itemCode)
         {
+            Debug.Log($"{nickname}이 {itemCode}를 주웠다!");
             if (InGameItemDic.ContainsKey(itemCode))
             {
                 NamePlayerPairs[nickname].SetUserItem(InGameItemDic[itemCode]);

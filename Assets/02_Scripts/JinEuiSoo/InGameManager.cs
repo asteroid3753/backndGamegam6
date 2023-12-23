@@ -133,8 +133,6 @@ namespace LJH
                     }
 
                     TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
-
-
                 };
             }
 
@@ -352,6 +350,8 @@ namespace LJH
                 float percent = ScoreDic[name] / totalScore * 100f;
                 GaugeDic[name].Percent = percent;
             }
+
+            Debug.Log($"{nickname}이 먹이를 먹였다!");
 
             NamePlayerPairs[nickname].SetUserItem(null);
         }

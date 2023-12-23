@@ -770,10 +770,10 @@ MonoBehaviour:
   _movingSpeed: 650
   isFlipX: 0
   _logicMoveLearpingTime: 0.175
-  _currentHavingItemIdex: 0
+  _currentHavingItemIdex: -1
   _currentItemGrowingPoint: 0
   _currentTargetItem: {fileID: 0}
-  _itemDetectingArea: 1.5
+  _itemDetectingArea: 0.7
   _findSlime: 0
 --- !u!70 &7988963316888641831
 CapsuleCollider2D:

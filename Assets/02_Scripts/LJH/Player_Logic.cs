@@ -68,9 +68,10 @@ namespace LJH
         {
             if (_item == null)
             {
-                _currentHavingItemIdex = 0;
+                _currentHavingItemIdex = -1;
                 _currentItemGrowingPoint = 0;
                 _itemSpriteRenderer.sprite = null;
+                Debug.Log("item이 null임");
             }
             else
             {
@@ -78,6 +79,7 @@ namespace LJH
                 _currentHavingItemIdex = _item.ItemCode;
                 _currentItemGrowingPoint = _item.GrowPoint;
                 _itemSpriteRenderer.sprite = _item.ItemImg;
+                Debug.Log("item이 null이 아님");
             }
         }
 
@@ -137,7 +139,6 @@ namespace LJH
             // GetGrowingItem
             {
                 GetGrowingItem();
-
             }
 
             void GetGrowingItem()
@@ -147,7 +148,7 @@ namespace LJH
                     return;
                 }
 
-                bool canTakeItem = (CurrentTargetItem != null) == true && (_currentHavingItemIdex == 0) == true;
+                bool canTakeItem = (CurrentTargetItem != null) == true && (_currentHavingItemIdex == -1) == true;
 
                 if (canTakeItem == true)
                 {
@@ -157,7 +158,7 @@ namespace LJH
                     return;
                 }
 
-                bool haveItem = (_currentHavingItemIdex != 0) == true;
+                bool haveItem = (_currentHavingItemIdex != -1) == true;
                 bool canGiveItemToSlime = _findSlime == true && haveItem;
 
                 if (canGiveItemToSlime)
@@ -166,7 +167,6 @@ namespace LJH
                     BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
                     Debug.Log($"Send Meg to Server _Give item to slime_ : item Grow Point {_currentItemGrowingPoint} .");
                 }
-
             }
         }
 
