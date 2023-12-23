@@ -10270,7 +10270,7 @@ PrefabInstance:
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.data[0]
       value: 
@@ -10278,11 +10278,11 @@ PrefabInstance:
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.data[1]
       value: 
-      objectReference: {fileID: 330930237208926249, guid: cf40dc06f5b335d40a8b25a99a864021, type: 3}
+      objectReference: {fileID: 2432016760123932057, guid: 0f717d65427b0374aba91811e3823763, type: 3}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.data[2]
       value: 
-      objectReference: {fileID: 2432016760123932057, guid: 0f717d65427b0374aba91811e3823763, type: 3}
+      objectReference: {fileID: 330930237208926249, guid: cf40dc06f5b335d40a8b25a99a864021, type: 3}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.data[3]
       value: 

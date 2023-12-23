@@ -719,6 +719,7 @@ GameObject:
   - component: {fileID: 1523891357867652900}
   - component: {fileID: 788141461758133074}
   - component: {fileID: 7988963316888641831}
+  - component: {fileID: 6867673582276454840}
   m_Layer: 10
   m_Name: Player_Logic
   m_TagString: Untagged
@@ -810,6 +811,33 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 1.26}
   m_Size: {x: 1.7509145, y: 1.7509146}
   m_Direction: 0
+--- !u!50 &6867673582276454840
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5890094755400478680}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0.85
+  m_AngularDrag: 0.85
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!1 &6600637298108421433
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,6 +849,7 @@ GameObject:
   - component: {fileID: 7916596386891489410}
   - component: {fileID: 4916535381607236802}
   - component: {fileID: 8412304461150402227}
+  - component: {fileID: 8302195144422744964}
   m_Layer: 11
   m_Name: Player_Mover
   m_TagString: Untagged
@@ -866,7 +895,7 @@ MonoBehaviour:
     SerializationNodes: []
   player: {fileID: 788141461758133074}
   isConrollAble: 0
-  _rigidBody: {fileID: 0}
+  _rigidBody: {fileID: 8302195144422744964}
   _inputVector: {x: 0, y: 0}
 --- !u!70 &8412304461150402227
 CapsuleCollider2D:
@@ -903,3 +932,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 1.26}
   m_Size: {x: 1.7509145, y: 1.7509146}
   m_Direction: 0
+--- !u!50 &8302195144422744964
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6600637298108421433}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0.85
+  m_AngularDrag: 0.85
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
