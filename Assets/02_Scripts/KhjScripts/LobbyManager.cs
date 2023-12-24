@@ -6,6 +6,7 @@ using BackEnd.Game;
 using UnityEngine.UI;
 using TMPro;
 using KSY;
+using Sirenix.Utilities;
 
 namespace khj
 {
@@ -41,6 +42,11 @@ namespace khj
             {
                 return;
             }
+            
+            if(string.IsNullOrEmpty(nameInputField.text)){
+                Debug.Log("ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”");
+                return;
+            }
 
             _isLoginButtonClicked = true;
 
@@ -49,18 +55,18 @@ namespace khj
 
             if (bro.IsSuccess())
             {
-                Debug.Log("·Î±×ÀÎ : " + bro);
+                Debug.Log("ë¡œê·¸ì¸ : " + bro);
             }
             else if (bro.GetStatusCode() == "401")
             {
                 SignUp();
                 var broTwo = Backend.BMember.CustomLogin(nickName, nickName);
 
-                Debug.Log("·Î±×ÀÎ : " + broTwo);
+                Debug.Log("ë¡œê·¸ì¸ : " + broTwo);
             }
             else
             {
-                Debug.LogError("·Î±×ÀÎ : " + bro);
+                Debug.LogError("ë¡œê·¸ì¸ : " + bro);
             }
 
             StartMatch();
@@ -77,14 +83,22 @@ namespace khj
 
             if (!bro.IsSuccess())
             {
-                Debug.LogError("È¸¿ø°¡ÀÔ: " + bro);
+                Debug.LogError("íšŒì›ê°€ì…: " + bro);
             }
 
             bro = Backend.BMember.UpdateNickname(nickName);
 
             if (!bro.IsSuccess())
             {
-                Debug.LogError("´Ğ³×ÀÓ º¯°æ : " + bro);
+                Debug.LogError("ë‹‰ë„¤ì„ ë³€ê²½ : " + bro);
+            }
+
+        }
+
+        public void SubmitName(string name){
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                Login();
             }
 
         }
