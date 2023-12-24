@@ -289,6 +289,9 @@ namespace LJH
                     // Game End
                     TotalScoreMessage scoreMsg = new TotalScoreMessage(scoreArr);
                     BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);
+
+                    Message endMsg = new Message(MsgType.EndGame);
+                    BackEndManager.Instance.InGame.SendDataToInGame(endMsg);
                     DeclareMatchEnd();
 
                     _isGameEnd = false;
