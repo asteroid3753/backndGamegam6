@@ -125,6 +125,7 @@ namespace LJH
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
                 BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
+                BackEndManager.Instance.Parsing.EndGameEvent += Parsing_EndGameEvent;
 
                 Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
                 {
@@ -322,6 +323,7 @@ namespace LJH
             BackEndManager.Instance.Parsing.SlimeSizeUpEvent -= Parsing_SlimeSizeUpEvent;
             BackEndManager.Instance.Parsing.GrabItemEvent -= Parsing_GrabItemEvent;
             BackEndManager.Instance.Parsing.CreateItemEvent -= Parsing_CreateItemEvent;
+            BackEndManager.Instance.Parsing.EndGameEvent -= Parsing_EndGameEvent;
         }
 
         void DeclareMatchEnd()
@@ -376,6 +378,11 @@ namespace LJH
             Debug.Log($"{nickname}이 먹이를 먹였다!");
 
             NamePlayerPairs[nickname].SetUserItem(null);
+        }
+
+        private void Parsing_EndGameEvent()
+        {
+            //TODO : 게임이 끝났으니 모든 수신, 동작 멈추게 하고, 사용자에게 표시해야함
         }
     }
 }

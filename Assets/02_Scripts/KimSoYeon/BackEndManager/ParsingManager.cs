@@ -11,13 +11,14 @@ namespace KSY
 {
     public class ParsingManager
     {
-        #region 
-        #endregion
+        #region Event
         public event Action<string, Vector2> PlayerMoveEvent;
-public event Action<string, float> SlimeSizeUpEvent;
+        public event Action<string, float> SlimeSizeUpEvent;
         public event Action<string, int> GrabItemEvent;
         public event Action<int, int, int> CreateItemEvent;
         public event Action<float[]> TotalScoreEvent;
+        public event Action EndGameEvent;
+        #endregion
 
         public void Init()
         {
@@ -68,6 +69,9 @@ public event Action<string, float> SlimeSizeUpEvent;
                     TotalScoreMessage scoreMsg = DataParser.ReadJsonData<TotalScoreMessage>(args.BinaryUserData);
                     TotalScoreMsgEvent(scoreMsg);
                     break;
+                case MsgType.EndGame:
+                    EndGameMsgEvent();
+                    break;
             }
         }
 
@@ -100,6 +104,11 @@ public event Action<string, float> SlimeSizeUpEvent;
         private void TotalScoreMsgEvent(TotalScoreMessage data)
         {
             TotalScoreEvent?.Invoke((float[])data.scoreArr.Clone());
+        }
+
+        private void EndGameMsgEvent()
+        {
+            EndGameEvent?.Invoke();
         }
     } 
 }

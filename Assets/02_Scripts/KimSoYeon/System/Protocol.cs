@@ -13,7 +13,8 @@ namespace KSY.Protocol
         GrabItem, // 아이템 획득
         CreateItem, // 아이템 생성
         CreateBg, // 배경 생성
-        TotalScore // 최종 점수
+        TotalScore, // 최종 점수
+        EndGame // 게임 종료
     }
 
     public class Message
