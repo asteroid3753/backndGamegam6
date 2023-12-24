@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 
 namespace LJH
 {
@@ -12,6 +12,7 @@ namespace LJH
         [FoldoutGroup("PreDefine"), SerializeField] LJH.Player_Logic player;
         [FoldoutGroup("PreDefine"), SerializeField] SpriteRenderer _bodySpriteRenderer;
         [FoldoutGroup("PreDefine"), SerializeField] Animator _animator;
+        [FoldoutGroup("PreDefine"), SerializeField] TextMeshPro _nameTMP;
 
         [SerializeField] bool _isWalk;
 
@@ -38,6 +39,11 @@ namespace LJH
             // Update SetWalk
             _animator.SetBool("Walk", _isWalk);
 
+        }
+
+        public void SetNickName(string name)
+        {
+            _nameTMP.text = name;
         }
     }
 }

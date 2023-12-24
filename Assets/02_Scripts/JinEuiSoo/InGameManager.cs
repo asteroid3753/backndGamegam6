@@ -184,13 +184,14 @@ namespace LJH
 
                     mover = moverGO.GetComponent<Player_Mover>();
                     logic = logicGO.GetComponent<Player_Logic>();
-                    visual = moverGO.GetComponent<Player_Visual>(); // inCase, this might need it in the future..
+                    visual = visualGO.GetComponent<Player_Visual>(); // inCase, this might need it in the future..
                     #endregion
 
                     // Set InGameManager
                     #region 
                     NamePlayerPairs.Add(_playerNickNames[i], logic);
                     logic.NickName = _playerNickNames[i];
+                    visual.SetNickName(_playerNickNames[i]);
                     AddGauge(_playerNickNames[i], _gaugeColors[i]);
                     ScoreDic.Add(_playerNickNames[i], 0f);
                     #endregion
