@@ -121,6 +121,7 @@ namespace LJH
             // Regest Event
             {
                 ItemEventAdd();
+                SpawnPointInit();
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
                 BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;

@@ -73,7 +73,7 @@ namespace LJH
                 _currentHavingItemIdex = -1;
                 _currentItemGrowingPoint = 0;
                 _itemSpriteRenderer.sprite = null;
-                Debug.Log("item¿Ã null¿”");
+                Debug.Log("itemÏù¥ nullÏûÑ");
             }
             else
             {
@@ -81,7 +81,7 @@ namespace LJH
                 _currentHavingItemIdex = _item.ItemCode;
                 _currentItemGrowingPoint = _item.GrowPoint;
                 _itemSpriteRenderer.sprite = _item.ItemImg;
-                Debug.Log("item¿Ã null¿Ã æ∆¥‘");
+                Debug.Log("itemÏù¥ nullÏù¥ ÏïÑÎãò");
             }
         }
 
@@ -142,33 +142,33 @@ namespace LJH
             {
                 GetGrowingItem();
             }
+        }
 
-            void GetGrowingItem()
+        void GetGrowingItem()
+        {
+            if (Input.GetKeyDown(KeyCode.Space) == false)
             {
-                if (Input.GetKeyDown(KeyCode.Space) == false)
-                {
-                    return;
-                }
+                return;
+            }
 
-                bool canTakeItem = (CurrentTargetItem != null) == true && (_currentHavingItemIdex == -1) == true;
+            bool canTakeItem = (CurrentTargetItem != null) == true && (_currentHavingItemIdex == -1) == true;
 
-                if (canTakeItem == true)
-                {
-                    GrabItemMessage itemMsg = new GrabItemMessage(CurrentTargetItem.ItemCode);
-                    BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
-                    Debug.Log($"Send Meg to Server _Grab Item_ : item index {CurrentTargetItem.ItemCode} .");
-                    return;
-                }
+            if (canTakeItem == true)
+            {
+                GrabItemMessage itemMsg = new GrabItemMessage(CurrentTargetItem.ItemCode);
+                BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
+                Debug.Log($"Send Meg to Server _Grab Item_ : item index {CurrentTargetItem.ItemCode} .");
+                return;
+            }
 
-                bool haveItem = (_currentHavingItemIdex != -1) == true;
-                bool canGiveItemToSlime = _findSlime == true && haveItem;
+            bool haveItem = (_currentHavingItemIdex != -1) == true;
+            bool canGiveItemToSlime = _findSlime == true && haveItem;
 
-                if (canGiveItemToSlime)
-                {
-                    SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(_currentItemGrowingPoint);
-                    BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
-                    Debug.Log($"Send Meg to Server _Give item to slime_ : item Grow Point {_currentItemGrowingPoint} .");
-                }
+            if (canGiveItemToSlime)
+            {
+                SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(_currentItemGrowingPoint);
+                BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
+                Debug.Log($"Send Meg to Server _Give item to slime_ : item Grow Point {_currentItemGrowingPoint} .");
             }
         }
 

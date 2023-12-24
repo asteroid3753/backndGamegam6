@@ -14,9 +14,9 @@ namespace KSY
         #region 
         #endregion
         public event Action<string, Vector2> PlayerMoveEvent;
-        public event Action<string, float> SlimeSizeUpEvent;
+public event Action<string, float> SlimeSizeUpEvent;
         public event Action<string, int> GrabItemEvent;
-        public event Action<int, int, Vector2> CreateItemEvent;
+        public event Action<int, int, int> CreateItemEvent;
         public event Action<float[]> TotalScoreEvent;
 
         public void Init()
@@ -28,22 +28,22 @@ namespace KSY
         {
             if (args.BinaryUserData == null)
             {
-                Debug.LogWarning(string.Format("�� �����Ͱ� ��ε�ĳ���� �Ǿ����ϴ�.\n{0} - {1}", args.From, args.ErrInfo));
-                // �����Ͱ� ������ �׳� ����
+                Debug.LogWarning(string.Format("빈 데이터가 브로드캐스팅 되었습니다.\n{0} - {1}", args.From, args.ErrInfo));
+                // 데이터가 없으면 그냥 리턴
                 return;
             }
 
             Message msg = DataParser.ReadJsonData<Message>(args.BinaryUserData);
             if (msg == null)
             {
-                Debug.Log("������ �޼��� ����");
+                Debug.Log("데이터 메세지 없음");
                 return;
             }
 
             if (InGameManager.Instance.NamePlayerPairs == null)
             {
-                Debug.LogError("Players ������ �������� �ʽ��ϴ�.");
-                return;
+               Debug.LogError("Players 정보가 존재하지 않습니다.");
+               return;
             }
 
             switch (msg.type)
@@ -75,7 +75,7 @@ namespace KSY
         {
             Vector2 moveVector = new Vector2(data.x, data.y);
 
-            // if Now Vector diffrent
+            // 타겟 백터랑 일치하는지 확인 동일하면 이벤트 튀길 필요가 없음
             if (!moveVector.Equals(InGameManager.Instance.NamePlayerPairs[nickname].MovingTarget))
             {
                 PlayerMoveEvent?.Invoke(nickname, moveVector);
@@ -94,7 +94,7 @@ namespace KSY
 
         private void CreateItemMsgEvent(CreateItemMessage data)
         {
-            CreateItemEvent?.Invoke(data.itemType, data.itemCode, new Vector2(data.x, data.y));
+            CreateItemEvent?.Invoke(data.itemType, data.itemCode, data.index);
         }
 
         private void TotalScoreMsgEvent(TotalScoreMessage data)

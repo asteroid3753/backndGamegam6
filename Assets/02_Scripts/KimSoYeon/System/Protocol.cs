@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace KSY.Protocol
 {
-    // ¾÷µ¥ÀÌÆ® ÇÒ ¶§¸¶´Ù ParsingManager switch¹® ¾÷µ¥ÀÌÆ®µµ °°ÀÌ ÇØÁà¾ßÇÔ
+    // ì—…ë°ì´íŠ¸ í•  ë•Œë§ˆë‹¤ ParsingManager switchë¬¸ ì—…ë°ì´íŠ¸ë„ ê°™ì´ í•´ì¤˜ì•¼í•¨
     public enum MsgType
     {
-        PlayerMove = 0, //ÇÃ·¹ÀÌ¾î Å° ÀÔ·Â
-        SlimeSizeUp, // ½½¶óÀÓ Å©±â 
-        GrabItem, // ¾ÆÀÌÅÛ È¹µæ
-        CreateItem, // ¾ÆÀÌÅÛ »ı¼º
-        CreateBg, // ¹è°æ »ı¼º
-        TotalScore // ÃÖÁ¾ Á¡¼ö
+        PlayerMove = 0, //í”Œë ˆì´ì–´ í‚¤ ì…ë ¥
+        SlimeSizeUp, // ìŠ¬ë¼ì„ í¬ê¸° 
+        GrabItem, // ì•„ì´í…œ íšë“
+        CreateItem, // ì•„ì´í…œ ìƒì„±
+        CreateBg, // ë°°ê²½ ìƒì„±
+        TotalScore // ìµœì¢… ì ìˆ˜
     }
 
     public class Message
@@ -62,15 +62,13 @@ namespace KSY.Protocol
     {
         public int itemType;
         public int itemCode;
-        public float x;
-        public float y;
+        public int index;
 
-        public CreateItemMessage(int itemType, int itemCode, Vector2 pos) : base(MsgType.CreateItem)
+        public CreateItemMessage(int itemType, int itemCode, int index) : base(MsgType.CreateItem)
         {
             this.itemType = itemType;
             this.itemCode = itemCode;
-            this.x = pos.x;
-            this.y = pos.y;
+            this.index = index;
         }
     }
 

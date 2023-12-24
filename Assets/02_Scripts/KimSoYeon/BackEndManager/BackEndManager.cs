@@ -54,8 +54,8 @@ namespace KSY
         {
             if (Backend.IsInitialized)
             {
-                // Ã³¸®µÈ ÀÌº¥Æ® °¹¼ö return
-                // BackEND ¼Û¼ö½Å ÀÌº¥Æ®¸¦ À§ÇØ ²À ÁÖ±âÀûÀ¸·Î È£ÃâÇØ¾ßÇÔ (½ÇÁúÀû ¼Û¼ö½Å)
+                // ì²˜ë¦¬ëœ ì´ë²¤íŠ¸ ê°¯ìˆ˜ return
+                // BackEND ì†¡ìˆ˜ì‹  ì´ë²¤íŠ¸ë¥¼ ìœ„í•´ ê¼­ ì£¼ê¸°ì ìœ¼ë¡œ í˜¸ì¶œí•´ì•¼í•¨ (ì‹¤ì§ˆì  ì†¡ìˆ˜ì‹ )
                 Backend.Match.Poll();
             }
         }

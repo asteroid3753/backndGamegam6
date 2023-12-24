@@ -38,6 +38,11 @@ namespace LJH{
             }
         }
 
+        private int spawnPointIndex = -1;
+        public int SpawnPointIndex { get { return spawnPointIndex; } set { spawnPointIndex = value; } }
+
+
+
         private void Awake()
         {
             spriteRender = GetComponent<SpriteRenderer>();
