@@ -16,6 +16,7 @@ namespace khj
         [SerializeField] GameObject titlePanel;
         [SerializeField] GameObject loginPanel;
         [SerializeField] TMP_InputField nameInputField;
+        [SerializeField] LoginInfoText loginInfoText;
         [SerializeField] int idLength = 10;
         string nickName;
 
@@ -48,7 +49,8 @@ namespace khj
             Regex regex = new Regex(@"^[0-9a-zA-Z]{1,"+ idLength + @"}$");
             if (!regex.IsMatch(nameInputField.text)) 
             {
-                Debug.Log($"1~{idLength}사이의 영문 혹은 숫자로 이루어진 아이디를 입력해주세요");
+                loginInfoText.InfoText = $"1~{idLength}사이의 영문 혹은 숫자로 이루어진 아이디를 입력해주세요";
+               // Debug.Log($"1~{idLength}사이의 영문 혹은 숫자로 이루어진 아이디를 입력해주세요");
                 return;
             }
 
