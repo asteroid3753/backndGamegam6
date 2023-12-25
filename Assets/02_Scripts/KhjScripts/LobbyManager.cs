@@ -46,10 +46,10 @@ namespace khj
                 return;
             }
 
-            Regex regex = new Regex(@"^[0-9a-zA-Z]{1,"+ idLength + @"}$");
+            Regex regex = new Regex(@"^[0-9a-zA-Z가-힝]{1,"+ idLength + @"}$");
             if (!regex.IsMatch(nameInputField.text)) 
             {
-                loginInfoText.InfoText = $"1~{idLength}사이의 영문 혹은 숫자로 이루어진 아이디를 입력해주세요";
+                loginInfoText.InfoText = $"1~{idLength}사이의 영문, 한글 혹은 숫자로 이루어진 아이디를 입력해주세요";
                // Debug.Log($"1~{idLength}사이의 영문 혹은 숫자로 이루어진 아이디를 입력해주세요");
                 return;
             }

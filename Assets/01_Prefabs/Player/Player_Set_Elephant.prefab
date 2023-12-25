@@ -774,6 +774,8 @@ MonoBehaviour:
   _movingSpeed: 200
   isFlipX: 0
   _logicMoveLearpingTime: 0.175
+  _dashPower: 150
+  _dashCoolTime: 2
   _currentHavingItemIdex: -1
   _currentItemGrowingPoint: 0
   _currentTargetItem: {fileID: 0}
@@ -896,12 +898,11 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  player: {fileID: 788141461758133074}
+  _player: {fileID: 0}
   _rigidBody: {fileID: 8302195144422744964}
-  _dashPower: 150
-  _dashCoolTIme: 2
-  _isDashOn: 0
-  _dashWaitInnerTime: 0
+  _inputDash: 0
+  _canDash: 0
+  _dashInnerCoolTime: 0
   isConrollAble: 0
   _inputVector: {x: 0, y: 0}
 --- !u!70 &8412304461150402227

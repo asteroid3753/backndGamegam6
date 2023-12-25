@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using MorningBird;
 
 namespace LJH
 {
@@ -45,6 +46,11 @@ namespace LJH
         }
 
         [SerializeField, FoldoutGroup("About Moving")] float _logicMoveLearpingTime = 0.15f;
+        [SerializeField, FoldoutGroup("About Moving")] float _dashPower = 500f;
+        public float DashPower => _dashPower;
+        [SerializeField, FoldoutGroup("About Moving")] float _dashCoolTime = 2f;
+        public float DashCoolTime => _dashCoolTime;
+
 
         [SerializeField, FoldoutGroup("Player Information")] public string NickName { get; set; }
 
@@ -174,6 +180,12 @@ namespace LJH
 
         void DetectingNerbyItemAndSlime()
         {
+            // Early Return for resource save
+            if (TimeSafer.Instance.Get100msSafer == false)
+            {
+                return;
+            }
+
             // Find Item
             List<Collider2D> nerbyItemList = Physics2D.OverlapCircleAll(this.transform.position, _itemDetectingArea).ToList();
 
@@ -218,7 +230,7 @@ namespace LJH
                 Vector2 directionToItem = targetPosition - logicPosition;
                 float distanceToItem = directionToItem.magnitude;
 
-                // If the index is 0, just set. For declare stand.
+                // If the index is 0, declare stand.
                 if (i == 0)
                 {
                     lastShortestLength = distanceToItem;

@@ -43,7 +43,9 @@ namespace MorningBird.SceneManagement
             {
                 if (_isTransitionStarted == true)
                 {
-                    Debug.Log("Currently, Transition is on going");
+#if UNITY_EDITOR
+                    //Debug.Log("Currently, Transition is on going");
+#endif
                     return;
                 }
             }
@@ -136,7 +138,7 @@ namespace MorningBird.SceneManagement
                     while (_isTransitionStarted == true)
                     {
 #if UNITY_EDITOR
-                        Debug.Log("Transition is keeping going");
+                        //Debug.Log("Transition is keeping going");
 #endif
 
                         await Task.Delay(250);
