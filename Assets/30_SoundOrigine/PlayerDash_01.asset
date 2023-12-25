@@ -22,7 +22,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _name: PlayerDash_01
-  _audioClip: {fileID: 8300000, guid: ab05f8cdd56de75459e1d12d54bf3c18, type: 3}
+  _audioClip: {fileID: 8300000, guid: 575ef63d2c3b03248908ab5a13e490b8, type: 3}
   _bypassEffects: 0
   _bypassListenerEffects: 0
   _bypassReverbZones: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   _volume: 1
   _pitch: 1
   _stereoPan: 0
-  _spatialBlend: 1
+  _spatialBlend: 0
   _reverbZoneMix: 1
   _dopplerLevel: 0
   _spread: 0
