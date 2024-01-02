@@ -814,7 +814,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _player: {fileID: 0}
+  _player: {fileID: 6672177667630927840}
   _rigidBody: {fileID: 8925253833794940291}
   _inputDash: 0
   _canDash: 0
