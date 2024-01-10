@@ -3,6 +3,7 @@ using KSY.Protocol;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LJH
@@ -19,6 +20,8 @@ namespace LJH
 
         Transform[] itemSpawnPoint;
         HashSet<int> availablePoints;
+
+        Coroutine createItemCoroutine;
 
         private void ItemEventAdd()
         {
@@ -43,7 +46,23 @@ namespace LJH
             {
                 itemCount = 0;
                 itemTypeCount = System.Enum.GetValues(typeof(Define.ItemType)).Length;
-                StartCoroutine(CreateItem());
+                createItemCoroutine = StartCoroutine(CreateItem());
+                InGameItemDic.OnAdd += () =>
+                {
+                    if (itemMaxCount <= InGameItemDic.Count)
+                    {
+                        Debug.Log("코루틴 종료");
+                        StopCoroutine(createItemCoroutine);
+                    }
+                };
+                InGameItemDic.OnRemove += () =>
+                {
+                    if (itemMaxCount > InGameItemDic.Count)
+                    {
+                        Debug.Log("코루틴 시작");
+                        createItemCoroutine = StartCoroutine("CreateItem", itemSpawnSpan);
+                    }
+                };
             }
         }
         IEnumerator CreateItem()

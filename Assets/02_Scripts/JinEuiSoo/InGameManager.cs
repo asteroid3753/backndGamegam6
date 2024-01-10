@@ -15,6 +15,7 @@ using Cinemachine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using TMPro;
+using khj;
 
 namespace LJH
 {
@@ -49,7 +50,7 @@ namespace LJH
 
         public Dictionary<string, LJH.Player_Logic> NamePlayerPairs;
 
-        public Dictionary<int, GrowingItem> InGameItemDic;
+        public EventDictionary<int, GrowingItem> InGameItemDic;
 
         public Dictionary<string, GaugeElement> GaugeDic;
         public Dictionary<string, float> ScoreDic;
@@ -159,7 +160,7 @@ namespace LJH
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
                 NamePlayerPairs = new Dictionary<string, LJH.Player_Logic>();
-                InGameItemDic = new Dictionary<int, GrowingItem>();
+                InGameItemDic = new EventDictionary<int, GrowingItem>();
                 GaugeDic = new Dictionary<string, GaugeElement>();
                 ScoreDic = new Dictionary<string, float>();
 
