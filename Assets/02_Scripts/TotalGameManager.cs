@@ -242,7 +242,9 @@ public class TotalGameManager : MonoBehaviour
 
     private void Parsing_TotalScoreEvent(float[] scoreArr)
     {
-        for(int i = 0; i < scoreArr.Length; i++) 
+        Debug.Log("TotalScore 이벤트 호출 Total");
+
+        for (int i = 0; i < scoreArr.Length; i++) 
         {
             playerResultSocres.Add(playerNickNames[i], scoreArr[i]);
 
