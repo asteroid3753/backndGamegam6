@@ -5594,7 +5594,8 @@ GameObject:
   - component: {fileID: 992732858}
   - component: {fileID: 992732857}
   - component: {fileID: 992732856}
-  - component: {fileID: 992732855}
+  - component: {fileID: 992732859}
+  - component: {fileID: 992732860}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Slime
@@ -5602,51 +5603,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &992732855
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 992732854}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.9505615, y: -0.6157665}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 26.63, y: 20.97}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 39.406715, y: 33.283833}
-  m_EdgeRadius: 0
 --- !u!95 &992732856
 Animator:
   serializedVersion: 5
@@ -5708,7 +5664,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: -1944147244936480225, guid: 6e489aa060e247247b244ee22a7b3a9d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5736,6 +5692,82 @@ Transform:
   - {fileID: 1388904873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &992732859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992732854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea8c55cf73da4b24cbb1ac5ef61cb645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!60 &992732860
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992732854}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 26.63, y: 20.97}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -11.888159, y: 2.9450674}
+      - {x: -13.53071, y: -1.2989134}
+      - {x: -13.416027, y: -4.9801846}
+      - {x: -11.185134, y: -7.411408}
+      - {x: -6.8938236, y: -9.433982}
+      - {x: -1.8018203, y: -10.550983}
+      - {x: 5.0499997, y: -10.099999}
+      - {x: 6.29, y: -9.82}
+      - {x: 7.41, y: -9.5}
+      - {x: 11.103022, y: -7.8244205}
+      - {x: 13.337425, y: -5.3275037}
+      - {x: 13.2965975, y: -1.2404426}
+      - {x: 12.310357, y: 1.1415509}
+      - {x: 10.228114, y: 4.341795}
+      - {x: 8.369708, y: 7.3759537}
+      - {x: 4.3409414, y: 10.417943}
+      - {x: 2.3838, y: 8.574575}
+      - {x: -2.8551638, y: 8.49644}
+      - {x: -8.3019285, y: 6.2289267}
+  m_UseDelaunayMesh: 0
 --- !u!1 &994001258
 GameObject:
   m_ObjectHideFlags: 0
@@ -8292,7 +8324,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1761906677046938084, guid: 6e489aa060e247247b244ee22a7b3a9d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.7372549}
   m_FlipX: 0
@@ -12857,7 +12889,7 @@ PrefabInstance:
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: slimeArea
       value: 
-      objectReference: {fileID: 992732855}
+      objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: groundArea
       value: 

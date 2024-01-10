@@ -223,6 +223,9 @@ namespace LJH
                         // Debug.Log(_playerPositions[i].position); 
                         #endregion
 
+                        // Set Tag
+                        logicGO.tag = "Player";
+
                         // Set Cinemachine
                         #region 
                         mover.SetFirstPos(_playerPositions[i].position);
@@ -231,7 +234,7 @@ namespace LJH
                         cam.Follow = logicGO.transform;
                         cam.LookAt = logicGO.transform;
                         #endregion
-
+                   
 
                     }
                     else
