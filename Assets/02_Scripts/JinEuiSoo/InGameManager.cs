@@ -15,7 +15,7 @@ using Cinemachine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using TMPro;
-using System.Net.NetworkInformation;
+using khj;
 
 namespace LJH
 {
@@ -59,7 +59,6 @@ namespace LJH
 
         private float totalScore = 0;
 
-        private bool endTrigger = false;
         [SerializeField] BoxCollider2D slimeArea;
         [SerializeField] BoxCollider2D groundArea;
         GameObject slimeObj;
@@ -127,6 +126,8 @@ namespace LJH
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
                 BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
+                BackEndManager.Instance.Parsing.EndGameEvent += Parsing_EndGameEvent;
+
                 Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
                 {
                     if (args.ErrInfo == ErrorCode.Success)
@@ -278,7 +279,6 @@ namespace LJH
             #endregion
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
-            if (endTrigger) return;
             if (TotalGameManager.Instance.isHost || _isGameEnd == true)
             {
                 if (slimeObj.transform.localScale.x >= slimeEndScale || _isGameEnd == true)
@@ -296,10 +296,9 @@ namespace LJH
 
                     Message endMsg = new Message(MsgType.EndGame);
                     BackEndManager.Instance.InGame.SendDataToInGame(endMsg);
-       
                     DeclareMatchEnd();
-                    endTrigger = true;
-                    //_isGameEnd = false;
+
+                    _isGameEnd = false;
                 }
             }
 
@@ -331,6 +330,7 @@ namespace LJH
             BackEndManager.Instance.Parsing.SlimeSizeUpEvent -= Parsing_SlimeSizeUpEvent;
             BackEndManager.Instance.Parsing.GrabItemEvent -= Parsing_GrabItemEvent;
             BackEndManager.Instance.Parsing.CreateItemEvent -= Parsing_CreateItemEvent;
+            BackEndManager.Instance.Parsing.EndGameEvent -= Parsing_EndGameEvent;
         }
 
         void DeclareMatchEnd()
@@ -387,6 +387,9 @@ namespace LJH
             NamePlayerPairs[nickname].SetUserItem(null);
         }
 
-     
+        private void Parsing_EndGameEvent()
+        {
+            //TODO : 게임이 끝났으니 모든 수신, 동작 멈추게 하고, 사용자에게 표시해야함
+        }
     }
 }

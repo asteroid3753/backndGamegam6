@@ -19,6 +19,7 @@ namespace khj
         [SerializeField] LoginInfoText loginInfoText;
         [SerializeField] int idLength = 10;
         string nickName;
+        Coroutine enterCheck;
 
         [SerializeField] bool _isLoginButtonClicked = false;
 
@@ -38,7 +39,7 @@ namespace khj
         {
             loginPanel.SetActive(true);
         }
-
+        
         public void Login()
         {
             if(_isLoginButtonClicked == true)
@@ -101,12 +102,27 @@ namespace khj
 
         }
 
-        public void SubmitName(string name){
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-            {
-                Login();
-            }
+        public void StartChecking()
+        {
+            enterCheck = StartCoroutine(CheckingKey());
+        }
+        public void EndChecking()
+        {
+            StopCoroutine(enterCheck);
+        }
 
+        IEnumerator CheckingKey()
+        {
+            while (true)
+            {
+                yield return null;
+
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+                {
+                    Login();
+                    break;
+                }
+            }
         }
     }
 }
