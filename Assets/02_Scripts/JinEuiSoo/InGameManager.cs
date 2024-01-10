@@ -58,6 +58,7 @@ namespace LJH
         int itemCount = 0;
 
         private float totalScore = 0;
+        private bool gameEndTrigger = false;
 
         [SerializeField] BoxCollider2D slimeArea;
         [SerializeField] BoxCollider2D groundArea;
@@ -126,8 +127,6 @@ namespace LJH
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
                 BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
-                BackEndManager.Instance.Parsing.EndGameEvent += Parsing_EndGameEvent;
-
                 Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
                 {
                     if (args.ErrInfo == ErrorCode.Success)
@@ -277,12 +276,16 @@ namespace LJH
             #region GameEndingConditionCheck
 
             #endregion
+
+            if (gameEndTrigger) return;
             // If Someone want, Change the DeclareMatchEnd. But, Have to check IsInGameServerConnet() for checking the InGame is running.
 
             if (TotalGameManager.Instance.isHost || _isGameEnd == true)
             {
                 if (slimeObj.transform.localScale.x >= slimeEndScale || _isGameEnd == true)
                 {
+                    BackEndManager.Instance.InGame.SendDataToInGame(new Message(MsgType.EndGame));
+
                     float[] scoreArr = new float[4];
 
                     for (int i = 0; i < ScoreDic.Count; i++)
@@ -290,15 +293,10 @@ namespace LJH
                         scoreArr[i] = ScoreDic[_playerNickNames[i]];
                     }
 
-                    // Game End
                     TotalScoreMessage scoreMsg = new TotalScoreMessage(scoreArr);
-                    BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);
-
-                    Message endMsg = new Message(MsgType.EndGame);
-                    BackEndManager.Instance.InGame.SendDataToInGame(endMsg);
+                    BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);   
                     DeclareMatchEnd();
-
-                    _isGameEnd = false;
+                    gameEndTrigger = true;
                 }
             }
 
@@ -330,7 +328,6 @@ namespace LJH
             BackEndManager.Instance.Parsing.SlimeSizeUpEvent -= Parsing_SlimeSizeUpEvent;
             BackEndManager.Instance.Parsing.GrabItemEvent -= Parsing_GrabItemEvent;
             BackEndManager.Instance.Parsing.CreateItemEvent -= Parsing_CreateItemEvent;
-            BackEndManager.Instance.Parsing.EndGameEvent -= Parsing_EndGameEvent;
         }
 
         void DeclareMatchEnd()
@@ -385,11 +382,6 @@ namespace LJH
             Debug.Log($"{nickname}이 먹이를 먹였다!");
 
             NamePlayerPairs[nickname].SetUserItem(null);
-        }
-
-        private void Parsing_EndGameEvent()
-        {
-            //TODO : 게임이 끝났으니 모든 수신, 동작 멈추게 하고, 사용자에게 표시해야함
         }
     }
 }

@@ -1,3 +1,4 @@
+using JES;
 using KSY;
 using MorningBird.Sound;
 using UnityEngine;
@@ -14,17 +15,14 @@ namespace KSY
         // Start is called before the first frame update
         void Start()
         {    
-            BackEndManager.Instance.Parsing.TotalScoreEvent -= GameEndEventFunc;
-            BackEndManager.Instance.Parsing.TotalScoreEvent += GameEndEventFunc;
+            BackEndManager.Instance.Parsing.EndGameEvent += GameEndEventFunc;
         }
 
-        private void GameEndEventFunc(float[] obj)
+        private void GameEndEventFunc()
         {
-            Debug.Log("TotalScore 이벤트 호출 GameEnd");
-            //BackEndManager.Instance.Parsing.TotalScoreEvent -= Parsing_TotalScoreEvent;
-            gameEndPanel.SetActive(true);
-
             SoundManager.Instance.RequestPlayClip(endSound);
+            gameEndPanel.SetActive(true);
+            BackEndManager.Instance.Parsing.EndGameEvent -= GameEndEventFunc;
         }
     }
 

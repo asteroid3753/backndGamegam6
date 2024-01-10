@@ -28,10 +28,10 @@ MonoBehaviour:
   _bypassReverbZones: 0
   _playStartTime: 0
   _priority: 128
-  _volume: 0.75
+  _volume: 1.096
   _pitch: 1
   _stereoPan: 0
-  _spatialBlend: 1
+  _spatialBlend: 0
   _reverbZoneMix: 1
   _dopplerLevel: 0
   _spread: 0
