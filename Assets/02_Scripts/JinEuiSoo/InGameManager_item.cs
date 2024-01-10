@@ -47,31 +47,16 @@ namespace LJH
                 itemCount = 0;
                 itemTypeCount = System.Enum.GetValues(typeof(Define.ItemType)).Length;
                 createItemCoroutine = StartCoroutine(CreateItem());
-                InGameItemDic.OnAdd += () =>
-                {
-                    if (itemMaxCount <= InGameItemDic.Count)
-                    {
-                        Debug.Log("코루틴 종료");
-                        StopCoroutine(createItemCoroutine);
-                    }
-                };
-                InGameItemDic.OnRemove += () =>
-                {
-                    if (itemMaxCount > InGameItemDic.Count)
-                    {
-                        Debug.Log("코루틴 시작");
-                        createItemCoroutine = StartCoroutine("CreateItem", itemSpawnSpan);
-                    }
-                };
             }
         }
         IEnumerator CreateItem()
         {
             while (true)
             {
+                yield return new WaitForSeconds(itemSpawnSpan);
+
                 if (itemMaxCount <= InGameItemDic.Count)
                 {
-                    yield return new WaitForSeconds(0.2f);
                     continue;
                 }
 
@@ -84,7 +69,6 @@ namespace LJH
                 CreateItemMessage msg = new CreateItemMessage(itemType, itemCount, spawnIndex);
                 BackEndManager.Instance.InGame.SendDataToInGame(msg);
                 itemCount++;
-                yield return new WaitForSeconds(itemSpawnSpan);
             }
         }
 

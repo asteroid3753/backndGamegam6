@@ -50,7 +50,7 @@ namespace LJH
 
         public Dictionary<string, LJH.Player_Logic> NamePlayerPairs;
 
-        public EventDictionary<int, GrowingItem> InGameItemDic;
+        public Dictionary<int, GrowingItem> InGameItemDic;
 
         public Dictionary<string, GaugeElement> GaugeDic;
         public Dictionary<string, float> ScoreDic;
@@ -160,7 +160,7 @@ namespace LJH
                 bool isSuperPlayer = TotalGameManager.Instance.isHost;
 
                 NamePlayerPairs = new Dictionary<string, LJH.Player_Logic>();
-                InGameItemDic = new EventDictionary<int, GrowingItem>();
+                InGameItemDic = new Dictionary<int, GrowingItem>();
                 GaugeDic = new Dictionary<string, GaugeElement>();
                 ScoreDic = new Dictionary<string, float>();
 
