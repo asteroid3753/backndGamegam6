@@ -70,6 +70,9 @@ namespace LJH
         [SerializeField, FoldoutGroup("About Item")] bool _findSlime; 
 
         SpriteRenderer _itemSpriteRenderer;
+        Vector3 offset = Vector3.zero;
+        Vector2 capsuleSize = Vector2.zero;
+        SpriteRenderer bodyRenderer;
 
         //setter Test
         public void SetUserItem(GrowingItem _item)
@@ -89,11 +92,6 @@ namespace LJH
                 _itemSpriteRenderer.sprite = _item.ItemImg;
                 Debug.Log("item이 null이 아님");
             }
-        }
-
-        private void FixedUpdate()
-        {
-
         }
 
         private void Update()
@@ -187,7 +185,7 @@ namespace LJH
             }
 
             // Find Item
-            List<Collider2D> nerbyItemList = Physics2D.OverlapCircleAll(this.transform.position, _itemDetectingArea).ToList();
+            List<Collider2D> nerbyItemList = Physics2D.OverlapCapsuleAll(this.transform.position + offset, capsuleSize, CapsuleDirection2D.Vertical, 0).ToList();
 
             // refine GrowingItem only
             for (int i = nerbyItemList.Count - 1; i >= 0; i--)
@@ -257,6 +255,9 @@ namespace LJH
         private void Start()
         {
             _itemSpriteRenderer = _playerVisual.transform.Find("Item").GetComponent<SpriteRenderer>();
+            CapsuleCollider2D col = GetComponent<CapsuleCollider2D>();
+            offset = col.offset;
+            capsuleSize = col.size;
         }
     }
 }
