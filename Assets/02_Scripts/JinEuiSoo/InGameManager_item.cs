@@ -20,6 +20,7 @@ namespace LJH
 
         Transform[] itemSpawnPoint;
         HashSet<int> availablePoints;
+        int lastDeleteIndex = -1;
 
         Coroutine createItemCoroutine;
 
@@ -95,8 +96,15 @@ namespace LJH
             {
                 NamePlayerPairs[nickname].SetUserItem(InGameItemDic[itemCode]);
 
+                //스폰된 아이템 오브젝트 삭제
                 Destroy(InGameItemDic[itemCode].gameObject);
-                availablePoints.Add(InGameItemDic[itemCode].SpawnPointIndex);
+                //방금 삭제된 아이템의 스폰위치 인덱스를 저장해두고, 직전에 삭제됐던 스폰위치 인덱스를 해시셋에 추가
+                if(lastDeleteIndex != -1)
+                {
+                    availablePoints.Add(lastDeleteIndex);
+                }
+                lastDeleteIndex = InGameItemDic[itemCode].SpawnPointIndex;
+                //딕셔너리에서 아이템 삭제
                 InGameItemDic.Remove(itemCode);
             }
         }

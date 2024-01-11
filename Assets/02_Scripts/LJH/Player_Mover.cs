@@ -70,7 +70,7 @@ namespace LJH
             // Dash
             if(_inputDash == true && _canDash == true)
             {
-                _inputDash = false;
+                _canDash = false;
                 _dashInnerCoolTime = _dashCoolTIme;
 
 
@@ -108,6 +108,10 @@ namespace LJH
                     if (Input.GetKeyDown(KeyCode.Z))
                     {
                         _inputDash = true;
+                    }
+                    else if (Input.GetKeyUp(KeyCode.Z))
+                    {
+                        _inputDash = false;
                     }
                 }
 
