@@ -179,7 +179,7 @@ namespace LJH
 
                     // Instantiate and Set Variables
                     #region 
-                    playerSetGO = Instantiate(_playerPrefab[i]);
+                    playerSetGO = Instantiate(_playerPrefab[i], _playerPositions[i].position, _playerPositions[i].rotation);
                     moverGO = playerSetGO.transform.Find("Player_Mover").gameObject;
                     logicGO = playerSetGO.transform.Find("Player_Logic").gameObject;
                     visualGO = playerSetGO.transform.Find("Player_Visual").gameObject; // inCase, this might need it in the future..
