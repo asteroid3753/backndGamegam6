@@ -2024,6 +2024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titlePanel: {fileID: 666280640}
   loginPanel: {fileID: 827963459}
+  startButton: {fileID: 1034723921}
   nameInputField: {fileID: 223663113}
   loginInfoText: {fileID: 1270016707}
   idLength: 10

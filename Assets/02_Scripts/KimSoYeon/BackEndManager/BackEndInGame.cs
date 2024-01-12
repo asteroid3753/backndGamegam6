@@ -11,13 +11,13 @@ namespace KSY
     {
         public void Init()
         {
-            // Áßº¹ È£Ãâ ¹æÁö
+            // ì¤‘ë³µ í˜¸ì¶œ ë°©ì§€
             Backend.Match.OnMatchRelay -= ReceiveEvent;
             Backend.Match.OnMatchRelay += ReceiveEvent;
         }
 
-        // ¼­¹ö·Î µ¥ÀÌÅÍ ÆĞÅ¶ Àü¼Û
-        // ¼­¹ö¿¡¼­´Â ÀÌ ÆĞÅ¶À» ¹Ş¾Æ ¸ğµç Å¬¶óÀÌ¾ğÆ®(ÆĞÅ¶ º¸³½ Å¬¶óÀÌ¾ğÆ® Æ÷ÇÔ)·Î ºê·ÎµåÄ³½ºÆÃ ÇØÁØ´Ù.
+        // ì„œë²„ë¡œ ë°ì´í„° íŒ¨í‚· ì „ì†¡
+        // ì„œë²„ì—ì„œëŠ” ì´ íŒ¨í‚·ì„ ë°›ì•„ ëª¨ë“  í´ë¼ì´ì–¸íŠ¸(íŒ¨í‚· ë³´ë‚¸ í´ë¼ì´ì–¸íŠ¸ í¬í•¨)ë¡œ ë¸Œë¡œë“œìºìŠ¤íŒ… í•´ì¤€ë‹¤.
         public void SendDataToInGame<T>(T msg)
         {
             var byteArray = DataParser.DataToJsonData<T>(msg);
@@ -26,7 +26,7 @@ namespace KSY
 
         private void ReceiveEvent(MatchRelayEventArgs args)
         {
-            // µ¥ÀÌÅÍ ÆÄ½ÌÀ» À§ÇØ ÆÄ½Ì ¸Å´ÏÀú ÇÔ¼ö È£Ãâ
+            // ë°ì´í„° íŒŒì‹±ì„ ìœ„í•´ íŒŒì‹± ë§¤ë‹ˆì € í•¨ìˆ˜ í˜¸ì¶œ
             BackEndManager.Instance.Parsing.OnRecieve(args);
         }
 

@@ -15,6 +15,7 @@ namespace khj
     {
         [SerializeField] GameObject titlePanel;
         [SerializeField] GameObject loginPanel;
+        [SerializeField] GameObject startButton;
         [SerializeField] TMP_InputField nameInputField;
         [SerializeField] LoginInfoText loginInfoText;
         [SerializeField] int idLength = 10;
@@ -27,6 +28,7 @@ namespace khj
         {
             titlePanel.SetActive(true);
             loginPanel.SetActive(false);
+            StartCoroutine(CheckingKeyToStart());
         }
 
         private void Start()
@@ -38,6 +40,8 @@ namespace khj
         public void TouchToStart()
         {
             loginPanel.SetActive(true);
+            startButton.SetActive(false);
+            nameInputField.ActivateInputField();
         }
         
         public void Login()
@@ -51,6 +55,9 @@ namespace khj
             if (!regex.IsMatch(nameInputField.text)) 
             {
                 loginInfoText.InfoText = $"1~{idLength}사이의 영문, 한글 혹은 숫자로 이루어진 아이디를 입력해주세요";
+                EndChecking();
+                StartChecking();
+                nameInputField.ActivateInputField();
                // Debug.Log($"1~{idLength}사이의 영문 혹은 숫자로 이루어진 아이디를 입력해주세요");
                 return;
             }
@@ -99,19 +106,18 @@ namespace khj
             {
                 Debug.LogError("닉네임 변경 : " + bro);
             }
-
         }
 
         public void StartChecking()
         {
-            enterCheck = StartCoroutine(CheckingKey());
+            enterCheck = StartCoroutine(CheckingKeyToLogin());
         }
         public void EndChecking()
         {
             StopCoroutine(enterCheck);
         }
 
-        IEnumerator CheckingKey()
+        IEnumerator CheckingKeyToLogin()
         {
             while (true)
             {
@@ -120,6 +126,18 @@ namespace khj
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
                 {
                     Login();
+                    break;
+                }
+            }
+        }
+        IEnumerator CheckingKeyToStart()
+        {
+            while (true)
+            {
+                yield return null;
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+                {
+                    TouchToStart();
                     break;
                 }
             }
