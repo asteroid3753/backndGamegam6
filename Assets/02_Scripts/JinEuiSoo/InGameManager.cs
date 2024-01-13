@@ -267,6 +267,7 @@ namespace LJH
             GaugeElement gaugeElement = obj.GetComponent<GaugeElement>();
             gaugeElement.Percent = initPercent;
             gaugeElement.GaugeColor = color;
+            gaugeElement.NickName = nickname;
             GaugeDic.Add(nickname, gaugeElement);
         }
 

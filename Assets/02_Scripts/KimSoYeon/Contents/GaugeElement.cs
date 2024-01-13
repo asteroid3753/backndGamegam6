@@ -14,6 +14,9 @@ namespace KSY
 
         private Image img;
 
+        [SerializeField]
+        private TextMeshProUGUI nicknameTextGUI;
+
         private float percent;
         public float Percent
         {
@@ -37,6 +40,17 @@ namespace KSY
                 img.color = gaugeColor;
             }
 
+        }
+
+        private string nickName;
+        public string NickName
+        {
+            get { return nickName; }
+            set
+            {
+                nickName = value;
+                nicknameTextGUI.text = nickName;
+            }
         }
 
         void Awake()
