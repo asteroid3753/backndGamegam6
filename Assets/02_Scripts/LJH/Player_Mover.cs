@@ -105,11 +105,11 @@ namespace LJH
                 {
                     horizontal = Input.GetAxisRaw("Horizontal");
                     vertical = Input.GetAxisRaw("Vertical");
-                    if (Input.GetKeyDown(KeyCode.Z))
+                    if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
                     {
                         _inputDash = true;
                     }
-                    else if (Input.GetKeyUp(KeyCode.Z))
+                    else if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
                     {
                         _inputDash = false;
                     }

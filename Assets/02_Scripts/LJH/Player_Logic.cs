@@ -189,9 +189,9 @@ namespace LJH
             // refine GrowingItem only
             for (int i = nerbyItemList.Count - 1; i >= 0; i--)
             {
-                Collider2D content = nerbyItemList[i];
-
                 if (slimeCheck) continue;
+                
+                Collider2D content = nerbyItemList[i];      
                 if (content.transform.tag == "Slime")
                 {
                     slimeCheck = true;

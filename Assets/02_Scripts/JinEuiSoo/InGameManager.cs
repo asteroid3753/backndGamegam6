@@ -298,6 +298,7 @@ namespace LJH
                     BackEndManager.Instance.InGame.SendDataToInGame(scoreMsg);   
                     DeclareMatchEnd();
                     gameEndTrigger = true;
+                    _isGameEnd = true;
                 }
             }
 
