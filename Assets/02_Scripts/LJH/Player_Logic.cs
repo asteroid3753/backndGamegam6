@@ -67,7 +67,8 @@ namespace LJH
         }
 
         [SerializeField, FoldoutGroup("About Item")] float _itemDetectingArea = 1.5f;
-        [SerializeField, FoldoutGroup("About Item")] bool _findSlime; 
+        [SerializeField, FoldoutGroup("About Item")] bool _findSlime;
+        [SerializeField] public bool canGiveItemToSlime;
 
         SpriteRenderer _itemSpriteRenderer;
         Vector3 offset = Vector3.zero;
@@ -165,9 +166,6 @@ namespace LJH
                 return;
             }
 
-            bool haveItem = (_currentHavingItemIdex != -1) == true;
-            bool canGiveItemToSlime = _findSlime == true && haveItem;
-
             if (canGiveItemToSlime)
             {
                 SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(_currentItemGrowingPoint);
@@ -187,23 +185,27 @@ namespace LJH
             // Find Item
             List<Collider2D> nerbyItemList = Physics2D.OverlapCapsuleAll(this.transform.position + offset, capsuleSize, CapsuleDirection2D.Vertical, 0).ToList();
 
+            bool slimeCheck = false;
             // refine GrowingItem only
             for (int i = nerbyItemList.Count - 1; i >= 0; i--)
             {
                 Collider2D content = nerbyItemList[i];
 
+                if (slimeCheck) continue;
                 if (content.transform.tag == "Slime")
                 {
-                    _findSlime = true;
+                    slimeCheck = true;
                     continue;
                 }
-
+            
                 if (content.transform.TryGetComponent<GrowingItem>(out _) == false)
                 {
                     nerbyItemList.Remove(content);
                 }
             }
 
+            _findSlime = slimeCheck;
+            canGiveItemToSlime = _findSlime == true && _currentHavingItemIdex != -1;
             // Early Return
             if (nerbyItemList.Count == 0)
             {
@@ -245,11 +247,6 @@ namespace LJH
             GrowingItem growingItem = nerbyItemList[leastShortestItemIdex].transform.GetComponent<GrowingItem>();
 
             _currentTargetItem = growingItem;
-        }
-
-        private void LateUpdate()
-        {
-            _findSlime = false;
         }
 
         private void Start()

@@ -15,6 +15,7 @@ namespace LJH
         [FoldoutGroup("PreDefine"), SerializeField] TextMeshPro _nameTMP;
 
         [SerializeField] bool _isWalk;
+        [SerializeField] GameObject canGiveItemUI;
 
         public bool IsWalk 
         {
@@ -38,7 +39,9 @@ namespace LJH
 
             // Update SetWalk
             _animator.SetBool("Walk", _isWalk);
-
+            
+            // canGiveItemUI
+            canGiveItemUI.SetActive(player.canGiveItemToSlime);
         }
 
         public void SetNickName(string name)
