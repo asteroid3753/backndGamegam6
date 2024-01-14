@@ -21,6 +21,7 @@ namespace LJH
         Transform[] itemSpawnPoint;
         HashSet<int> availablePoints;
         int lastDeleteIndex = -1;
+        private int lastItemCode = 0;
 
         Coroutine createItemCoroutine;
 
@@ -43,13 +44,19 @@ namespace LJH
         
         private void GameItemInit()
         {
+            itemTypeCount = System.Enum.GetValues(typeof(Define.ItemType)).Length;
+            itemCount = 0;
+            ItemReHost();     
+        }
+
+        private void ItemReHost()
+        {
             if (TotalGameManager.Instance.isHost)
             {
-                itemCount = 0;
-                itemTypeCount = System.Enum.GetValues(typeof(Define.ItemType)).Length;
                 createItemCoroutine = StartCoroutine(CreateItem());
             }
         }
+
         IEnumerator CreateItem()
         {
             while (true)
@@ -122,6 +129,10 @@ namespace LJH
                 item.SpawnPointIndex = index;
                 availablePoints.Remove(index);
                 InGameItemDic.Add(itemCode, item);
+
+                //Host가 아닌 사람은 Count Update
+                if (!TotalGameManager.Instance.isHost)
+                    itemCount = itemCode;
             }
         }
 

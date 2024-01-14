@@ -166,8 +166,8 @@ namespace LJH
                     {
                         TotalGameManager.Instance.isHost = true;
                         TotalGameManager.Instance.host = _myClientNickName;
+                        ItemReHost();
                     }
-
                 };
             }
 
