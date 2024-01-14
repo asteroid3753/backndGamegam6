@@ -16,6 +16,7 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using TMPro;
 using khj;
+using JES;
 
 namespace LJH
 {
@@ -373,6 +374,7 @@ namespace LJH
 
             totalScore += addSize;
             ScoreDic[nickname] += addSize;
+            VFXSoundPlayer.Instance.PlaySlimeSmile();
 
             for (int i = 0; i < ScoreDic.Count; i++)
             {

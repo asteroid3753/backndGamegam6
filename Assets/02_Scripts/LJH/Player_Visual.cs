@@ -13,19 +13,22 @@ namespace LJH
         [FoldoutGroup("PreDefine"), SerializeField] SpriteRenderer _bodySpriteRenderer;
         [FoldoutGroup("PreDefine"), SerializeField] Animator _animator;
         [FoldoutGroup("PreDefine"), SerializeField] TextMeshPro _nameTMP;
+        [FoldoutGroup("PreDefine"), SerializeField] ParticleSystem _moveParticle;
 
-        [SerializeField] bool _isWalk;
+
+        [FoldoutGroup("Debug")]
+        [ShowInInspector] public bool IsWalk;
+        [FoldoutGroup("Debug")]
         [SerializeField] GameObject canGiveItemUI;
 
-        public bool IsWalk 
-        {
-            get => _isWalk;
-            set => _isWalk = value;
-        }
+        ParticleSystem.EmissionModule _moveParticleEmission;
+
+
 
         private void Start()
         {
             _bodySpriteRenderer = this.gameObject.transform.Find("Body").GetComponent<SpriteRenderer>();
+            _moveParticleEmission = _moveParticle.emission;
         }
 
 
@@ -38,7 +41,18 @@ namespace LJH
             _bodySpriteRenderer.flipX = player.IsFlipX;
 
             // Update SetWalk
-            _animator.SetBool("Walk", _isWalk);
+            _animator.SetBool("Walk", IsWalk);
+
+            // Update Move ParticleSystem
+            if (IsWalk == true)
+            {
+                _moveParticleEmission.enabled = true;
+            }
+            else
+            {
+                _moveParticleEmission.enabled = false;
+
+            }
             
             // canGiveItemUI
             canGiveItemUI.SetActive(player.canGiveItemToSlime);

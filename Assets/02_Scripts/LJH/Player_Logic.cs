@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MorningBird;
+using JES;
 
 namespace LJH
 {
@@ -145,11 +146,11 @@ namespace LJH
 
             // GetGrowingItem
             {
-                GetGrowingItem();
+                ProcessGetOrSetGrowingItem();
             }
         }
 
-        void GetGrowingItem()
+        void ProcessGetOrSetGrowingItem()
         {
             if (Input.GetKeyDown(KeyCode.Space) == false)
             {
@@ -163,6 +164,7 @@ namespace LJH
                 GrabItemMessage itemMsg = new GrabItemMessage(CurrentTargetItem.ItemCode);
                 BackEndManager.Instance.InGame.SendDataToInGame(itemMsg);
                 Debug.Log($"Send Meg to Server _Grab Item_ : item index {CurrentTargetItem.ItemCode} .");
+                VFXSoundPlayer.Instance.PlayPickUp();
                 return;
             }
 
@@ -170,6 +172,7 @@ namespace LJH
             {
                 SlimeSizeUpMessage sizeMsg = new SlimeSizeUpMessage(_currentItemGrowingPoint);
                 BackEndManager.Instance.InGame.SendDataToInGame(sizeMsg);
+                VFXSoundPlayer.Instance.PlayPickDown();
                 Debug.Log($"Send Meg to Server _Give item to slime_ : item Grow Point {_currentItemGrowingPoint} .");
             }
         }

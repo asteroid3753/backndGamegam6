@@ -21,17 +21,17 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _name: SlimeLaugh (1) 5
+  _name: SlimeLaugh 5
   _audioClip: {fileID: 8300000, guid: f1ce3c1ccd37bac499de7436f0c36a4c, type: 3}
   _bypassEffects: 0
   _bypassListenerEffects: 0
   _bypassReverbZones: 0
   _playStartTime: 0
   _priority: 128
-  _volume: 0.75
+  _volume: 0.358
   _pitch: 1
   _stereoPan: 0
-  _spatialBlend: 1
+  _spatialBlend: 0
   _reverbZoneMix: 1
   _dopplerLevel: 0
   _spread: 0

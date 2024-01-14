@@ -22,16 +22,16 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _name: PickDown
-  _audioClip: {fileID: 8300000, guid: fe3ade26f976b5d4984bb0924b341567, type: 3}
+  _audioClip: {fileID: 8300000, guid: 63eea94bdedae0e4e8ce531703b57815, type: 3}
   _bypassEffects: 0
   _bypassListenerEffects: 0
   _bypassReverbZones: 0
   _playStartTime: 0
   _priority: 128
-  _volume: 0.75
+  _volume: 1.2
   _pitch: 1
   _stereoPan: 0
-  _spatialBlend: 1
+  _spatialBlend: 0
   _reverbZoneMix: 1
   _dopplerLevel: 0
   _spread: 0
