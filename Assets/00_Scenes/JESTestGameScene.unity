@@ -12746,11 +12746,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6333731817946388403, guid: 5950334e59a2dfe4086cdb312d0cd53b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5950334e59a2dfe4086cdb312d0cd53b, type: 3}
+--- !u!1 &2078324907 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2528368287110525601, guid: 5950334e59a2dfe4086cdb312d0cd53b, type: 3}
+  m_PrefabInstance: {fileID: 2078324906}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2101109073
 GameObject:
   m_ObjectHideFlags: 0
@@ -13107,6 +13113,10 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      propertyPath: endSound
+      value: 
+      objectReference: {fileID: 11400000, guid: 0bf2693426544ea44ac0c085172f041e, type: 2}
+    - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: gaugeObj
       value: 
       objectReference: {fileID: 1759356900}
@@ -13122,6 +13132,10 @@ PrefabInstance:
       propertyPath: gaugePrefab
       value: 
       objectReference: {fileID: 6446871937054840964, guid: 73be28aea062a814dbce97831e07d217, type: 3}
+    - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      propertyPath: gameEndPanel
+      value: 
+      objectReference: {fileID: 2078324907}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: itemMaxCount
       value: 50
@@ -13145,7 +13159,7 @@ PrefabInstance:
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.data[0]
       value: 

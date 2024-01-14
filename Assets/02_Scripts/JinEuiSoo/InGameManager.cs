@@ -24,6 +24,9 @@ namespace LJH
     public partial class InGameManager : SerializedMonoBehaviour
     {
         [SerializeField]
+        GameObject gameEndPanel;
+
+        [SerializeField]
         private GameObject gaugePrefab;
 
         [SerializeField]
@@ -66,6 +69,8 @@ namespace LJH
         [SerializeField] BoxCollider2D groundArea;
         GameObject slimeObj;
 
+        [SerializeField]
+        AudioStorage endSound;
         #region Singleton
 
         static InGameManager _instance;
@@ -129,6 +134,7 @@ namespace LJH
                 BackEndManager.Instance.Parsing.PlayerMoveEvent += Parsing_PlayerMove;
                 Backend.Match.OnLeaveInGameServer += OnLeaveInGameServerEvent;
                 BackEndManager.Instance.Parsing.SlimeSizeUpEvent += Parsing_SlimeSizeUpEvent;
+                BackEndManager.Instance.Parsing.EndGameEvent += GameEndEventFunc;
                 Backend.Match.OnMatchResult = (MatchResultEventArgs args) =>
                 {
                     if (args.ErrInfo == ErrorCode.Success)
@@ -359,6 +365,7 @@ namespace LJH
             BackEndManager.Instance.Parsing.SlimeSizeUpEvent -= Parsing_SlimeSizeUpEvent;
             BackEndManager.Instance.Parsing.GrabItemEvent -= Parsing_GrabItemEvent;
             BackEndManager.Instance.Parsing.CreateItemEvent -= Parsing_CreateItemEvent;
+            BackEndManager.Instance.Parsing.EndGameEvent -= GameEndEventFunc;
         }
 
         void DeclareMatchEnd()
@@ -415,5 +422,18 @@ namespace LJH
 
             NamePlayerPairs[nickname].SetUserItem(null);
         }
+
+        /// <summary>
+        /// 게임이 끝났다는 메세지 EventFunc
+        /// </summary>
+        private void GameEndEventFunc()
+        {
+            gameEndTrigger = true;
+            _isGameEnd = true;
+            SoundManager.Instance.RequestPlayClip(endSound);
+            gameEndPanel.SetActive(true);
+            BackEndManager.Instance.Parsing.EndGameEvent -= GameEndEventFunc;
+        }
+
     }
 }
