@@ -13145,7 +13145,7 @@ PrefabInstance:
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPrefab.Array.data[0]
       value: 
@@ -13180,11 +13180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _gaugeColors.Array.data[1].g
-      value: 0.43921572
+      value: 0.3254902
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _gaugeColors.Array.data[1].r
-      value: 0.3921569
+      value: 0.7294118
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _gaugeColors.Array.data[2].b
@@ -13204,11 +13204,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _gaugeColors.Array.data[3].g
-      value: 0.3254902
+      value: 0.43921572
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _gaugeColors.Array.data[3].r
-      value: 0.7294118
+      value: 0.3921569
       objectReference: {fileID: 0}
     - target: {fileID: 8636769761734610866, guid: 60816af7a16daba4da50ebe49dde8a32, type: 3}
       propertyPath: _playerPositions.Array.data[0]
