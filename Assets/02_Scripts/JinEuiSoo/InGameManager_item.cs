@@ -53,6 +53,7 @@ namespace LJH
         {
             if (TotalGameManager.Instance.isHost)
             {
+                StopCoroutine(CreateItem());
                 createItemCoroutine = StartCoroutine(CreateItem());
             }
         }
