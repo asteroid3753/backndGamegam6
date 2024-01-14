@@ -17,6 +17,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using khj;
 using JES;
+using System.Runtime.CompilerServices;
 
 namespace LJH
 {
@@ -140,6 +141,33 @@ namespace LJH
                     }
 
                     TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Result);
+                };
+
+                Backend.Match.OnSessionOffline += (args) =>
+                {
+                    if (args.GameRecord.m_nickname == _myClientNickName)
+                    {
+                        // 게임 다시하기
+                        var bro = Backend.BMember.Logout();
+                        TotalGameManager.Instance.ChangeState(TotalGameManager.GameState.Login);
+                        GameSceneLoadManager.Instance.UnLoadAllScenes();
+                        GameSceneLoadManager.Instance.LoadSceneAsync("Login");
+                    }
+                };
+
+                Backend.Match.OnChangeSuperGamer = (MatchInGameChangeSuperGamerEventArgs args) => {
+                    // TODO
+                    Debug.Log(string.Format("이전 방장 : {0} / 새 방장 : {1}", args.OldSuperUserRecord.m_nickname, args.NewSuperUserRecord.m_nickname));
+
+                    //알아서 변경해준거,
+                    _superPlayerNickName = args.NewSuperUserRecord.m_nickname;
+
+                    if (_superPlayerNickName == _myClientNickName)
+                    {
+                        TotalGameManager.Instance.isHost = true;
+                        TotalGameManager.Instance.host = _myClientNickName;
+                    }
+
                 };
             }
 
